@@ -52,10 +52,10 @@ public class Order {
 
     @Override
     public String toString() {
-        // TODO decide how much formatting is here VS in invoid
+        // TODO decide how much formatting is here VS in invoice
         String productsToString = "";
         for (Product product : products) {
-            productsToString = productsToString.concat(product.getName());
+            productsToString = productsToString.concat(product.getName() + ", ");
         }
 
         return "{" +

@@ -34,8 +34,10 @@ public class Main {
         order.addProduct(photo3);
 
         order.setCustomer(c_one);
-
         System.out.println(order);
+
+        Order orderCopy = order.clone();
+        System.out.println(orderCopy);
         
 
 
