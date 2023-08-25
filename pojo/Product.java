@@ -9,6 +9,20 @@ public class Product {
     private int creatingHours;
 
 
+
+    // might remove this later, need it for testing order / invoice setting
+    public Product(int id, String name, BigDecimal price, int creatingHours) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.creatingHours = creatingHours;
+    }
+
+
+    public Product() {
+    }
+
+
     // all this needs to be loaded in from .csv, so no argument checkers?
     public int getId() {
         return this.id;

@@ -28,4 +28,9 @@ public class Invoice {
         this.totalcosts = totalcosts;
     }
 
+    // return a nicely formatted string with all the info for printing
+    public String formatInvoice() {
+        return " ";
+    }
+
 }

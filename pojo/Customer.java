@@ -18,6 +18,18 @@ public class Customer {
         setEmail(email);
     }
 
+    // constructor for the clone method
+    public Customer(Customer source) {
+        setId(source.id);
+        setFirstName(source.firstName);
+        setLastName(source.lastName);
+        setAddress(source.address);
+        setPostalCode(source.postalCode);
+        setCity(source.city);
+        setEmail(source.email);
+        setPhoneNr(source.phoneNr);
+    }
+
 
     public int getId() {
         return this.id;
@@ -91,6 +103,10 @@ public class Customer {
             throw new IllegalArgumentException();
         }
         this.phoneNr = phoneNr;
+    }
+
+    public Customer clone() {
+        return new Customer(this);
     }
 
 }
