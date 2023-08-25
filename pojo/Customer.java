@@ -19,16 +19,16 @@ public class Customer {
     }
 
     // constructor for the clone method
-    public Customer(Customer source) {
-        setId(source.id);
-        setFirstName(source.firstName);
-        setLastName(source.lastName);
-        setAddress(source.address);
-        setPostalCode(source.postalCode);
-        setCity(source.city);
-        setEmail(source.email);
-        setPhoneNr(source.phoneNr);
-    }
+    // public Customer(Customer source) {
+    //     setId(source.id);
+    //     setFirstName(source.firstName);
+    //     setLastName(source.lastName);
+    //     setAddress(source.address);
+    //     setPostalCode(source.postalCode);
+    //     setCity(source.city);
+    //     setEmail(source.email);
+    //     setPhoneNr(source.phoneNr);
+    // }
 
 
     public int getId() {
@@ -38,7 +38,7 @@ public class Customer {
         // random Id generated between 1 - 10000 -> semi-unique (does it have to be unique tho?)
         this.id = (int) (Math.random() * 10000 + 1);
     }
-    public void setId(int id) { // do I need this overload if I have a clone() method?
+    public void setId(int id) { //  overload for clone() method
         this.id = id;
     }
     public String getFirstName() {
@@ -46,7 +46,7 @@ public class Customer {
     }
     public void setFirstName(String firstName) {
         if (firstName == null || firstName.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Customer's first name cannot be null or empty.");
         }
         this.firstName = firstName;
     }
@@ -55,7 +55,7 @@ public class Customer {
     }
     public void setLastName(String lastName) {
         if (lastName == null || lastName.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Customer's last name cannot be set to null or empty.");
         }
         this.lastName = lastName;
     }
@@ -63,27 +63,27 @@ public class Customer {
         return this.address;
     }
     public void setAddress(String address) {
-        if (address == null || address.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
+        //if (address == null || address.isEmpty()) {
+        //    throw new IllegalArgumentException("Customer's address cannot be set to null or empty.");
+        //}
         this.address = address;
     }
     public String getPostalCode() {
         return this.postalCode;
     }
     public void setPostalCode(String postalCode) {
-        if (postalCode == null || postalCode.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
+        //if (postalCode == null || postalCode.isEmpty()) {
+        //    throw new IllegalArgumentException("Customer's postal code cannot be set to null or empty.");
+        //}
         this.postalCode = postalCode;
     }
     public String getCity() {
         return this.city;
     }
     public void setCity(String city) {
-        if (city == null || city.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
+        //if (city == null || city.isEmpty()) {
+        //    throw new IllegalArgumentException("Customer's city cannot be set to null or empty.");
+        //}
         this.city = city;
     }
     public String getEmail() {
@@ -91,7 +91,7 @@ public class Customer {
     }
     public void setEmail(String email) {
         if (email == null || email.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Customer's email cannot be set to null or empty.");
         }
         this.email = email;
     }
@@ -99,14 +99,23 @@ public class Customer {
         return this.phoneNr;
     }
     public void setPhoneNr(String phoneNr) {
-        if (phoneNr == null || phoneNr.isEmpty()) { // set a maximum size (of digits) too?
-            throw new IllegalArgumentException();
-        }
+        //if (phoneNr == null || phoneNr.isEmpty()) { // set a maximum size (of digits) too?
+        //    throw new IllegalArgumentException("Customer's phone number cannot be set to null or empty.");
+        //}
         this.phoneNr = phoneNr;
     }
 
+    @Override
     public Customer clone() {
-        return new Customer(this);
+        Customer customer = new Customer(this.firstName, this.lastName, this.email);
+        customer.setId(this.id);
+        customer.setAddress(this.address);
+        customer.setPostalCode(this.postalCode);
+        customer.setCity(this.city);
+        customer.setPhoneNr(this.phoneNr);
+        return customer;
     }
 
+
+    
 }
