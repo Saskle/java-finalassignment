@@ -102,7 +102,7 @@ public class Main {
                 break;
 
             case 2: // view current order / shopping cart
-                System.out.println("CURRENT ORDER");
+                System.out.println("CURRENT ORDER OVERVIEW");
                 System.out.println(order);
 
                 mainMenu(order);
@@ -110,7 +110,7 @@ public class Main {
 
             case 3: // customer information
                 System.out.println("CUSTOMER INFO");
-                scan.nextLine(); // throwaway line for nextInt()
+                
 
                 if (order.hasCustomer()) {
                     System.out.println(order.getCustomer());
@@ -118,14 +118,7 @@ public class Main {
                     String response = scan.nextLine();
 
                     if (response.equals("yes")) {
-                        System.out.print("Please add your first name: ");
-                        String firstName = scan.nextLine();
-                        System.out.print("Please add your last name: ");
-                        String lastName = scan.nextLine();
-                        System.out.print("Please add your email address: ");
-                        String email = scan.nextLine();
-
-                        Customer customer = new Customer(firstName, lastName, email);
+                        Customer customer = promptCustomerInfo();
                         order.setCustomer(customer);
 
                         mainMenu(order);
@@ -139,14 +132,7 @@ public class Main {
                     
                 }
 
-                System.out.print("Please add your first name: ");
-                String firstName = scan.nextLine();
-                System.out.print("Please add your last name: ");
-                String lastName = scan.nextLine();
-                System.out.print("Please add your email address: ");
-                String email = scan.nextLine();
-
-                Customer customer = new Customer(firstName, lastName, email);
+                Customer customer = promptCustomerInfo();
                 order.setCustomer(customer);
 
                 mainMenu(order);
@@ -154,6 +140,11 @@ public class Main {
 
             case 4: // create invoice
                 System.out.println("CREATE INVOICE");
+
+                if (!order.hasCustomer()) {
+                    Customer newCustomer = promptCustomerInfo();
+                    order.setCustomer(newCustomer);
+                }               
                 Invoice invoice = new Invoice(1, order);
                 System.out.println(invoice);
 
@@ -169,5 +160,18 @@ public class Main {
                 mainMenu(order);
                 break;
         }
+    }
+
+    public static Customer promptCustomerInfo() {
+        scan.nextLine(); // throwaway line for nextInt()
+        System.out.print("Please add your first name: ");
+        String firstName = scan.nextLine();
+        System.out.print("Please add your last name: ");
+        String lastName = scan.nextLine();
+        System.out.print("Please add your email address: ");
+        String email = scan.nextLine();
+
+        Customer customer = new Customer(firstName, lastName, email);
+        return customer;
     }
 }

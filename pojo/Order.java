@@ -31,6 +31,14 @@ public class Order {
         return this.customer != null;
     }
 
+    public ArrayList<Product> getAllProducts() {
+        ArrayList<Product> allProducts = new ArrayList<>();
+        for (Product product : this.products) {
+            allProducts.add(product);
+        }
+        return allProducts;
+    }
+    
     public Product getProduct(int index) {
         return products.get(index).clone();
     }
