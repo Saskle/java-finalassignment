@@ -27,6 +27,9 @@ public class Order {
     public void setCustomer(Customer customer) {
         this.customer = customer.clone();
     }
+    public boolean hasCustomer() {
+        return this.customer != null;
+    }
 
     public Product getProduct(int index) {
         return products.get(index).clone();

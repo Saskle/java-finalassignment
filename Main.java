@@ -48,12 +48,16 @@ public class Main {
         String response = scan.nextLine();
 
         if (response.equals("existing")) {
-            System.out.println("The last saved order no. XXXX was made by MR. XX");
+            // load in existing order (hardcode something for now)
+            Order loadedOrder = new Order(4);
+            loadedOrder.addProduct(productCatalog[3]);
+            loadedOrder.setCustomer(new Customer("Saskia", "de Klerk", "saskle@calco.nl"));;
+
+            System.out.println("The last saved order no. " + loadedOrder.getId() + " was made by " + loadedOrder.getCustomer().getFirstName() + " " + loadedOrder.getCustomer().getLastName());
             System.out.println("Please enter the order no. of the order you'd like to restore.");
             response = scan.nextLine();
 
-            // load in existing order (hardcode something for now)
-            Order loadedOrder = new Order(4);
+            
             mainMenu(loadedOrder);
 
         } else if (response.equals("new")) {
@@ -77,6 +81,7 @@ public class Main {
         System.out.print("Please enter the no. of the menu to proceed: ");
         int menuChoice = scan.nextInt(); // add argument validation
 
+        // has int
         switch (menuChoice) {
             case 1: // product catalog
                 System.out.println("PRODUCT CATALOG");
@@ -105,14 +110,44 @@ public class Main {
 
             case 3: // customer information
                 System.out.println("CUSTOMER INFO");
+                scan.nextLine(); // throwaway line for nextInt()
 
-                if (order.getCustomer() == null) {
-                    System.out.println("No customer info as been added to this order yet.");
-                    // prompt for info
-                } else {
+                if (order.hasCustomer()) {
                     System.out.println(order.getCustomer());
-                    // prompt for info
+                    System.out.println("Do you want to change this info?");
+                    String response = scan.nextLine();
+
+                    if (response.equals("yes")) {
+                        System.out.print("Please add your first name: ");
+                        String firstName = scan.nextLine();
+                        System.out.print("Please add your last name: ");
+                        String lastName = scan.nextLine();
+                        System.out.print("Please add your email address: ");
+                        String email = scan.nextLine();
+
+                        Customer customer = new Customer(firstName, lastName, email);
+                        order.setCustomer(customer);
+
+                        mainMenu(order);
+
+                    } else {
+                        mainMenu(order);
+                    }
+
+                } else {
+                    System.out.println("No customer info as been added to this order yet.");
+                    
                 }
+
+                System.out.print("Please add your first name: ");
+                String firstName = scan.nextLine();
+                System.out.print("Please add your last name: ");
+                String lastName = scan.nextLine();
+                System.out.print("Please add your email address: ");
+                String email = scan.nextLine();
+
+                Customer customer = new Customer(firstName, lastName, email);
+                order.setCustomer(customer);
 
                 mainMenu(order);
                 break;
@@ -122,6 +157,7 @@ public class Main {
                 Invoice invoice = new Invoice(1, order);
                 System.out.println(invoice);
 
+                mainMenu(order);
                 break;
             case 5: // close application
                 System.out.println("Application closing.");
