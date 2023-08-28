@@ -8,6 +8,11 @@ public class Invoice {
     private BigDecimal totalcosts;
 
 
+    public Invoice(int id, Order order) {
+        setId(id);
+        setOrder(order);
+        // for each product in order.products, totalcosts.add(product.getPrice());
+    }
 
     public int getId() {
         return this.id;
@@ -31,9 +36,15 @@ public class Invoice {
         this.totalcosts = totalcosts;
     }
 
-    // return a nicely formatted string with all the info for printing (or use toString?)
-    public String formatInvoice() {
-        return " ";
+    // format this to a nice invoice
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + getId() + "'" +
+            ", order='" + getOrder() + "'" +
+            ", totalcosts='" + getTotalcosts() + "'" +
+            "}";
     }
+
 
 }

@@ -61,4 +61,15 @@ public class Product {
         return new Product(this.id, this.name, this.price, this.creatingHours);
     }
 
+
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + getId() + "'" +
+            ", name='" + getName() + "'" +
+            ", price='" + getPrice() + "'" +
+            ", creatingHours='" + getCreatingHours() + "'" +
+            "}";
+    }
+
 }

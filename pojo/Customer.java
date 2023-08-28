@@ -116,6 +116,20 @@ public class Customer {
         return customer;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + getId() + "'" +
+            ", firstName='" + getFirstName() + "'" +
+            ", lastName='" + getLastName() + "'" +
+            ", address='" + getAddress() + "'" +
+            ", postalCode='" + getPostalCode() + "'" +
+            ", city='" + getCity() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", phoneNr='" + getPhoneNr() + "'" +
+            "}";
+    }
+
 
     
 }

@@ -22,7 +22,7 @@ public class Order {
         this.id = id;
     }
     public Customer getCustomer() {
-        return this.customer.clone();
+        return this.customer.clone();  
     }
     public void setCustomer(Customer customer) {
         this.customer = customer.clone();
@@ -58,10 +58,18 @@ public class Order {
             productsToString = productsToString.concat(product.getName() + ", ");
         }
 
+        // protection when order is printed but no customer is entered yet
+        String customer = "No customer";
+        if (this.customer != null) {
+            customer = this.customer.toString();
+        }
+
         return "{" +
             " id='" + getId() + "'" +
-            ", customer='" + getCustomer() + "'" +
+            ", customer='" + customer + "'" +
             ", products='" + productsToString + "'" +
             "}";
     }
+
+    
 }
