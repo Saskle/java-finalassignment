@@ -9,6 +9,7 @@ public class Invoice {
     private Order order;
     private BigDecimal totalcosts;
     private LocalDateTime completionTime;
+    private OpeningHours openingHours;
 
 
     public Invoice(int id, Order order) {
@@ -16,6 +17,7 @@ public class Invoice {
         setOrder(order);
         setTotalcosts();
         setCompletionTime();
+        this.openingHours = new OpeningHours(order);
     }
 
     public int getId() {

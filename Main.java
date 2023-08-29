@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import pojo.Customer;
@@ -40,14 +41,10 @@ public class Main {
         //Product photo11 = new Product(11, "Glass 100 x 150 mat", new BigDecimal("82.50"), 20);
         //Product photo12 = new Product(12, "Glass 100 x 150 high gloss", new BigDecimal("82.50"), 20);
 
-        
-
-        
-
-        System.out.print("Welcome to PhotoShop! \nDo you want to continue shopping, or create a new order? ");
+        System.out.print("\nWelcome to PhotoShop! \nDo you want to continue shopping, or create a new order? ");
         String response = scan.nextLine();
 
-        if (response.equals("existing")) {
+        if (response.equals("continuec")) {
             // load in existing order (hardcode something for now)
             Order loadedOrder = new Order(4);
             loadedOrder.addProduct(productCatalog[3]);
