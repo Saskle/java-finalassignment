@@ -29,6 +29,9 @@ public class OpeningHours {
         // if no, go to the next day
         // when productionTime hits 0, that is the completionTime
 
+        
+        // right now, it adds the hours correctly but does not move on to the next day when working hours exceed closing time
+
     private void calculateWorkHours(Order order) {
         int totalWorkHours = 0;
 
@@ -47,8 +50,7 @@ public class OpeningHours {
                 break;
             }
 
-            //System.out.println(openingHours[i][0]); // what day is it now?
-            if (openingHours[i][0].equals(now.getDayOfWeek().toString())) { // if we are at the right weekday
+            if (openingHours[i][0].equals(now.getDayOfWeek().toString())) { // if we are at the right weekday (today)
 
                 // split the string on ":" -> index 0 is hours and index 1 is minutes
                 String[] beginHours = openingHours[i][1].split(":"); // openihg time
@@ -64,7 +66,7 @@ public class OpeningHours {
                         System.out.println(totalWorkHours + " left to do!");
 
                     } else { // shop is closed, move to next day?
-                        break;
+                        break; 
                     }
                 }
             }
