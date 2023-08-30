@@ -10,7 +10,8 @@ import pojo.*;
 
 public class ShopService {
     
-    public static final Product[] productCatalog = new Product[] {
+    // hardcoded product info, remove when implementing csv reader!
+    public Product[] productCatalog = new Product[] {
         new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1),
         new Product(2, "Paper 10 x 15 high gloss", new BigDecimal("1.50"), 1),
         new Product(3, "Paper 30 x 40 mat", new BigDecimal("4.50"), 2),
@@ -29,43 +30,82 @@ public class ShopService {
     private JSONhandler jsonHandler;
 
     private Order order; // current order
+    private Invoice invoice;
 
     public ShopService() {
         // not sure what to put here yet
+        // upon intialisation, create product catalog string to fill with all products
     }
 
+    public void loadResources() {
+        // get csv & json data into classes (?)
+        // or make this private and just use constructor for this?
+    }
     // what do these methods return to the presentation layer? strings? the objects themselves?
     public void createOrder() {
         int id = createID();
         // check if order exists in json by checking equals / id (?)
-        // if yes, genereate new one
-        // if no, create new order with that id
+        this.order = new Order(id);
 
     }
-    public void getOrder(int orderID) {
+    public void retrieveOrder() {
         // retrieve order from json
     }
+    public String getOrder() {
+        return this.order.toString();
+    }
 
-    public void saveOrder(Order order) {
+    // remove this when csv loader is implemented!
+    public void setOrder(Order order) {
+        this.order = order.clone();
+    }
+
+    public void saveOrder() {
         // check if this order already exists in json
         // if not, put it in there and save it
     }
 
-    public void createCustomer() {
+    public void createCustomer(String firstName, String lastName, String email) {
         int id = createID();
         // check if id is unique?
-        this.order.setCustomer(new Customer(null, null, null)); // TODO constructor that allows setting id
+        this.order.setCustomer(new Customer(id, firstName, lastName, email));
     }
-    public void getCustomer(int customerID) {
-        // check if there is a customer related to the order
+    public String getCustomer() {
+        // check if there is a customer related to the order ?
+        return this.order.getCustomer().toString();
+        
     }
-    public void setCustomer() {
+    public void setCustomer(Customer customer) {
         // add customer to order
+        this.order.setCustomer(customer.clone());
+    }
+    public boolean hasCustomer() {
+        return this.order.hasCustomer(); // TODO think if this can be implemented better
+    }
+
+    public void addProduct(int id) {
+        this.order.addProduct(productCatalog[id].clone());
+    }
+    public void addProduct(String name) {
+        this.order.addProduct(null); // TODO look up index
+    }
+    public void getProduct() {
+
+    }
+
+    public void createInvoice() {
+        int id = createID();
+        // check if ID is unique?
+        this.invoice = new Invoice(id, this.order.clone());
+    }
+
+    public String getInvoice() {
+        return this.invoice.toString();
     }
 
     private int createID() { 
         // random Id generated between 1 - 10000 -> semi-unique (does it have to be unique tho?)
-        return (int) (Math.random() * 10000 + 1); // TODO remove this logic from customer!
+        return (int) (Math.random() * 10000 + 1);
     }
 
     // CSV

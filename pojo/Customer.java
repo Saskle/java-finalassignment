@@ -13,8 +13,8 @@ public class Customer {
     private String phoneNr; // I need a way to save the 0 in 0612345678, might check if it is actually a number tho
 
     // first name, last name and email are obligatory, rest is not
-    public Customer(String firstName, String lastName, String email) {
-        setId();
+    public Customer(int id, String firstName, String lastName, String email) {
+        setId(id);
         setFirstName(firstName);
         setLastName(lastName);
         setEmail(email);
@@ -36,11 +36,14 @@ public class Customer {
     public int getId() {
         return this.id;
     }
-    public void setId() {
-        // random Id generated between 1 - 10000 -> semi-unique (does it have to be unique tho?)
-        this.id = (int) (Math.random() * 10000 + 1);
-    }
+    // public void setId() {
+    //     // random Id generated between 1 - 10000 -> semi-unique (does it have to be unique tho?)
+    //     this.id = (int) (Math.random() * 10000 + 1);
+    // }
     public void setId(int id) { //  overload for clone() method
+        if (id <= 0) {
+            throw new IllegalArgumentException("Customer's ID cannot be 0 or negative.");
+        }
         this.id = id;
     }
     public String getFirstName() {
@@ -109,7 +112,7 @@ public class Customer {
 
     @Override
     public Customer clone() {
-        Customer customer = new Customer(this.firstName, this.lastName, this.email);
+        Customer customer = new Customer(this.id, this.firstName, this.lastName, this.email);
         customer.setId(this.id);
         customer.setAddress(this.address);
         customer.setPostalCode(this.postalCode);

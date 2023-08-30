@@ -3,61 +3,49 @@ package presentation;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
-import pojo.Customer; //this should be service layer
-import pojo.Invoice;
+import pojo.Customer; // remove this when json reader is implemented
 import pojo.Order;
 import pojo.Product;
+import service.ShopService;
 
 // ----------------- PURPOSE: Print application info to user, interpretet user input, start & close app -----------------
 
 public class ShopPresentation {
 
-    // idea: upon intialisation, create product catalog string to fill with all products
-    // then, print product catalog with a function using this string
-
     // create a global promptuserchoice function to check, with parameters as int range? 
-
-    // hardcoded product info, remove when implementing csv reader!
-    public static Product[] productCatalog = new Product[] {
-        new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1),
-        new Product(2, "Paper 10 x 15 high gloss", new BigDecimal("1.50"), 1),
-        new Product(3, "Paper 30 x 40 mat", new BigDecimal("4.50"), 2),
-        new Product(4, "Paper 30 x 40 high gloss", new BigDecimal("5.00"), 2),
-        new Product(5, "Canvas 30 x 40 mat", new BigDecimal("24.00"), 12),
-        new Product(6, "Canvas 30 x 40 high gloss", new BigDecimal("27.50"), 2),
-        new Product(7, "Canvas 100 x 150 mat", new BigDecimal("64.75"), 16),
-        new Product(8, "Canvas 100 x 150 high gloss", new BigDecimal("72.50"), 16),
-        new Product(9, "Glass 30 x 40 mat", new BigDecimal("27.50"), 14),
-        new Product(10, "Glass 30 x 40 high gloss", new BigDecimal("27.50"), 14),
-        new Product(11, "Glass 100 x 150 mat", new BigDecimal("82.50"), 20),
-        new Product(12, "Glass 100 x 150 high gloss", new BigDecimal("82.50"), 20)
-     };
     
     private Scanner scan = new Scanner(System.in);
+    private ShopService shopService;
 
     public void startApp() {
         // intialize service
+        shopService = new ShopService();
+        shopService.loadResources();
+
         System.out.print("\nWelcome to PhotoShop! \nDo you want to continue shopping, or create a new order? ");
         String response = scan.nextLine();
+        // has next
 
         if (response.equals("continue")) {
 
             // load in existing order (hardcode something for now)
             Order loadedOrder = new Order(4);
-            loadedOrder.addProduct(productCatalog[3]);
-            loadedOrder.setCustomer(new Customer("Saskia", "de Klerk", "saskle@calco.nl"));;
+            loadedOrder.addProduct(new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1));
+            loadedOrder.setCustomer(new Customer(1, "Saskia", "de Klerk", "saskle@calco.nl"));;
 
             System.out.println("The last saved order no. " + loadedOrder.getId() + " was made by " + loadedOrder.getCustomer().getFirstName() + " " + loadedOrder.getCustomer().getLastName());
             System.out.println("Please enter the order no. of the order you'd like to restore.");
             response = scan.nextLine();
 
-            showMainMenu(loadedOrder);
+            // pass dummyorder to shopservice
+            shopService.setOrder(loadedOrder);
+            showMainMenu();
 
         } else if (response.equals("new")) {
-            Order order = new Order(0);
+            shopService.createOrder();
 
             // go to main menu
-            showMainMenu(order);
+            showMainMenu();
         }
     }
 
@@ -68,7 +56,7 @@ public class ShopPresentation {
         System.exit(0);
     }
 
-    public void showMainMenu(Order order) {
+    public void showMainMenu() {
         System.out.println("\nMAIN MENU");
         System.out.print("1 - Product Catalog\n2 - View Current Order\n3 - Customer Information\n4 - Create Invoice\n5 - Close Application\n");
         System.out.print("Please enter the no. of the menu to proceed: ");
@@ -83,28 +71,28 @@ public class ShopPresentation {
 
         switch (menuChoice) {
             case 1:
-                showProductCatalogue(order); break;
+                showProductCatalogue(); break;
             case 2: 
-                showCurrentOrder(order); break;
+                showCurrentOrder(); break;
             case 3: 
-                showCustomerData(order); break;
+                showCustomerData(); break;
             case 4:
-                printInvoice(order); break;
+                printInvoice(); break;
             case 5:
                 closeApp();
                 break;
             default:
                 System.out.println("Please enter a correct menu index.");
-                showMainMenu(order);
+                showMainMenu();
                 break;
             }
         }
 
-    public void showProductCatalogue(Order order) {
+    public void showProductCatalogue() {
         System.out.println("PRODUCT CATALOG");
 
-        for (int i = 0; i < productCatalog.length; i++) {
-            System.out.println(i + " - " + productCatalog[i]);
+        for (int i = 0; i < shopService.productCatalog.length; i++) {
+            System.out.println(i + " - " + shopService.productCatalog[i]);
         }
         System.out.println("Please pick a product to add to your order.");
         
@@ -114,36 +102,35 @@ public class ShopPresentation {
         }
 
         int index = scan.nextInt();
-        order.addProduct(productCatalog[index]);
+        shopService.addProduct(index);
         System.out.println("Product X has been added.");
 
         // again show products, prompt for new products to add?
 
-        showMainMenu(order);
+        showMainMenu();
     }
     
-    public void showCurrentOrder(Order order) {
+    public void showCurrentOrder() {
         System.out.println("CURRENT ORDER OVERVIEW");
-        System.out.println(order);
-        showMainMenu(order);
+        System.out.println(shopService.getOrder());
+        showMainMenu();
     }
     
-    public void showCustomerData(Order order) {
+    public void showCustomerData() {
         System.out.println("CUSTOMER INFO");
-
-        if (order.hasCustomer()) {
-            System.out.println(order.getCustomer());
+        
+        if (shopService.hasCustomer()) {
+            System.out.println(shopService.getCustomer());
             System.out.println("Do you want to change this info?");
+            scan.nextLine(); // throwaway next line but doesn't work here (TODO)
             String response = scan.nextLine();
 
             if (response.equals("yes")) {
-                Customer customer = promptCustomerData();
-                order.setCustomer(customer);
-
-                showMainMenu(order);
+                promptCustomerData();
+                showMainMenu();
 
             } else {
-                showMainMenu(order);
+                showMainMenu();
             }
 
         } else {
@@ -151,26 +138,24 @@ public class ShopPresentation {
             
         }
 
-        Customer customer = promptCustomerData();
-        order.setCustomer(customer);
+        promptCustomerData();
 
-        showMainMenu(order);
+        showMainMenu();
     }
 
-    public void printInvoice(Order order) {
+    public void printInvoice() {
         System.out.println("CREATE INVOICE");
 
-                if (!order.hasCustomer()) {
-                    Customer newCustomer = promptCustomerData();
-                    order.setCustomer(newCustomer);
+                if (!shopService.hasCustomer()) {
+                    promptCustomerData();
                 }               
-                Invoice invoice = new Invoice(1, order);
-                System.out.println(invoice);
+                shopService.createInvoice();
+                System.out.println(shopService.getInvoice());
 
-                showMainMenu(order);
+                showMainMenu();
     }
 
-    public Customer promptCustomerData() {
+    public void promptCustomerData() {
         scan.nextLine(); // throwaway line for nextInt()
         System.out.print("Please add your first name: ");
         String firstName = scan.nextLine();
@@ -179,7 +164,6 @@ public class ShopPresentation {
         System.out.print("Please add your email address: ");
         String email = scan.nextLine();
 
-        Customer customer = new Customer(firstName, lastName, email);
-        return customer;
+        shopService.createCustomer(firstName, lastName, email);
     }
 }
