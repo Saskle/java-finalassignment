@@ -20,32 +20,42 @@ public class ShopPresentation {
     public void startApp() {
         // intialize service
         shopService = new ShopService();
-        shopService.loadResources();
 
-        System.out.print("\nWelcome to PhotoShop! \nDo you want to continue shopping, or create a new order? ");
-        String response = scan.nextLine();
-        // has next
+        System.out.println("\nWelcome to PhotoShop! ");
+        System.out.println("Do you want to retrieve a previously saved order (1), or create a new order (2) ?");
+        System.out.print("Please enter the corresponding number of your choice: ");
+        
+        while (!scan.hasNextInt()) {
+            System.out.println("You haven't entered a number. ");
+            scan.next();
+        }
+        int response = scan.nextInt();
 
-        if (response.equals("continue")) {
+        switch (response) {
+            case 1:
+                // load in existing order (hardcode something for now)
+                Order loadedOrder = new Order(4);
+                loadedOrder.addProduct(new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1));
+                loadedOrder.setCustomer(new Customer(1, "Saskia", "de Klerk", "saskle@calco.nl"));;
 
-            // load in existing order (hardcode something for now)
-            Order loadedOrder = new Order(4);
-            loadedOrder.addProduct(new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1));
-            loadedOrder.setCustomer(new Customer(1, "Saskia", "de Klerk", "saskle@calco.nl"));;
+                System.out.println("The last saved order no. " + loadedOrder.getId() + " was made by " + loadedOrder.getCustomer().getFirstName() + " " + loadedOrder.getCustomer().getLastName());
+                System.out.println("Please enter the order no. of the order you'd like to restore.");
+                scan.nextLine();
 
-            System.out.println("The last saved order no. " + loadedOrder.getId() + " was made by " + loadedOrder.getCustomer().getFirstName() + " " + loadedOrder.getCustomer().getLastName());
-            System.out.println("Please enter the order no. of the order you'd like to restore.");
-            response = scan.nextLine();
+                // pass dummyorder to shopservice
+                shopService.setOrder(loadedOrder);
+                showMainMenu();
+                break;
 
-            // pass dummyorder to shopservice
-            shopService.setOrder(loadedOrder);
-            showMainMenu();
+            case 2: 
+                // new order
+                shopService.createOrder();
 
-        } else if (response.equals("new")) {
-            shopService.createOrder();
+                showMainMenu();
+                break;
 
-            // go to main menu
-            showMainMenu();
+            default: // TODO create a default state here
+                break;
         }
     }
 
@@ -58,14 +68,13 @@ public class ShopPresentation {
 
     public void showMainMenu() {
         System.out.println("\nMAIN MENU");
-        System.out.print("1 - Product Catalog\n2 - View Current Order\n3 - Customer Information\n4 - Create Invoice\n5 - Close Application\n");
-        System.out.print("Please enter the no. of the menu to proceed: ");
+        printMainMenu();
 
         // don't repeat yourself!
         while (!scan.hasNextInt()) {
-            System.out.println("You haven't entered a no. ");
+            System.out.println("You haven't entered a number! ");
             scan.next();
-            System.out.print("1 - Product Catalog\n2 - View Current Order\n3 - Customer Information\n4 - Create Invoice\n5 - Close Application\n");
+            printMainMenu();
         }
         int menuChoice = scan.nextInt(); 
 
@@ -88,16 +97,17 @@ public class ShopPresentation {
             }
         }
 
+    public void printMainMenu() {
+        System.out.print("1 - Product Catalog\n2 - View Current Order\n3 - Customer Information\n4 - Create Invoice\n5 - Close Application\n");
+        System.out.print("Please enter the no. of the menu to proceed: ");
+    }
     public void showProductCatalogue() {
         System.out.println("PRODUCT CATALOG");
 
-        for (int i = 0; i < shopService.productCatalog.length; i++) {
-            System.out.println(i + " - " + shopService.productCatalog[i]);
-        }
-        System.out.println("Please pick a product to add to your order.");
+        printProductCatalogue();
         
         while (!scan.hasNextInt()) {
-            System.out.println("You haven't entered a no. ");
+            System.out.println("You haven't entered a number! ");
             scan.next();
         }
 
@@ -110,6 +120,13 @@ public class ShopPresentation {
         showMainMenu();
     }
     
+    public void printProductCatalogue() {
+        for (int i = 0; i < shopService.productCatalog.length; i++) {
+            System.out.println(i + " - " + shopService.productCatalog[i]);
+        }
+        System.out.println("Please pick a product to add to your order.");
+    }
+
     public void showCurrentOrder() {
         System.out.println("CURRENT ORDER OVERVIEW");
         System.out.println(shopService.getOrder());

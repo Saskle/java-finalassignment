@@ -5,8 +5,7 @@ import java.math.BigDecimal;
 
 import pojo.*;
 
-// ----------------- PURPOSE: retrieve & save data upon initialisation / closing, insert calculated data -----------------
-// for sake of simplicity, right now all the 'business' logic is here, perhaps break it up futher later
+// ----------------- PURPOSE: all business / service related tasks (for now) -----------------
 
 public class ShopService {
     
@@ -29,19 +28,21 @@ public class ShopService {
     private CSVhandler csvHandler;
     private JSONhandler jsonHandler;
 
-    private Order order; // current order
+    private Order order; // only current order is stored
     private Invoice invoice;
 
     public ShopService() {
-        // not sure what to put here yet
         // upon intialisation, create product catalog string to fill with all products
+        loadResources();
     }
 
     public void loadResources() {
         // get csv & json data into classes (?)
         // or make this private and just use constructor for this?
     }
-    // what do these methods return to the presentation layer? strings? the objects themselves?
+
+
+    // what do these methods return to the presentation layer? strings? 
     public void createOrder() {
         int id = createID();
         // check if order exists in json by checking equals / id (?)
@@ -66,8 +67,7 @@ public class ShopService {
     }
 
     public void createCustomer(String firstName, String lastName, String email) {
-        int id = createID();
-        // check if id is unique?
+        int id = createID(); // for the sake of simplicity we assume the ID is unique
         this.order.setCustomer(new Customer(id, firstName, lastName, email));
     }
     public String getCustomer() {
@@ -89,13 +89,12 @@ public class ShopService {
     public void addProduct(String name) {
         this.order.addProduct(null); // TODO look up index
     }
-    public void getProduct() {
-
+    public String getProduct(int id) {
+        return this.order.getProduct(id).toString();
     }
 
     public void createInvoice() {
-        int id = createID();
-        // check if ID is unique?
+        int id = createID(); // for the sake of simplicity we assume the ID is unique
         this.invoice = new Invoice(id, this.order.clone());
     }
 
