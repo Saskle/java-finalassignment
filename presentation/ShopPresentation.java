@@ -8,9 +8,14 @@ import pojo.Invoice;
 import pojo.Order;
 import pojo.Product;
 
-// ----------------- PURPOSE: Print application info to user, interpretet user input -----------------
+// ----------------- PURPOSE: Print application info to user, interpretet user input, start & close app -----------------
 
 public class ShopPresentation {
+
+    // idea: upon intialisation, create product catalog string to fill with all products
+    // then, print product catalog with a function using this string
+
+    // create a global promptuserchoice function to check, with parameters as int range? 
 
     // hardcoded product info, remove when implementing csv reader!
     public static Product[] productCatalog = new Product[] {
@@ -31,6 +36,7 @@ public class ShopPresentation {
     private Scanner scan = new Scanner(System.in);
 
     public void startApp() {
+        // intialize service
         System.out.print("\nWelcome to PhotoShop! \nDo you want to continue shopping, or create a new order? ");
         String response = scan.nextLine();
 
@@ -66,9 +72,15 @@ public class ShopPresentation {
         System.out.println("\nMAIN MENU");
         System.out.print("1 - Product Catalog\n2 - View Current Order\n3 - Customer Information\n4 - Create Invoice\n5 - Close Application\n");
         System.out.print("Please enter the no. of the menu to proceed: ");
-        int menuChoice = scan.nextInt(); // add argument validation
 
-        // has int
+        // don't repeat yourself!
+        while (!scan.hasNextInt()) {
+            System.out.println("You haven't entered a no. ");
+            scan.next();
+            System.out.print("1 - Product Catalog\n2 - View Current Order\n3 - Customer Information\n4 - Create Invoice\n5 - Close Application\n");
+        }
+        int menuChoice = scan.nextInt(); 
+
         switch (menuChoice) {
             case 1:
                 showProductCatalogue(order); break;
@@ -96,10 +108,14 @@ public class ShopPresentation {
         }
         System.out.println("Please pick a product to add to your order.");
         
-        // promptMainMenu()
+        while (!scan.hasNextInt()) {
+            System.out.println("You haven't entered a no. ");
+            scan.next();
+        }
+
         int index = scan.nextInt();
         order.addProduct(productCatalog[index]);
-        System.out.println("Product has been added.");
+        System.out.println("Product X has been added.");
 
         // again show products, prompt for new products to add?
 
@@ -109,7 +125,6 @@ public class ShopPresentation {
     public void showCurrentOrder(Order order) {
         System.out.println("CURRENT ORDER OVERVIEW");
         System.out.println(order);
-
         showMainMenu(order);
     }
     

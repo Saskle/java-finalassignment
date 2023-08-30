@@ -3,6 +3,8 @@ package pojo;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
+// ----------------- PURPOSE: Handle & validate Opening Hour data from repository -----------------
+
 public class OpeningHours {
 
     // hardcoded data, remove when CSVHandler works

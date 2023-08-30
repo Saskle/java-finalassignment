@@ -2,6 +2,8 @@ package pojo;
 
 import java.util.ArrayList;
 
+// ----------------- PURPOSE: Handling & validating Order data -----------------
+
 public class Order {
     private int id;
     private Customer customer;

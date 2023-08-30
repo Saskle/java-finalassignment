@@ -2,6 +2,8 @@ package pojo;
 
 import java.math.BigDecimal;
 
+// ----------------- PURPOSE: Handling & validating Product data -----------------
+
 public class Product {
     private int id; 
     private String name;

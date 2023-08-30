@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
 
+// ----------------- PURPOSE: Storing order data for printing invoices -----------------
+
 public class Invoice {
     private int id;
     private Order order;

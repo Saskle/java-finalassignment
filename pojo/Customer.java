@@ -1,5 +1,7 @@
 package pojo;
 
+// ----------------- PURPOSE: Handling & validating Customer data -----------------
+
 public class Customer {
     private int id; 
     private String firstName;
