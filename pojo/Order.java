@@ -9,13 +9,10 @@ public class Order {
     private Customer customer;
     private ArrayList<Product> products;
 
-
-
     public Order(int id) {
         setId(id);
         this.products = new ArrayList<>();
     }
-
 
     public int getId() {
         return this.id;

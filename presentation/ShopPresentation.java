@@ -1,6 +1,7 @@
 package presentation;
 
 import java.math.BigDecimal;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import pojo.Customer; // remove this when json reader is implemented
@@ -11,9 +12,7 @@ import service.ShopService;
 // ----------------- PURPOSE: Print application info to user, interpretet user input, start & close app -----------------
 
 public class ShopPresentation {
-
-    // create a global promptuserchoice function to check, with parameters as int range? 
-    
+ 
     private Scanner scan = new Scanner(System.in);
     private ShopService shopService;
 
@@ -52,7 +51,7 @@ public class ShopPresentation {
                 showMainMenu();
                 break;
 
-            default: throw new IllegalArgumentException("Input at startApp() went wrong!");
+            default: throw new InputMismatchException("Input at startApp() went wrong!");
         }
     }
 
@@ -93,7 +92,7 @@ public class ShopPresentation {
 
         System.out.println("Please enter the corresponding no. or name of the product to add to your order.");
         System.out.println("To return to the main menu, enter 0.");
-        // TODO prompt for strings too
+        // TODO prompt for strings too (although that is not needed)
 
         int index = validateInput(shopService.productCatalog.length); // the range is the amount of products in the catalogue
 
@@ -102,7 +101,7 @@ public class ShopPresentation {
         }
 
         shopService.addProduct(index - 1); // product id's start at 1 instead of 0
-        System.out.println("Product " + shopService.productCatalog[index - 1] + " has been added."); // TODO print the name of the product instead
+        System.out.println("Product " + shopService.productCatalog[index - 1].getName() + " has been added."); // TODO print the name of the product instead
 
         System.out.println("Would you like to add another product? ");
         System.out.print("Enter 0 for no, 1 for yes: ");
@@ -112,7 +111,7 @@ public class ShopPresentation {
             case 0: showMainMenu(); break;
             case 1: showProductCatalogue();
             default:
-                throw new IllegalArgumentException("showProductCatalogue()'s switch case doesn't work properly");
+                throw new InputMismatchException("showProductCatalogue()'s switch case doesn't work properly");
         }
 
         showMainMenu();
@@ -146,7 +145,7 @@ public class ShopPresentation {
                 shopService.removeProduct(productIndex);
                 break;
             case 3: showCustomerData(); break;
-            default: throw new IllegalArgumentException("showCurrentOrder()'s switch case doesn't work properly!");
+            default: throw new InputMismatchException("showCurrentOrder()'s switch case doesn't work properly!");
         }
 
         showMainMenu();
@@ -160,7 +159,7 @@ public class ShopPresentation {
             System.out.println("Do you want to change this info?");
             System.out.print("Enter 0 for returning to the main menu, 1 for editing customer data: ");
 
-            scan.nextLine(); // throwaway next line but doesn't work here (TODO)
+            scan.nextLine(); // throwaway next line but doesn't work here ? (TODO)
             int response = validateInput(1);
 
             switch (response) {
@@ -168,7 +167,7 @@ public class ShopPresentation {
                 case 1: promptCustomerData();
                         showMainMenu();
                     break;
-                default: throw new IllegalArgumentException("showCurrentOrder()'s switch case doesn't work properly!");
+                default: throw new InputMismatchException("showCurrentOrder()'s switch case doesn't work properly!");
             }
 
         } else {
@@ -208,11 +207,10 @@ public class ShopPresentation {
     public int validateInput(int range) {
         // first check if there is actually numberical input
         while (!scan.hasNextInt()) {
-            System.out.println("You haven't entered a number in the correct range. Please try again. ");
-            scan.nextLine();
+            System.out.println("You haven't entered a number. Please try again. ");
+            scan.next();
         }
         int response = scan.nextInt();
-        // scan.findInLine("\\p{Digit}");
 
         // if there is, is it within the range (inclusive) we want?
         if (response < 0 || response > range) {

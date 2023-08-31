@@ -1,8 +1,8 @@
 package service;
-import repository.*;
 
 import java.math.BigDecimal;
 
+import repository.*;
 import pojo.*;
 
 // ----------------- PURPOSE: all business / service related tasks (for now) -----------------
@@ -99,6 +99,7 @@ public class ShopService {
         this.order.deleteProduct(index);
     }
 
+    // TODO if I pass the order id as invoice id, invoice constructor doesn't need to generate ID's!
     public void createInvoice() {
         int id = createID(); // for the sake of simplicity we assume the ID is unique
         this.invoice = new Invoice(id, this.order.clone());
@@ -109,7 +110,7 @@ public class ShopService {
     }
 
     private int createID() { 
-        // random Id generated between 1 - 10000 -> semi-unique (does it have to be unique tho?)
+        // random Id generated between 1 - 10000, so semi-unique 
         return (int) (Math.random() * 10000 + 1);
     }
 

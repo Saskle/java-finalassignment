@@ -10,8 +10,6 @@ public class Product {
     private BigDecimal price;
     private int creatingHours;
 
-
-
     // might remove this later, need it for testing order / invoice setting
     public Product(int id, String name, BigDecimal price, int creatingHours) {
         setId(id);
