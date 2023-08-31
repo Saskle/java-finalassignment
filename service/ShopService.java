@@ -30,6 +30,9 @@ public class ShopService {
 
     private Order order; // only current order is stored
     private Invoice invoice;
+ 
+    // TODO add printing methods / to string methods for printing / or use String get() for that
+    // -> presentation cannot depend on toString() overrides in POJOs !
 
     public ShopService() {
         // upon intialisation, create product catalog string to fill with all products
@@ -91,6 +94,9 @@ public class ShopService {
     }
     public String getProduct(int id) {
         return this.order.getProduct(id).toString();
+    }
+    public void removeProduct(int index) {
+        this.order.deleteProduct(index);
     }
 
     public void createInvoice() {

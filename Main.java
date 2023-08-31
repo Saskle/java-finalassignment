@@ -1,17 +1,6 @@
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Scanner;
-
 import presentation.*;
 
-import pojo.Customer;
-import pojo.Invoice;
-import pojo.Order;
-import pojo.Product;
-
 public class Main {
-    static Scanner scan = new Scanner(System.in);
-
     public static void main(String[] args) {
         
         //Product photo1 = new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1);
@@ -31,6 +20,4 @@ public class Main {
         shopPresentation.startApp();
         
     }
-
-
 }

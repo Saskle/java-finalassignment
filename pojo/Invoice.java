@@ -26,9 +26,7 @@ public class Invoice {
         return this.id;
     }
     public void setId(int id) { 
-        // TODO: generate random number
-        // or add 20230000 to it to create a 'realistic' invoice number?
-        // OR take order.id and add a string prefix to it, like 'INV2032'
+        // OR take order.id and add a string prefix to it, like 'INV2032' ?
         this.id = id;
     }
 
