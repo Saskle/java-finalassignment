@@ -209,14 +209,15 @@ public class ShopPresentation {
         // first check if there is actually numberical input
         while (!scan.hasNextInt()) {
             System.out.println("You haven't entered a number in the correct range. Please try again. ");
-            scan.next();
+            scan.nextLine();
         }
         int response = scan.nextInt();
+        // scan.findInLine("\\p{Digit}");
 
         // if there is, is it within the range (inclusive) we want?
         if (response < 0 || response > range) {
             System.out.println("You haven't entered a number in the correct range. Please try again. ");
-            validateInput(range);
+            response = validateInput(range);
         }
         return response;
     }
