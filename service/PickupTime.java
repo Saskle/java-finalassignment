@@ -6,14 +6,14 @@ import pojo.OpeningHours;
 
 // ----------------- PURPOSE: Calculate pickuptime based on current time, shop opening times and product creation hours ---------------
 
-public class PickupTimeCalculator {
+public class PickupTime {
     
     private OpeningHours openingHours;
     private LocalDateTime now;
     private LocalDateTime pickupTime;
     private int totalWorkHours; // lets make this class independent of type order
 
-    public PickupTimeCalculator(int totalWorkHours) {
+    public PickupTime(int totalWorkHours) {
         
     }
 

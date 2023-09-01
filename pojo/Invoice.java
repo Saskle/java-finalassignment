@@ -2,24 +2,22 @@ package pojo;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.Month;
 
 // ----------------- PURPOSE: Storing order data for printing invoices -----------------
 
 public class Invoice {
     private int id;
     private Order order;
-    private BigDecimal totalcosts;
-    private LocalDateTime completionTime;
-    private OpeningHours openingHours;
+    private BigDecimal totalCosts;
+    private int totalWorkHours;
+    private LocalDateTime pickUpTime;
 
 
-    public Invoice(int id, Order order) {
+    public Invoice(int id, Order order, LocalDateTime pickUpTime) {
         setId(id);
         setOrder(order);
         setTotalcosts();
-        setCompletionTime();
-        this.openingHours = new OpeningHours(order);
+        setPickUpTime(pickUpTime);
     }
 
     public int getId() {
@@ -40,32 +38,36 @@ public class Invoice {
         this.order = order.clone();
     }
 
-    public BigDecimal getTotalcosts() {
-        return this.totalcosts;
+    public BigDecimal getTotalCosts() {
+        return this.totalCosts;
     }
     public void setTotalcosts() { 
         BigDecimal totalcosts = new BigDecimal("0");
         for (int i = 0; i < order.getAllProducts().size(); i++) {
             totalcosts = totalcosts.add(order.getProduct(i).getPrice());
         }
-        this.totalcosts = totalcosts;
+        this.totalCosts = totalcosts;
     }
-    public void setTotalcosts(BigDecimal totalcosts) { //overload for setting directly (delete if unwanted!)
-        this.totalcosts = totalcosts;
+    public void setTotalCosts(BigDecimal totalcosts) { //overload for setting directly (delete if unwanted!)
+        this.totalCosts = totalcosts;
     }
 
-    public LocalDateTime getCompletionTime() {
-        return this.completionTime;
+    public int getTotalWorkHours() {
+        return this.totalWorkHours;
     }
-    public void setCompletionTime() {
-        int totalWorkHours = 0;
-        for (int i = 0; i < order.getAllProducts().size(); i++) {
-            totalWorkHours += order.getProduct(i).getCreatingHours();
+    public void setTotalWorkHours(int totalWorkHours) {
+        if (totalWorkHours <= 0) {
+            throw new IllegalArgumentException("An invoice's total work hours can't be 0 or less!");
         }
+        this.totalWorkHours = totalWorkHours;
+    }
 
-        // TODO: make this compliant with opening hours
-        LocalDateTime now = LocalDateTime.now();
-        this.completionTime = now.plusHours((long)totalWorkHours);
+    public LocalDateTime getPickUpTime() {
+        return this.pickUpTime;
+    }
+    public void setPickUpTime(LocalDateTime pickUpTime) {
+        // TODO argument validation?
+        this.pickUpTime = pickUpTime;
     }
 
     // format this to a nice invoice
@@ -74,8 +76,9 @@ public class Invoice {
         return "{" +
             " id='" + getId() + "'" +
             ", order='" + getOrder() + "'" +
-            ", totalcosts='" + getTotalcosts() + "'" +
-            ", completionTime='" + getCompletionTime() + "'" +
+            ", total costs='" + getTotalCosts() + "'" +
+            ", total production hours='" + getTotalWorkHours() + "'" +
+            ", completionTime='" + getPickUpTime() + "'" +
             "}";
     }
 

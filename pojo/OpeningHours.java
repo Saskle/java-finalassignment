@@ -83,6 +83,7 @@ public class OpeningHours {
         int totalWorkHours = 0;
         int calculatedTime = 0;
 
+        // TODO remove this
         for (Product product : order.getAllProducts()) {
             totalWorkHours =+ product.getCreatingHours();
         }

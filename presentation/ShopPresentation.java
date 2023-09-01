@@ -7,18 +7,19 @@ import java.util.Scanner;
 import pojo.Customer; // remove this when json reader is implemented
 import pojo.Order;
 import pojo.Product;
-import service.ShopService;
+import service.InvoiceService;
+import service.OrderService;
 
 // ----------------- PURPOSE: Print application info to user, interpretet user input, start & close app -----------------
 
 public class ShopPresentation {
  
     private Scanner scan = new Scanner(System.in);
-    private ShopService shopService;
+    private OrderService shopService;
 
     public void startApp() {
         // intialize service
-        shopService = new ShopService();
+        shopService = new OrderService();
 
         System.out.println("\nWelcome to PhotoShop! ");
         System.out.println("Do you want to retrieve a previously saved order (1), or create a new order (2) ?");
@@ -181,13 +182,17 @@ public class ShopPresentation {
     public void printInvoice() {
         System.out.println("CREATE INVOICE");
 
-        // TODO check if there are actually products in the order
+        if(!shopService.hasProducts()) {
+            System.out.println("There are no projects in this order yet!");
+            showProductCatalogue();
+        }
 
         if (!shopService.hasCustomer()) {
             promptCustomerData();
-        }               
-        shopService.createInvoice();
-        System.out.println(shopService.getInvoice());
+        }   
+        InvoiceService invoiceService = new InvoiceService();
+        invoiceService.createInvoice(shopService.getOrder());
+        System.out.println(invoiceService.getInvoice());
 
         showMainMenu();
     }

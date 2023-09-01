@@ -7,7 +7,7 @@ import pojo.*;
 
 // ----------------- PURPOSE: all business / service related tasks (for now) -----------------
 
-public class ShopService {
+public class OrderService {
     
     // hardcoded product info, remove when implementing csv reader!
     public Product[] productCatalog = new Product[] {
@@ -29,12 +29,11 @@ public class ShopService {
     private JSONhandler jsonHandler;
 
     private Order order; // only current order is stored
-    private Invoice invoice;
  
     // TODO add printing methods / to string methods for printing / or use String get() for that
     // -> presentation cannot depend on toString() overrides in POJOs !
 
-    public ShopService() {
+    public OrderService() {
         // upon intialisation, create product catalog string to fill with all products
         loadResources();
     }
@@ -55,8 +54,10 @@ public class ShopService {
     public void retrieveOrder() {
         // retrieve order from json
     }
-    public String getOrder() {
-        return this.order.toString();
+
+    // TODO are we giving the internal order like this?
+    public Order getOrder() {
+        return this.order.clone();
     }
 
     // remove this when csv loader is implemented!
@@ -98,15 +99,8 @@ public class ShopService {
     public void removeProduct(int index) {
         this.order.deleteProduct(index);
     }
-
-    // TODO if I pass the order id as invoice id, invoice constructor doesn't need to generate ID's!
-    public void createInvoice() {
-        int id = createID(); // for the sake of simplicity we assume the ID is unique
-        this.invoice = new Invoice(id, this.order.clone());
-    }
-
-    public String getInvoice() {
-        return this.invoice.toString();
+    public boolean hasProducts() {
+        return !this.order.getAllProducts().isEmpty();
     }
 
     private int createID() { 
