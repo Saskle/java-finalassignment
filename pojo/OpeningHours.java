@@ -1,7 +1,6 @@
 package pojo;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 
 // ----------------- PURPOSE: Handle & validate Opening Hour data from repository -----------------
 
@@ -18,10 +17,7 @@ public class OpeningHours {
         { "SATURDAY", "09:00", "16:00" }
     };
 
-    private HashMap<String, Integer> workingHours;
-
     public OpeningHours(Order order) {
-        this.workingHours = new HashMap<>();
         calculateWorkHours(order);
     }
 

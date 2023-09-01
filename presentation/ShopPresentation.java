@@ -188,6 +188,7 @@ public class ShopPresentation {
         }
 
         if (!shopService.hasCustomer()) {
+            System.out.println("There is no customer data for this order yet!");
             promptCustomerData();
         }   
         InvoiceService invoiceService = new InvoiceService();
