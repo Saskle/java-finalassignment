@@ -135,8 +135,10 @@ public class PickupTime {
 
     }
 
-    private LocalDateTime pickupTime(int productionHours, int dayIndex) {
+    private LocalDateTime pickupTime(int totalWorkHours, int dayIndex) {
 
+        int productionHours = totalWorkHours;
+        
         // get the opening and closing hour for the day (first column is opening hour, second is closing hour)
         int openingHour = findOpeningtime(dayIndex, 1);
         int closeHour = findOpeningtime(dayIndex, 2);
@@ -146,7 +148,7 @@ public class PickupTime {
         productionHours -= workHoursInThisDay;
         if (productionHours <= 0) {
             // pick it up at calculated time + count of days
-            pickupTime = now.plusHours(productionHours);
+            pickupTime = now.plusHours(totalWorkHours);
 
             // if the pickup time is before opening, set it to opening time of this day
             if (pickupTime.getHour() < openingHour) {
