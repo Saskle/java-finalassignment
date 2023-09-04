@@ -33,7 +33,7 @@ public class Order {
     public ArrayList<Product> getAllProducts() {
         ArrayList<Product> allProducts = new ArrayList<>();
         for (Product product : this.products) {
-            allProducts.add(product);
+            allProducts.add(product.clone());
         }
         return allProducts;
     }

@@ -18,17 +18,15 @@ public class InvoiceService {
 
         // set total production hours by iterating through all products
         for (Product product : order.getAllProducts()) {
-            this.totalWorkHours =+ product.getCreatingHours();
+            this.totalWorkHours += product.getCreatingHours();
         }
-        System.out.println("Total work hours for this order is: " + totalWorkHours);
+        System.out.println("Total work hours for this order is: " + this.totalWorkHours);
 
-        // intitalize PickUpTime
+        // intitalize PickUpTime & calculate pickup time
         this.pickupTime = new PickupTime(totalWorkHours);
-        // calculate new pickuptime
-        LocalDateTime now = LocalDateTime.now(); // TODO remove this when we calculate pickup time!
 
         // create new invoice and set pickuptime & totalworkhours
-        this.invoice = new Invoice(order.getId(), order.clone(), now);
+        this.invoice = new Invoice(order.getId(), order.clone(), this.pickupTime.getPickupTime());
         this.invoice.setTotalWorkHours(totalWorkHours);
     }
 

@@ -43,6 +43,7 @@ public class ShopPresentation {
 
                 // pass dummyorder to shopservice
                 shopService.setOrder(loadedOrder);
+                shopService.setCustomer(new Customer(1, "Saskia", "de Klerk", "saskle@calco.nl"));
                 showMainMenu();
                 break;
 
@@ -195,7 +196,7 @@ public class ShopPresentation {
         invoiceService.createInvoice(shopService.getOrder());
         System.out.println(invoiceService.getInvoice());
 
-        showMainMenu();
+        closeApp();
     }
 
     public void promptCustomerData() {
