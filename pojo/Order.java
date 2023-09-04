@@ -53,7 +53,7 @@ public class Order {
     @Override
     public Order clone() { // deep copy of this order
         Order order = new Order(this.id);
-        if (order.hasCustomer()) {
+        if (this.hasCustomer()) {
             order.setCustomer(this.customer.clone());
         }
         

@@ -35,10 +35,6 @@ public class PickupTime {
 
     private void setPickUpTime() {
 
-        // initializing hour count (which we will substract until 0)
-        //double productionHours = totalWorkHours;
-        // can I remove this? am I substracting?
-
         // find today's index
         int dayIndex = getStartDay();
 
@@ -120,7 +116,6 @@ public class PickupTime {
 
         try {
             return Double.parseDouble(workingHours[0]) + (Double.parseDouble(workingHours[1]) / 60);
-            //return Integer.parseInt(workingHours[0]) + (Integer.parseInt(workingHours[1]) / 60);
         } catch (NumberFormatException e) {
             System.out.println(e);
         }
