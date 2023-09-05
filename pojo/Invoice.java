@@ -4,13 +4,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-// ----------------- PURPOSE: Storing order data for printing invoices -----------------
+// ----------------- PURPOSE: Storing order data for invoices -----------------
 
 public class Invoice {
     private int id;
     private Order order;
     private BigDecimal totalCosts;
     private int totalWorkHours;
+    private LocalDateTime orderTime;
     private LocalDateTime pickUpTime;
 
 
@@ -18,6 +19,7 @@ public class Invoice {
         setId(id);
         setOrder(order);
         setTotalcosts();
+        setOrderTime();
         setPickUpTime(pickUpTime);
     }
 
@@ -63,11 +65,20 @@ public class Invoice {
         this.totalWorkHours = totalWorkHours;
     }
 
+    public LocalDateTime getOrderTime() {
+        return this.orderTime;
+    }
+    public void setOrderTime() {
+        this.orderTime = LocalDateTime.now();
+    }
+
     public LocalDateTime getPickUpTime() {
         return this.pickUpTime;
     }
     public void setPickUpTime(LocalDateTime pickUpTime) {
-        // TODO argument validation?
+        if (pickUpTime.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("An invoice's pick up time cannot lie in the past!");
+        }
         this.pickUpTime = pickUpTime;
     }
 

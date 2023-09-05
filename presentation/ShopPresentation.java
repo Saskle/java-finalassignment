@@ -198,6 +198,9 @@ public class ShopPresentation {
         invoiceService.createInvoice(shopService.getOrder());
         System.out.println(invoiceService.getInvoice());
 
+        System.out.println("\nThank you for ordering at PhotoShop!");
+        System.out.println("Don't forget to send your printing files mentioning the invoice nr.");
+
         closeApp();
     }
 

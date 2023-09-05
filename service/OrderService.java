@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import repository.*;
 import pojo.*;
 
-// ----------------- PURPOSE: all business / service related tasks (for now) -----------------
+// ----------------- PURPOSE: handling order, product and customer data -----------------
 
 public class OrderService {
     
@@ -35,14 +35,7 @@ public class OrderService {
 
     public OrderService() {
         // upon intialisation, create product catalog string to fill with all products
-        loadResources();
     }
-
-    public void loadResources() {
-        // get csv & json data into classes (?)
-        // or make this private and just use constructor for this?
-    }
-
 
     // what do these methods return to the presentation layer? strings? 
     public void createOrder() {

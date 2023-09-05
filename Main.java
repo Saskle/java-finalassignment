@@ -16,8 +16,17 @@ public class Main {
         //Product photo11 = new Product(11, "Glass 100 x 150 mat", new BigDecimal("82.50"), 20);
         //Product photo12 = new Product(12, "Glass 100 x 150 high gloss", new BigDecimal("82.50"), 20);
 
-        ShopPresentation shopPresentation = new ShopPresentation();
-        shopPresentation.startApp();
+        //ShopPresentation shopPresentation = new ShopPresentation();
+        //shopPresentation.startApp();
         
+        System.out.println(PrintFormatter.HEADER_LINE + "WELCOME" + PrintFormatter.HEADER_LINE);
+        System.out.println(PrintFormatter.DIVIDER);
+        System.out.println(PrintFormatter.DIVIDER.length());
+
+        System.out.println(PrintFormatter.header("Hello"));
+        System.out.println(PrintFormatter.header("Welcome to Photoshop!"));
+        System.out.println(PrintFormatter.header("Product Catalogue"));
+        System.out.println(PrintFormatter.header("Customer Data"));
+
     }
 }

@@ -4,7 +4,7 @@ import pojo.Invoice;
 import pojo.Order;
 import pojo.Product;
 
-// ----------------- PURPOSE: create & format invoices from orders -----------------
+// ----------------- PURPOSE: create & format invoices from orders for printing -----------------
 
 public class InvoiceService {
     
@@ -17,6 +17,8 @@ public class InvoiceService {
         // set total production hours by iterating through all products
         for (Product product : order.getAllProducts()) {
             this.totalWorkHours += product.getCreatingHours();
+            // add to hashmap
+            // if product already exists, value amount++
         }
         System.out.println("Total work hours for this order is: " + this.totalWorkHours);
 
