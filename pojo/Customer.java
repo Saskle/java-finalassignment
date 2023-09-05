@@ -36,10 +36,6 @@ public class Customer {
     public int getId() {
         return this.id;
     }
-    // public void setId() {
-    //     // random Id generated between 1 - 10000 -> semi-unique (does it have to be unique tho?)
-    //     this.id = (int) (Math.random() * 10000 + 1);
-    // }
     public void setId(int id) { //  overload for clone() method
         if (id <= 0) {
             throw new IllegalArgumentException("Customer's ID cannot be 0 or negative.");
@@ -130,7 +126,7 @@ public class Customer {
             "Postal code: \t" + getPostalCode() + "\n" +
             "City: \t\t" + getCity() + "\n" +
             "Email: \t\t" + getEmail() + "\n" +
-            "Phone Nr.: \t" + getPhoneNr();
+            "Phone Nr.: \t" + getPhoneNr() + "\n";
     }
 
 

@@ -1,6 +1,8 @@
 package service;
 
 import java.math.BigDecimal;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import repository.*;
 import pojo.*;
@@ -76,9 +78,9 @@ public class OrderService {
         int id = createID(); // for the sake of simplicity we assume the ID is unique
         this.order.setCustomer(new Customer(id, firstName, lastName, email));
     }
-    public String getCustomer() {
+    public Customer getCustomer() {
         // check if there is a customer related to the order ?
-        return this.order.getCustomer().toString();
+        return this.order.getCustomer().clone();
         
     }
     public void setCustomer(Customer customer) {
@@ -87,6 +89,12 @@ public class OrderService {
     }
     public boolean hasCustomer() {
         return this.order.hasCustomer(); // TODO think if this can be implemented better
+    }
+    public void printCustomer() {
+        String customer =  this.order.getCustomer().toString();
+        Stream<String> stream = Pattern.compile("\n").splitAsStream(customer);
+        int counter = 1;
+        stream.forEach(line -> System.out.println(counter + ". " + line));
     }
 
     public void addProduct(int id) {
@@ -104,6 +112,7 @@ public class OrderService {
     public boolean hasProducts() {
         return !this.order.getAllProducts().isEmpty();
     }
+
 
     private int createID() { 
         // random Id generated between 1 - 10000, so semi-unique 
