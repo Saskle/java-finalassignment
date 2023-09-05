@@ -2,6 +2,7 @@ package pojo;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 // ----------------- PURPOSE: Storing order data for printing invoices -----------------
 
@@ -73,12 +74,13 @@ public class Invoice {
     // format this to a nice invoice
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E dd MMMM yyyy HH:mm");
         return "{" +
             " id='" + getId() + "'" +
             ", order='" + getOrder() + "'" +
             ", total costs='" + getTotalCosts() + "'" +
             ", total production hours='" + getTotalWorkHours() + "'" +
-            ", completionTime='" + getPickUpTime() + "'" +
+            ", completionTime='" + getPickUpTime().format(formatter) + "'" +
             "}";
     }
 

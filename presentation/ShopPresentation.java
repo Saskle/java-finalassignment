@@ -53,7 +53,7 @@ public class ShopPresentation {
                 showMainMenu();
                 break;
 
-            default: throw new InputMismatchException("Input at startApp() went wrong!");
+            default: throw new InputMismatchException("Input for startApp() isn't correctly validated!");
         }
     }
 
@@ -89,7 +89,7 @@ public class ShopPresentation {
     }
     
     public void showProductCatalogue() {
-        System.out.println("PRODUCT CATALOG");
+        System.out.println("\nPRODUCT CATALOG");
         printProductCatalogue();
 
         System.out.println("Please enter the corresponding no. or name of the product to add to your order.");
@@ -113,7 +113,7 @@ public class ShopPresentation {
             case 0: showMainMenu(); break;
             case 1: showProductCatalogue();
             default:
-                throw new InputMismatchException("showProductCatalogue()'s switch case doesn't work properly");
+                throw new InputMismatchException("Input for showProductCatalogue() isn't correctly validated!");
         }
 
         showMainMenu();
@@ -127,16 +127,17 @@ public class ShopPresentation {
     }
 
     public void showCurrentOrder() {
-        System.out.println("CURRENT ORDER OVERVIEW");
-        System.out.println(shopService.getOrder());
+        System.out.println("\nCURRENT ORDER OVERVIEW");
+        System.out.println(shopService.printOrder());
         System.out.println( "Would you like to: \n" +
                             "\t 1 - add new products to this order\n" +
                             "\t 2 - remove products from this order\n" + 
                             "\t 3 - change customer data\n" + 
+                            "\t 4 - place order and print invoice\n" + 
                             "\t 0 - return to the Main Menu"); 
-        System.out.print("Please enter the corresponding no. :");
+        System.out.print("Please enter the corresponding no.: ");
         
-        int response = validateInput(3);
+        int response = validateInput(4);
         switch (response) {
             case 0: showMainMenu(); break;
             case 1: showProductCatalogue(); break;
@@ -147,7 +148,8 @@ public class ShopPresentation {
                 shopService.removeProduct(productIndex);
                 break;
             case 3: showCustomerData(); break;
-            default: throw new InputMismatchException("showCurrentOrder()'s switch case doesn't work properly!");
+            case 4: printInvoice(); break;
+            default: throw new InputMismatchException("Input for showCurrentOrder() isn't correctly validated!");
         }
 
         showMainMenu();
@@ -169,7 +171,7 @@ public class ShopPresentation {
                 case 1: promptCustomerData();
                         showMainMenu();
                     break;
-                default: throw new InputMismatchException("showCurrentOrder()'s switch case doesn't work properly!");
+                default: throw new InputMismatchException("Input for showCurrentOrder() isn't correctly validated!");
             }
 
         } else {

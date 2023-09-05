@@ -70,6 +70,15 @@ public class OrderService {
         // if not, put it in there and save it
     }
 
+    public String printOrder() {
+        return "Order no. " + order.getId() + "\n" +
+                    "\t Customer info: " + order.getCustomer().toString() + " \n" +
+                    "\t Products\n" + 
+                    "\t " + order.getAllProducts().toString() + "\n" + 
+                    "\t 4 - place order and print invoice\n" + 
+                    "\t 0 - return to the Main Menu";
+    }
+
     public void createCustomer(String firstName, String lastName, String email) {
         int id = createID(); // for the sake of simplicity we assume the ID is unique
         this.order.setCustomer(new Customer(id, firstName, lastName, email));
