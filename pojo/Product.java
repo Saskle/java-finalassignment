@@ -64,7 +64,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "\t" + getName() + "\t\t" + getPrice() + "\t\t";
+        return "\t" + getName() + "\t" + getPrice();
     }
 
 

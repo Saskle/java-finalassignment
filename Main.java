@@ -44,6 +44,7 @@ public class Main {
 
         basket.removeProducts(photo3, 2);
         basket.removeProducts(photo2, 4);
+        basket.removeProducts(photo1, 2);
         System.out.println(basket);
 
     }
