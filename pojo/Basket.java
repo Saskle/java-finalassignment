@@ -9,9 +9,9 @@ import java.util.function.Function;
 // ----------------- PURPOSE: Defining & validating Basket & products in basket's data -----------------
 
 public class Basket {
-    HashMap<Product, Integer> products; // the HashMap holds products and their quantity
-    BigDecimal totalExpenses;
-    int totalProductionHours;
+    private HashMap<Product, Integer> products; // the HashMap holds products and their quantity
+    private BigDecimal totalExpenses;
+    private int totalProductionHours;
 
     public Basket() {
         // upon creating a new order, initialize the HashMap and set expenses and production hours to zero
@@ -27,8 +27,14 @@ public class Basket {
     public BigDecimal getTotalExpenses() {
         return this.totalExpenses;
     }
+    public void setTotalExpenses(BigDecimal totalExpenses) {
+        this.totalExpenses = totalExpenses;
+    }
     public int getTotalProductionHours() {
         return this.totalProductionHours;
+    }
+    public void setTotalProductionHours(int totalProductionHours) {
+        this.totalProductionHours = totalProductionHours;
     }
 
     private void updateTotalExpenses() {

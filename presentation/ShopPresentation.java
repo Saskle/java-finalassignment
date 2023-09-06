@@ -33,7 +33,7 @@ public class ShopPresentation {
             case 1:
                 // load in existing order (hardcode something for now)
                 Order loadedOrder = new Order(4);
-                loadedOrder.addProduct(new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1));
+                loadedOrder.basket.addProducts(new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1), 2);
                 loadedOrder.setCustomer(new Customer(1, "Saskia", "de Klerk", "saskle@calco.nl"));;
 
                 System.out.println("The last saved order no. " + loadedOrder.getId() + " was made by " + loadedOrder.getCustomer().getFirstName() + " " + loadedOrder.getCustomer().getLastName());
@@ -102,7 +102,7 @@ public class ShopPresentation {
             showMainMenu();
         }
 
-        shopService.addProduct(index - 1); // product id's start at 1 instead of 0
+        shopService.addProducts(index - 1, 1); // product id's start at 1 instead of 0
         System.out.println("Product " + shopService.productCatalog[index - 1].getName() + " has been added."); // TODO print the name of the product instead
 
         System.out.println("Would you like to add another product? ");
@@ -142,10 +142,10 @@ public class ShopPresentation {
             case 0: showMainMenu(); break;
             case 1: showProductCatalogue(); break;
             case 2: 
-                System.out.println(shopService.showAllProducts()); // TODO create function to show only products
+                System.out.println(shopService.showBasket()); // TODO create function to show only products
                 System.out.print("Which product would you like to remove? "); // TODO prompt for strings / product names too
                 int productIndex = validateInput(3); // lenght of order.products list
-                shopService.removeProduct(productIndex);
+                shopService.removeProducts(productIndex, 1);
                 break;
             case 3: showCustomerData(); break;
             case 4: checkOut(); break;

@@ -1,17 +1,22 @@
 package pojo;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Map;
 
 // ----------------- PURPOSE: Defining & validating Order data -----------------
 
 public class Order {
     private int id;
+    private LocalDateTime orderTime; // when the order is placed (invoice is printed)
+    private LocalDateTime pickUpTime; // when order is ready for pickup
     private Customer customer;
-    private ArrayList<Product> products;
+    public Basket basket; // why not talk to the basket directly? or shall I make it independent and therefore have loose coupling?
 
     public Order(int id) {
         setId(id);
-        this.products = new ArrayList<>();
+        this.basket = new Basket();
     }
 
     public int getId() {
@@ -19,6 +24,18 @@ public class Order {
     }
     public void setId(int id) {
         this.id = id;
+    }
+    public LocalDateTime getOrderTime() {
+        return this.orderTime;
+    }
+    public void setOrderTime(LocalDateTime orderTime) {
+        this.orderTime = orderTime;
+    }
+    public LocalDateTime getPickUpTime() {
+        return this.pickUpTime;
+    }
+    public void setPickupTime(LocalDateTime pickUpTime) {
+        this.pickUpTime = pickUpTime;
     }
     public Customer getCustomer() {
         return this.customer.clone();  
@@ -30,26 +47,6 @@ public class Order {
         return this.customer != null;
     }
 
-    public ArrayList<Product> getAllProducts() {
-        ArrayList<Product> allProducts = new ArrayList<>();
-        for (Product product : this.products) {
-            allProducts.add(product.clone());
-        }
-        return allProducts;
-    }
-    
-    public Product getProduct(int index) {
-        return products.get(index).clone();
-    }
-
-    public void addProduct(Product product) {
-        products.add(product.clone());
-    }
-
-    public void deleteProduct(int index) {
-        products.remove(index);
-    }
-
     @Override
     public Order clone() { // deep copy of this order
         Order order = new Order(this.id);
@@ -57,8 +54,13 @@ public class Order {
             order.setCustomer(this.customer.clone());
         }
         
-        for (Product product : products) {
-            order.products.add(product.clone());
+        if (!basket.getProducts().isEmpty()) {
+            for (Map.Entry<Product, Integer> set : basket.getProducts().entrySet()) {
+                order.basket.addProducts(null, id);
+            } // TODO give basket a clone()
+            order.basket.getProducts().forEach((product, quantity) -> order.basket.getProducts().put(product.clone(), quantity));
+            order.basket.setTotalProductionHours(this.basket.getTotalProductionHours());
+            order.basket.setTotalExpenses(this.basket.getTotalExpenses());
         }
         return order;
     }
@@ -66,10 +68,6 @@ public class Order {
     @Override
     public String toString() {
         // TODO remove this so I can format it whenever I like in presentation?
-        String productsToString = "";
-        for (Product product : products) {
-            productsToString = productsToString.concat(product.getName() + ", ");
-        }
 
         // protection when order is printed but no customer is entered yet
         String customer = "No customer";
@@ -80,7 +78,7 @@ public class Order {
         return "{" +
             " id='" + getId() + "'" +
             ", customer='" + customer + "'" +
-            ", products='" + productsToString + "'" +
+            ", products='" + basket + "'" +
             "}";
     }
 

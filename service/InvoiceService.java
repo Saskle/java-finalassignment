@@ -15,9 +15,7 @@ public class InvoiceService {
     public void createInvoice(Order order) {
 
         // set total production hours by iterating through all products
-        for (Product product : order.getAllProducts()) {
-            this.totalWorkHours += product.getCreatingHours();
-        }
+        this.totalWorkHours = order.basket.getTotalProductionHours();
         
 
         // intitalize PickUpTime & calculate pickup time

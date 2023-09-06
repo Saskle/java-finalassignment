@@ -30,22 +30,22 @@ public class Main {
         //Product photo11 = new Product(11, "Glass 100 x 150 mat", new BigDecimal("82.50"), 20);
         //Product photo12 = new Product(12, "Glass 100 x 150 high gloss", new BigDecimal("82.50"), 20);
 
-        //ShopPresentation shopPresentation = new ShopPresentation();
-        //shopPresentation.startApp();
+        ShopPresentation shopPresentation = new ShopPresentation();
+        shopPresentation.startApp();
 
-        Basket basket = new Basket();
+        // Basket basket = new Basket();
 
-        basket.addProducts(photo3, 3);
-        System.out.println(basket);
+        // basket.addProducts(photo3, 3);
+        // System.out.println(basket);
 
-        basket.addProducts(photo1, 1);
-        basket.addProducts(photo2, 4);
-        System.out.println(basket);
+        // basket.addProducts(photo1, 1);
+        // basket.addProducts(photo2, 4);
+        // System.out.println(basket);
 
-        basket.removeProducts(photo3, 2);
-        basket.removeProducts(photo2, 4);
-        basket.removeProducts(photo1, 2);
-        System.out.println(basket);
+        // basket.removeProducts(photo3, 2);
+        // basket.removeProducts(photo2, 4);
+        // basket.removeProducts(photo1, 2);
+        // System.out.println(basket);
 
     }
 }

@@ -70,7 +70,7 @@ public class OrderService {
         return  "Order no. " + order.getId() + "\n" +
                 "\tCustomer info: \n" + customer + " \n" +
                 "\tProducts\n" + 
-                "\t" + showAllProducts() + "\n";
+                "\t" + showBasket() + "\n";
     }
 
     public void createCustomer(String firstName, String lastName, String email) {
@@ -97,28 +97,18 @@ public class OrderService {
     //     stream.forEach(line -> System.out.println(counter + ". " + line));
     // }
 
-    public void addProduct(int id) {
-        this.order.addProduct(productCatalog[id].clone());
+    public void addProducts(int id, int quantity) {
+        order.basket.addProducts(productCatalog[id].clone(), quantity);
     }
-    public void addProduct(String name) {
-        this.order.addProduct(null); // TODO look up index
-    }
-    public String getProduct(int id) {
-        return this.order.getProduct(id).toString();
-    }
-    public void removeProduct(int index) {
-        this.order.deleteProduct(index);
+    public void removeProducts(int id, int quantity) {
+        order.basket.removeProducts(productCatalog[id], quantity);
     }
     public boolean hasProducts() {
-        return !this.order.getAllProducts().isEmpty();
+        return !order.basket.getProducts().isEmpty();
     }
 
-    public String showAllProducts() {
-        String allProducts = "";
-        for (Product product : order.getAllProducts()) {
-            allProducts.concat(product + "\n");
-        }
-        return allProducts;
+    public String showBasket() {
+        return order.basket.toString();
     }
 
 

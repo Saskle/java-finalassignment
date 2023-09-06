@@ -45,11 +45,7 @@ public class Invoice {
         return this.totalCosts;
     }
     public void setTotalcosts() { 
-        BigDecimal totalcosts = new BigDecimal("0");
-        for (int i = 0; i < order.getAllProducts().size(); i++) {
-            totalcosts = totalcosts.add(order.getProduct(i).getPrice());
-        }
-        this.totalCosts = totalcosts;
+        this.totalCosts = order.basket.getTotalExpenses();
     }
     public void setTotalCosts(BigDecimal totalcosts) { //overload for setting directly (delete if unwanted!)
         this.totalCosts = totalcosts;
