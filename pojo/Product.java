@@ -1,8 +1,9 @@
 package pojo;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
-// ----------------- PURPOSE: Handling & validating Product data -----------------
+// ----------------- PURPOSE: Defining & validating Product data -----------------
 
 public class Product {
     private int id; 
@@ -66,4 +67,21 @@ public class Product {
         return "\t" + getName() + "\t\t" + getPrice() + "\t\t";
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Product)) {
+            return false;
+        }
+        Product product = (Product) o;
+        return id == product.id && Objects.equals(name, product.name) && Objects.equals(price, product.price) && creatingHours == product.creatingHours;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price, creatingHours);
+    }
+    
 }

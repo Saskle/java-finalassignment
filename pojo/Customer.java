@@ -1,6 +1,6 @@
 package pojo;
 
-// ----------------- PURPOSE: Handling & validating Customer data -----------------
+// ----------------- PURPOSE: Defining & validating Customer data -----------------
 
 public class Customer {
     private int id; 

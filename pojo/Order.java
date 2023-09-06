@@ -2,7 +2,7 @@ package pojo;
 
 import java.util.ArrayList;
 
-// ----------------- PURPOSE: Handling & validating Order data -----------------
+// ----------------- PURPOSE: Defining & validating Order data -----------------
 
 public class Order {
     private int id;

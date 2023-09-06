@@ -1,6 +1,15 @@
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
+import pojo.Basket;
+import pojo.Invoice;
 import pojo.Product;
 import presentation.*;
 import service.OrderService;
@@ -24,18 +33,18 @@ public class Main {
         //ShopPresentation shopPresentation = new ShopPresentation();
         //shopPresentation.startApp();
 
-        HashMap<Product, Integer> products = new HashMap<>();
+        Basket basket = new Basket();
 
-        products.put(photo1, 3);
-        products.put(photo3, 2);
-        products.put(photo2, 4);
+        basket.addProducts(photo3, 3);
+        System.out.println(basket);
 
-        // print all elements in hashmap
-        products.forEach((product, quantity) -> System.out.println(product + " - " + quantity));
+        basket.addProducts(photo1, 1);
+        basket.addProducts(photo2, 4);
+        System.out.println(basket);
 
-        products.put(photo3, 1);
-
-        products.forEach((product, quantity) -> System.out.println(product + " - " + quantity));
+        basket.removeProducts(photo3, 2);
+        basket.removeProducts(photo2, 4);
+        System.out.println(basket);
 
     }
 }
