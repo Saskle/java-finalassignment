@@ -74,7 +74,7 @@ public class ShopPresentation {
             case 1: showProductCatalogue(); break;
             case 2: showCurrentOrder(); break;
             case 3: showCustomerData(); break;
-            case 4: printInvoice(); break;
+            case 4: checkOut(); break;
             case 5: closeApp(); break;
             default:
                 System.out.println("Please enter a correct menu index."); // case 0 is not handled, so don't throw an exeception here
@@ -128,7 +128,7 @@ public class ShopPresentation {
 
     public void showCurrentOrder() {
         System.out.println("\nCURRENT ORDER OVERVIEW");
-        System.out.println(shopService.printOrder());
+        System.out.println(shopService.showOrder());
         System.out.println( "Would you like to: \n" +
                             "\t 1 - add new products to this order\n" +
                             "\t 2 - remove products from this order\n" + 
@@ -142,13 +142,13 @@ public class ShopPresentation {
             case 0: showMainMenu(); break;
             case 1: showProductCatalogue(); break;
             case 2: 
-                System.out.println(shopService.getOrder()); // TODO create function to show only products
+                System.out.println(shopService.showAllProducts()); // TODO create function to show only products
                 System.out.print("Which product would you like to remove? "); // TODO prompt for strings / product names too
                 int productIndex = validateInput(3); // lenght of order.products list
                 shopService.removeProduct(productIndex);
                 break;
             case 3: showCustomerData(); break;
-            case 4: printInvoice(); break;
+            case 4: checkOut(); break;
             default: throw new InputMismatchException("Input for showCurrentOrder() isn't correctly validated!");
         }
 
@@ -159,7 +159,7 @@ public class ShopPresentation {
         System.out.println("CUSTOMER INFO");
         
         if (shopService.hasCustomer()) {
-            System.out.println(shopService.getCustomer());
+            System.out.println(shopService.showCustomer());
             System.out.println("Do you want to change this info?");
             System.out.print("Enter 0 for returning to the main menu, 1 for editing customer data: ");
 
@@ -169,7 +169,8 @@ public class ShopPresentation {
             switch (response) {
                 case 0: showMainMenu(); break;
                 case 1: promptCustomerData();
-                        showMainMenu();
+                        System.out.println("Customer data updated.");
+                        showCustomerData();
                     break;
                 default: throw new InputMismatchException("Input for showCurrentOrder() isn't correctly validated!");
             }
@@ -182,7 +183,7 @@ public class ShopPresentation {
         showMainMenu();
     }
 
-    public void printInvoice() {
+    public void checkOut() {
         System.out.println("CREATE INVOICE");
 
         if(!shopService.hasProducts()) {
@@ -196,6 +197,7 @@ public class ShopPresentation {
         }   
         InvoiceService invoiceService = new InvoiceService();
         invoiceService.createInvoice(shopService.getOrder());
+        System.out.println("Total work hours for this order is: " + invoiceService.getTotalWorkHours());
         System.out.println(invoiceService.getInvoice());
 
         System.out.println("\nThank you for ordering at PhotoShop!");
@@ -230,5 +232,21 @@ public class ShopPresentation {
             response = validateInput(range);
         }
         return response;
+    }
+
+    public void showBasket() {
+        // get all products from orderservice
+        // add index for removing products??
+    }
+
+    public void showCustomer() {
+        // get customer data & print it
+    }
+
+    public void showOrder() {
+        // CUSTOMER
+        showCustomer();
+        // PRODUCTS
+        showBasket();
     }
 }

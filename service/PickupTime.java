@@ -17,7 +17,7 @@ public class PickupTime {
             { "SUNDAY", "00:00", "00:00" },
             { "MONDAY", "09:00", "18:00" },
             { "TUESDAY", "10:00", "18:00" },
-            { "WEDNESSDAY", "09:00", "18:00" },
+            { "WEDNESDAY", "09:00", "18:00" },
             { "THURSDAY", "09:00", "18:00" },
             { "FRIDAY", "09:00", "21:00" },
             { "SATURDAY", "09:00", "16:00" }

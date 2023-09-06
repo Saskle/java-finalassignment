@@ -63,7 +63,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "\t" + getName() + "\t\t" + getPrice() + "\t\t" + getCreatingHours();
+        return "\t" + getName() + "\t\t" + getPrice() + "\t\t";
     }
 
 }

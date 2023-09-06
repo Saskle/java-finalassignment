@@ -27,13 +27,12 @@ public class OrderService {
         new Product(12, "Glass 100 x 150 high gloss", new BigDecimal("82.50"), 20)
      };
 
-    private CSVhandler csvHandler;
-    private JSONhandler jsonHandler;
+    //private CSVhandler csvHandler;
+    //private JSONhandler jsonHandler;
 
     private Order order; // only current order is stored
  
-    // TODO add printing methods / to string methods for printing / or use String get() for that
-    // -> presentation cannot depend on toString() overrides in POJOs !
+    // TODO format Strings to print for presentation, but final formatting is for the presentation layer
 
     public OrderService() {
         // upon intialisation, create product catalog string to fill with all products
@@ -50,7 +49,7 @@ public class OrderService {
         // retrieve order from json
     }
 
-    // TODO are we giving the internal order like this?
+    // TODO this is needed for InvoiceService
     public Order getOrder() {
         return this.order.clone();
     }
@@ -60,42 +59,43 @@ public class OrderService {
         this.order = order.clone();
     }
 
-    public void saveOrder() {
-        // check if this order already exists in json
-        // if not, put it in there and save it
-    }
-
-    public String printOrder() {
-        return "Order no. " + order.getId() + "\n" +
-                    "\t Customer info: " + order.getCustomer().toString() + " \n" +
-                    "\t Products\n" + 
-                    "\t " + order.getAllProducts().toString() + "\n" + 
-                    "\t 4 - place order and print invoice\n" + 
-                    "\t 0 - return to the Main Menu";
+    
+    public String showOrder() {
+        String customer = "";
+        if (this.order.hasCustomer()) {
+            customer = order.getCustomer().toString();
+        } else {
+            customer = "No customer found.";
+        }
+        return  "Order no. " + order.getId() + "\n" +
+                "\tCustomer info: \n" + customer + " \n" +
+                "\tProducts\n" + 
+                "\t" + showAllProducts() + "\n";
     }
 
     public void createCustomer(String firstName, String lastName, String email) {
         int id = createID(); // for the sake of simplicity we assume the ID is unique
         this.order.setCustomer(new Customer(id, firstName, lastName, email));
     }
-    public Customer getCustomer() {
-        // check if there is a customer related to the order ?
-        return this.order.getCustomer().clone();
-        
+
+    public String showCustomer() {
+        if (this.order.hasCustomer()) {
+            return this.order.getCustomer().toString();
+        } else {
+            return "No customer found.";
+        }
     }
-    public void setCustomer(Customer customer) {
-        // add customer to order
-        this.order.setCustomer(customer.clone());
-    }
+
     public boolean hasCustomer() {
         return this.order.hasCustomer(); // TODO think if this can be implemented better
     }
-    public void printCustomer() {
-        String customer =  this.order.getCustomer().toString();
-        Stream<String> stream = Pattern.compile("\n").splitAsStream(customer);
-        int counter = 1;
-        stream.forEach(line -> System.out.println(counter + ". " + line));
-    }
+
+    // public void printCustomer() {
+    //     String customer =  this.order.getCustomer().toString();
+    //     Stream<String> stream = Pattern.compile("\n").splitAsStream(customer);
+    //     int counter = 1;
+    //     stream.forEach(line -> System.out.println(counter + ". " + line));
+    // }
 
     public void addProduct(int id) {
         this.order.addProduct(productCatalog[id].clone());
@@ -111,6 +111,14 @@ public class OrderService {
     }
     public boolean hasProducts() {
         return !this.order.getAllProducts().isEmpty();
+    }
+
+    public String showAllProducts() {
+        String allProducts = "";
+        for (Product product : order.getAllProducts()) {
+            allProducts.concat(product + "\n");
+        }
+        return allProducts;
     }
 
 

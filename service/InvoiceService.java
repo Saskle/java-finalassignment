@@ -17,10 +17,8 @@ public class InvoiceService {
         // set total production hours by iterating through all products
         for (Product product : order.getAllProducts()) {
             this.totalWorkHours += product.getCreatingHours();
-            // add to hashmap
-            // if product already exists, value amount++
         }
-        System.out.println("Total work hours for this order is: " + this.totalWorkHours);
+        
 
         // intitalize PickUpTime & calculate pickup time
         this.pickupTime = new PickupTime(totalWorkHours);
@@ -34,6 +32,22 @@ public class InvoiceService {
     public Invoice getInvoice() {
         return this.invoice;
     }
+
+    public int getTotalWorkHours() {
+        return this.totalWorkHours;
+    }
+    public void setTotalWorkHours(int totalWorkHours) {
+        this.totalWorkHours = totalWorkHours;
+    }
+    public PickupTime getPickupTime() {
+        return this.pickupTime;
+    }
+    public void setPickupTime(PickupTime pickupTime) {
+        this.pickupTime = pickupTime;
+    }
+
+
+
 
     @Override
     public String toString() {

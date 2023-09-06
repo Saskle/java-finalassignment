@@ -120,13 +120,13 @@ public class Customer {
     @Override
     public String toString() {
         return 
-            "id: \t\t" + getId() + "\n" +
-            "Name: \t\t" + getFirstName() + " " + getLastName() + "\n" +
-            "Address: \t" + getAddress() + "\n" +
-            "Postal code: \t" + getPostalCode() + "\n" +
-            "City: \t\t" + getCity() + "\n" +
-            "Email: \t\t" + getEmail() + "\n" +
-            "Phone Nr.: \t" + getPhoneNr() + "\n";
+            "\tid: \t\t" + getId() + "\n" +
+            "\tName: \t\t" + getFirstName() + " " + getLastName() + "\n" +
+            "\tAddress: \t" + getAddress() + "\n" +
+            "\tPostal code: \t" + getPostalCode() + "\n" +
+            "\tCity: \t\t" + getCity() + "\n" +
+            "\tEmail: \t\t" + getEmail() + "\n" +
+            "\tPhone Nr.: \t" + getPhoneNr() + "\n";
     }
 
 

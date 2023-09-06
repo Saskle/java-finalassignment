@@ -65,7 +65,7 @@ public class Order {
 
     @Override
     public String toString() {
-        // TODO decide how much formatting is here VS in invoice
+        // TODO remove this so I can format it whenever I like in presentation?
         String productsToString = "";
         for (Product product : products) {
             productsToString = productsToString.concat(product.getName() + ", ");
