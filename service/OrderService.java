@@ -68,9 +68,9 @@ public class OrderService {
             customer = "No customer found.";
         }
         return  "Order no. " + order.getId() + "\n" +
-                "\tCustomer info: \n" + customer + " \n" +
-                "\tProducts\n" + 
-                "\t" + showBasket() + "\n";
+                "Customer info \n" + customer + " \n" +
+                "Products\n" + 
+                order.basket + "\n";
     }
 
     public void createCustomer(String firstName, String lastName, String email) {
@@ -97,14 +97,42 @@ public class OrderService {
     //     stream.forEach(line -> System.out.println(counter + ". " + line));
     // }
 
+    
     public void addProducts(int id, int quantity) {
-        order.basket.addProducts(productCatalog[id + 1].clone(), quantity);
+        // product IDs in CSV start on 1, not 0
+        order.basket.addProducts(productCatalog[id].clone(), quantity);
     }
     public void removeProducts(int id, int quantity) {
-        order.basket.removeProducts(productCatalog[id + 1], quantity);
+        // product IDs in CSV start on 1, not 0
+        order.basket.removeProducts(productCatalog[id], quantity);
+    }
+    public void removeProducts(String name, int quantity) { 
+        // if we assume that shop presentation does all the validation,
+        // it needs to know which products exist -> not right
+        Product product = getProduct(name);
+        order.basket.removeProducts(product, quantity);
     }
     public boolean hasProducts() {
         return !order.basket.getProducts().isEmpty();
+    }
+    public boolean hasProduct(Product product) {
+        return order.basket.getProducts().containsKey(product);
+    }
+    public Product getProduct(String name) {
+        for (int i = 0; i < productCatalog.length; i++) {
+            if (productCatalog[i].getName().equals(name)) {
+                return productCatalog[i].clone();
+            }
+        }
+        return null; // not sure if this is right
+    }
+    public boolean isProduct(String name) {
+        for (int i = 0; i < productCatalog.length; i++) {
+            if (productCatalog[i].getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String showBasket() {

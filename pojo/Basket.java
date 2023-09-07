@@ -92,7 +92,7 @@ public class Basket {
         // for every product in the HashMap, concat the string with the product.toString(), quantity and price subtotal
         for (Map.Entry<Product, Integer> set : products.entrySet()) {
             BigDecimal productSubTotal = set.getKey().getPrice().multiply(new BigDecimal(set.getValue()));
-            productsAsString = productsAsString.concat("\t" + set.getKey() + "\t" + set.getValue() + "\t" + productSubTotal + "\n");
+            productsAsString = productsAsString.concat(set.getKey() + "\t" + set.getValue() + "\t" + productSubTotal + "\n");
         }
         return productsAsString;
     }

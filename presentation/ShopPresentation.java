@@ -5,8 +5,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import pojo.Customer; // remove this when json reader is implemented
-import pojo.Order;
-import pojo.Product;
+import pojo.Order; // remove this when json reader is implemented
+import pojo.Product; // remove this when json reader is implemented
 import service.InvoiceService;
 import service.OrderService;
 
@@ -84,7 +84,11 @@ public class ShopPresentation {
         }
 
     public void printMainMenu() {
-        System.out.print("1 - Product Catalog\n2 - View Current Order\n3 - Customer Information\n4 - Create Invoice\n5 - Close Application\n");
+        System.out.print(   "1 - Product Catalog\n" +
+                            "2 - View Current Order\n" +
+                            "3 - Customer Information\n" + 
+                            "4 - Create Invoice\n" + 
+                            "5 - Close Application\n");
         System.out.print("Please enter the no. of the menu to proceed: ");
     }
     
@@ -93,6 +97,7 @@ public class ShopPresentation {
         printProductCatalogue();
 
         System.out.println("Please enter the corresponding no. or name of the product to add to your order.");
+        System.out.println("You can add multiple products at once by specifying id and quantity like (2:3).");
         System.out.println("To return to the main menu, enter 0.");
         // TODO prompt for strings too (although that is not needed)
 
@@ -145,14 +150,24 @@ public class ShopPresentation {
             case 2: 
                 System.out.println(shopService.showBasket());
                 System.out.print("Which product would you like to remove? "); // TODO prompt for strings / product names too
-                int productIndex = validateInput(shopService.basketSize()); // lenght of order.products list
-                shopService.removeProducts(productIndex, 1);
+                
+                // if (scan.hasNextInt()) {
+                //     validateInput(shopService.basketSize());
+                //     // match index on right product
+                // }
+
+                String productName = promptProductName();
+                shopService.removeProducts(productName, 1);
+                System.out.println(productName + " has been removed.\n");
+                showCurrentOrder();
+                
+                //int productIndex = validateInput(shopService.basketSize()); // lenght of order.products list
+                //shopService.removeProducts(productIndex, 1);
                 break;
             case 3: showCustomerData(); break;
             case 4: checkOut(); break;
             default: throw new InputMismatchException("Input for showCurrentOrder() isn't correctly validated!");
         }
-
         showMainMenu();
     }
     
@@ -235,19 +250,19 @@ public class ShopPresentation {
         return response;
     }
 
-    public void showBasket() {
-        // get all products from orderservice
-        // add index for removing products??
+    public String promptProductName() {
+
+        // as long as scan.next() is not a product name, keep asking
+        // if it is a product name, return it as a string and let the menu decide what to do with it
+
+        scan.nextLine(); // throwaway next line
+
+        String productName = scan.nextLine();
+        while (!shopService.isProduct(productName)) {
+            System.out.println("You haven't entered a correct product name. Please try again. ");
+            productName = scan.nextLine();
+        }
+        return productName;
     }
 
-    public void showCustomer() {
-        // get customer data & print it
-    }
-
-    public void showOrder() {
-        // CUSTOMER
-        showCustomer();
-        // PRODUCTS
-        showBasket();
-    }
 }
