@@ -101,15 +101,28 @@ public class ShopPresentation {
         System.out.println("To return to the main menu, enter 0.");
         // TODO prompt for strings too (although that is not needed)
 
-        int index = validateInput(shopService.productCatalog.length); // the range is the amount of products in the catalogue
-
-        if (index == 0) {
+        int index;
+        if (scan.hasNextInt()) {
+            // if the user enters numbers, validate and use that imput
+            index = validateInput(shopService.productCatalog.length); // the range is the amount of products in the catalogue
+            
+            if (index == 0) {
             showMainMenu();
+            }
+
+            shopService.addProducts(index - 1, 1); // product id's start at 1 instead of 0
+            System.out.println("Product " + shopService.productCatalog[index - 1].getName() + " has been added."); // TODO print the name of the product instead
+
+        } else {
+            // if the user enters a string, use that
+            String productName = promptProductName();
+            shopService.addProducts(productName, 1);
+            System.out.println(productName + " has been added.");
         }
 
-        shopService.addProducts(index - 1, 1); // product id's start at 1 instead of 0
-        System.out.println("Product " + shopService.productCatalog[index - 1].getName() + " has been added."); // TODO print the name of the product instead
+        
 
+        
         System.out.println("Would you like to add another product? ");
         System.out.print("Enter 0 for no, 1 for yes: ");
 
@@ -160,9 +173,6 @@ public class ShopPresentation {
                 shopService.removeProducts(productName, 1);
                 System.out.println(productName + " has been removed.\n");
                 showCurrentOrder();
-                
-                //int productIndex = validateInput(shopService.basketSize()); // lenght of order.products list
-                //shopService.removeProducts(productIndex, 1);
                 break;
             case 3: showCustomerData(); break;
             case 4: checkOut(); break;

@@ -99,16 +99,16 @@ public class OrderService {
 
     
     public void addProducts(int id, int quantity) {
-        // product IDs in CSV start on 1, not 0
         order.basket.addProducts(productCatalog[id].clone(), quantity);
     }
+    public void addProducts(String name, int quantity) {
+        Product product = getProduct(name);
+        order.basket.addProducts(product, quantity);
+    }
     public void removeProducts(int id, int quantity) {
-        // product IDs in CSV start on 1, not 0
         order.basket.removeProducts(productCatalog[id], quantity);
     }
     public void removeProducts(String name, int quantity) { 
-        // if we assume that shop presentation does all the validation,
-        // it needs to know which products exist -> not right
         Product product = getProduct(name);
         order.basket.removeProducts(product, quantity);
     }
