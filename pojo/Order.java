@@ -1,9 +1,7 @@
 package pojo;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.Objects;
 
 // ----------------- PURPOSE: Defining & validating Order data -----------------
 
@@ -49,20 +47,12 @@ public class Order {
 
     @Override
     public Order clone() { // deep copy of this order
-        Order order = new Order(this.id);
+        Order copy = new Order(this.id);
         if (this.hasCustomer()) {
-            order.setCustomer(this.customer.clone());
+            copy.setCustomer(this.customer.clone());
         }
-        
-        if (!basket.getProducts().isEmpty()) {
-            for (Map.Entry<Product, Integer> set : basket.getProducts().entrySet()) {
-                order.basket.addProducts(null, id);
-            } // TODO give basket a clone()
-            order.basket.getProducts().forEach((product, quantity) -> order.basket.getProducts().put(product.clone(), quantity));
-            order.basket.setTotalProductionHours(this.basket.getTotalProductionHours());
-            order.basket.setTotalExpenses(this.basket.getTotalExpenses());
-        }
-        return order;
+        copy.basket = this.basket.clone();
+        return copy;
     }
 
     @Override
@@ -82,5 +72,19 @@ public class Order {
             "}";
     }
 
-    
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Order)) {
+            return false;
+        }
+        Order order = (Order) o;
+        return id == order.id && Objects.equals(orderTime, order.orderTime) && Objects.equals(pickUpTime, order.pickUpTime) && Objects.equals(customer, order.customer) && Objects.equals(basket, order.basket);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, orderTime, pickUpTime, customer, basket);
+    }
 }

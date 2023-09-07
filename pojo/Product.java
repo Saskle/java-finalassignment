@@ -64,9 +64,12 @@ public class Product {
 
     @Override
     public String toString() {
-        return "\t" + getName() + "\t" + getPrice();
+        String nameTabulation = "\t\t";
+        if (getName().length() > 20) {
+            nameTabulation = "\t";
+        }
+        return "\t" + getName() + nameTabulation + getPrice();
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -83,5 +86,4 @@ public class Product {
     public int hashCode() {
         return Objects.hash(id, name, price, creatingHours);
     }
-    
 }

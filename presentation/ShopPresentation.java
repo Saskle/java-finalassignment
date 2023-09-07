@@ -120,9 +120,10 @@ public class ShopPresentation {
     }
     
     public void printProductCatalogue() {
+        System.out.println("ID \tName \t\t\t\tPrice");
         // printing all products in catalogue, adding 1 to i so 0 is available for going back to main menu
         for (int i = 0; i < shopService.productCatalog.length; i++) {
-            System.out.println((i + 1) + " - " + shopService.productCatalog[i]);
+            System.out.println((i + 1) + ". " + shopService.productCatalog[i]);
         }
     }
 
@@ -142,9 +143,9 @@ public class ShopPresentation {
             case 0: showMainMenu(); break;
             case 1: showProductCatalogue(); break;
             case 2: 
-                System.out.println(shopService.showBasket()); // TODO create function to show only products
+                System.out.println(shopService.showBasket());
                 System.out.print("Which product would you like to remove? "); // TODO prompt for strings / product names too
-                int productIndex = validateInput(3); // lenght of order.products list
+                int productIndex = validateInput(shopService.basketSize()); // lenght of order.products list
                 shopService.removeProducts(productIndex, 1);
                 break;
             case 3: showCustomerData(); break;
@@ -201,7 +202,7 @@ public class ShopPresentation {
         System.out.println(invoiceService.getInvoice());
 
         System.out.println("\nThank you for ordering at PhotoShop!");
-        System.out.println("Don't forget to send your printing files mentioning the invoice nr.");
+        System.out.println("Don't forget to send your printing files mentioning the invoice nr. to printing@photoshop.com!\n");
 
         closeApp();
     }

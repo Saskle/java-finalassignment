@@ -1,5 +1,7 @@
 package pojo;
 
+import java.util.Objects;
+
 // ----------------- PURPOSE: Defining & validating Customer data -----------------
 
 public class Customer {
@@ -20,23 +22,10 @@ public class Customer {
         setEmail(email);
     }
 
-    // constructor for the clone method
-    // public Customer(Customer source) {
-    //     setId(source.id);
-    //     setFirstName(source.firstName);
-    //     setLastName(source.lastName);
-    //     setAddress(source.address);
-    //     setPostalCode(source.postalCode);
-    //     setCity(source.city);
-    //     setEmail(source.email);
-    //     setPhoneNr(source.phoneNr);
-    // }
-
-
     public int getId() {
         return this.id;
     }
-    public void setId(int id) { //  overload for clone() method
+    private void setId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("Customer's ID cannot be 0 or negative.");
         }
@@ -129,6 +118,19 @@ public class Customer {
             "\tPhone Nr.: \t" + getPhoneNr() + "\n";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Customer)) {
+            return false;
+        }
+        Customer customer = (Customer) o;
+        return id == customer.id && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(address, customer.address) && Objects.equals(postalCode, customer.postalCode) && Objects.equals(city, customer.city) && Objects.equals(email, customer.email) && Objects.equals(phoneNr, customer.phoneNr);
+    }
 
-    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, address, postalCode, city, email, phoneNr);
+    }    
 }

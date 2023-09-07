@@ -36,16 +36,13 @@ public class Main {
         // Basket basket = new Basket();
 
         // basket.addProducts(photo3, 3);
+        // basket.addProducts(photo1, 2);
         // System.out.println(basket);
 
-        // basket.addProducts(photo1, 1);
-        // basket.addProducts(photo2, 4);
-        // System.out.println(basket);
+        // Basket newBasket = basket.clone();
+        // System.out.println(newBasket);
 
-        // basket.removeProducts(photo3, 2);
-        // basket.removeProducts(photo2, 4);
-        // basket.removeProducts(photo1, 2);
-        // System.out.println(basket);
+        // System.out.println(basket.equals(newBasket));
 
     }
 }

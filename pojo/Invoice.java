@@ -30,7 +30,6 @@ public class Invoice {
         // OR take order.id and add a string prefix to it, like 'INV2032' ?
         this.id = id;
     }
-
     public Order getOrder() {
         return this.order.clone();
     }

@@ -98,10 +98,10 @@ public class OrderService {
     // }
 
     public void addProducts(int id, int quantity) {
-        order.basket.addProducts(productCatalog[id].clone(), quantity);
+        order.basket.addProducts(productCatalog[id + 1].clone(), quantity);
     }
     public void removeProducts(int id, int quantity) {
-        order.basket.removeProducts(productCatalog[id], quantity);
+        order.basket.removeProducts(productCatalog[id + 1], quantity);
     }
     public boolean hasProducts() {
         return !order.basket.getProducts().isEmpty();
@@ -111,6 +111,9 @@ public class OrderService {
         return order.basket.toString();
     }
 
+    public int basketSize() {
+        return order.basket.getProducts().size();
+    }
 
     private int createID() { 
         // random Id generated between 1 - 10000, so semi-unique 

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.Objects;
 
 // ----------------- PURPOSE: Defining & validating Basket & products in basket's data -----------------
 
@@ -24,16 +25,21 @@ public class Basket {
     public HashMap<Product,Integer> getProducts() {
         return this.products;
     }
+    private void setProducts(HashMap<Product,Integer> products) {
+        for (Map.Entry<Product, Integer> set : products.entrySet()) {
+            this.products.put(set.getKey().clone(), set.getValue());
+        }
+    }
     public BigDecimal getTotalExpenses() {
         return this.totalExpenses;
     }
-    public void setTotalExpenses(BigDecimal totalExpenses) {
+    private void setTotalExpenses(BigDecimal totalExpenses) {
         this.totalExpenses = totalExpenses;
     }
     public int getTotalProductionHours() {
         return this.totalProductionHours;
     }
-    public void setTotalProductionHours(int totalProductionHours) {
+    private void setTotalProductionHours(int totalProductionHours) {
         this.totalProductionHours = totalProductionHours;
     }
 
@@ -69,6 +75,7 @@ public class Basket {
     public void removeProducts(Product product, int quantity) {
         if (products.containsKey(product)) {
             this.products.put(product.clone(), this.products.get(product) - quantity);
+            // guarantee that quantity never becomes negative
             if (products.get(product) <= 0) {
                 products.remove(product);
             }
@@ -97,5 +104,29 @@ public class Basket {
             "\t\t\t\t Total Production Hours: \t" + getTotalProductionHours() + "\n";
     }
 
+    @Override
+    public Basket clone() {
+        Basket copy = new Basket();
+        copy.setTotalExpenses(this.totalExpenses);
+        copy.setTotalProductionHours(this.totalProductionHours);
+        copy.setProducts(products);
+        return copy;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Basket)) {
+            return false;
+        }
+        Basket basket = (Basket) o;
+        return Objects.equals(products, basket.products) && Objects.equals(totalExpenses, basket.totalExpenses) && totalProductionHours == basket.totalProductionHours;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(products, totalExpenses, totalProductionHours);
+    }
+    
 }
