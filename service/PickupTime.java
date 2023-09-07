@@ -188,20 +188,6 @@ public class PickupTime {
         return -1; // TODO this should not happen
     }
 
-    // private double getOpeningtime(int dayIndex, int index) {
-
-    //     // get the opening and closing hour for the day (split the string on ":" -> index 0 is hours and index 1 is minutes)
-    //     String[] workingHours = openingHours[dayIndex][index].split(":");
-
-    //     try {
-    //         return Double.parseDouble(workingHours[0]) + (Double.parseDouble(workingHours[1]) / 60);
-    //     } catch (NumberFormatException e) {
-    //         System.out.println(e);
-    //     }
-    //     return -1;
-
-    // }
-
     private LocalDateTime getShopTime(int dayIndex, int index) {
         // get the opening and closing hour for the day (split the string on ":" -> index 0 is hours and index 1 is minutes)
         String[] workingHours = openingHours[dayIndex][index].split(":");

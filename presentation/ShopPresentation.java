@@ -99,7 +99,6 @@ public class ShopPresentation {
         System.out.println("Please enter the corresponding no. or name of the product to add to your order.");
         System.out.println("You can add multiple products at once by specifying id and quantity like (2:3).");
         System.out.println("To return to the main menu, enter 0.");
-        // TODO prompt for strings too (although that is not needed)
 
         int index;
         if (scan.hasNextInt()) {
@@ -120,9 +119,6 @@ public class ShopPresentation {
             System.out.println(productName + " has been added.");
         }
 
-        
-
-        
         System.out.println("Would you like to add another product? ");
         System.out.print("Enter 0 for no, 1 for yes: ");
 

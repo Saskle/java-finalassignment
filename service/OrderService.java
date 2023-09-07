@@ -89,20 +89,12 @@ public class OrderService {
     public boolean hasCustomer() {
         return this.order.hasCustomer(); // TODO think if this can be implemented better
     }
-
-    // public void printCustomer() {
-    //     String customer =  this.order.getCustomer().toString();
-    //     Stream<String> stream = Pattern.compile("\n").splitAsStream(customer);
-    //     int counter = 1;
-    //     stream.forEach(line -> System.out.println(counter + ". " + line));
-    // }
-
     
     public void addProducts(int id, int quantity) {
         order.basket.addProducts(productCatalog[id].clone(), quantity);
     }
     public void addProducts(String name, int quantity) {
-        Product product = getProduct(name);
+        Product product = getProduct(name); // is already returning a clone
         order.basket.addProducts(product, quantity);
     }
     public void removeProducts(int id, int quantity) {
