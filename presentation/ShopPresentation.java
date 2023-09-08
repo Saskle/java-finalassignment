@@ -268,4 +268,20 @@ public class ShopPresentation {
         return productName;
     }
 
+    public void validateMultipleInput() {
+
+        scan.nextLine(); // throwaway line for nextInt()
+        String response = scan.nextLine();
+
+        if (response.contains(":")) {
+            String[] responseParts = response.split(":");
+            // argument validation for things like 2:1:2 and so? should I catch that with scan.next() ?
+            // responseParts[0] -> is it a product name, if no, is it a valid index?
+            // responseParts[1] -> add the product that many times
+        } else {
+            if (scan.hasNextInt()) {
+                // validateInput(0); which range??
+            }
+        }
+    }
 }
