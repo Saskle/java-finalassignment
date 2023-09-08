@@ -33,16 +33,9 @@ public class Main {
         ShopPresentation shopPresentation = new ShopPresentation();
         shopPresentation.startApp();
 
-        // Basket basket = new Basket();
-
-        // basket.addProducts(photo3, 3);
-        // basket.addProducts(photo1, 2);
-        // System.out.println(basket);
-
-        // Basket newBasket = basket.clone();
-        // System.out.println(newBasket);
-
-        // System.out.println(basket.equals(newBasket));
+        // look into this for splitting Scanner input on ":"
+        // https://stackoverflow.com/questions/41473861/how-do-i-split-user-input-from-the-console
+        // https://stackoverflow.com/questions/3481828/how-do-i-split-a-string-in-java 
 
     }
 }

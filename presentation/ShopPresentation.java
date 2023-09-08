@@ -185,9 +185,7 @@ public class ShopPresentation {
             System.out.println("Do you want to change this info?");
             System.out.print("Enter 0 for returning to the main menu, 1 for editing customer data: ");
 
-            scan.nextLine(); // throwaway next line but doesn't work here ? (TODO)
             int response = validateInput(1);
-
             switch (response) {
                 case 0: showMainMenu(); break;
                 case 1: promptCustomerData();
@@ -200,9 +198,8 @@ public class ShopPresentation {
         } else {
             System.out.println("No customer info as been added to this order yet.");
             promptCustomerData();
+            showCustomerData();
         }
-        
-        showMainMenu();
     }
 
     public void checkOut() {
@@ -261,7 +258,7 @@ public class ShopPresentation {
         // as long as scan.next() is not a product name, keep asking
         // if it is a product name, return it as a string and let the menu decide what to do with it
 
-        scan.nextLine(); // throwaway next line
+        scan.nextLine(); // throwaway line for nextInt()
 
         String productName = scan.nextLine();
         while (!shopService.isProduct(productName)) {
