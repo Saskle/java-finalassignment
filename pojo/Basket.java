@@ -61,8 +61,12 @@ public class Basket {
         products.forEach((product, quantity) -> totalProductionHours += product.getCreatingHours() * quantity);
     }
 
-    // TODO test if this works properly, if products are deemed equal like this
     public void addProducts(Product product, int quantity) {
+        // don't allow a quantity parameter equal or less than 0
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("No product with quantity equal to or less than 0 may be added!");
+        }
+
         if (this.products.containsKey(product)) {
             this.products.put(product.clone(), this.products.get(product) + quantity);
         } else {
@@ -73,6 +77,11 @@ public class Basket {
     }
 
     public void removeProducts(Product product, int quantity) {
+        // don't allow a quantity parameter equal or less than 0
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("No product with quantity equal to or less than 0 may be removed!");
+        }
+
         if (products.containsKey(product)) {
             this.products.put(product.clone(), this.products.get(product) - quantity);
             // guarantee that quantity never becomes negative
