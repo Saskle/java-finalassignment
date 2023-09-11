@@ -21,9 +21,8 @@ public class Basket {
         this.totalProductionHours = 0;
     }
 
-    // TODO update these correctly (or check if I actually need them)
     public HashMap<Product,Integer> getProducts() {
-        return this.products;
+        return this.products; // TODO is this unsafe?
     }
     private void setProducts(HashMap<Product,Integer> products) {
         for (Map.Entry<Product, Integer> set : products.entrySet()) {
@@ -44,7 +43,7 @@ public class Basket {
     }
 
     private void updateTotalExpenses() {
-        // defining a function to map the stream on: multiply each product's price with it's stored quantity in the HashMap
+        // defining a function to map the stream on: multiply each product's price with its stored quantity in the HashMap
         Function<Product, BigDecimal> mapper = product -> product.getPrice().multiply(new BigDecimal(products.get(product)));
         
         // create a set out of our products HashMap so we can use stream()
@@ -67,9 +66,11 @@ public class Basket {
             throw new IllegalArgumentException("No product with quantity equal to or less than 0 may be added!");
         }
 
+        // if the product is already in the basket, sum the quantity
         if (this.products.containsKey(product)) {
             this.products.put(product.clone(), this.products.get(product) + quantity);
         } else {
+            // otherwise, add the product + specified quantity to the HashMap
             products.put(product.clone(), quantity);
         }
         updateProductionHours();
@@ -82,6 +83,7 @@ public class Basket {
             throw new IllegalArgumentException("No product with quantity equal to or less than 0 may be removed!");
         }
 
+        // if the product is in the basket, substract quantity
         if (products.containsKey(product)) {
             this.products.put(product.clone(), this.products.get(product) - quantity);
             // guarantee that quantity never becomes negative
@@ -118,7 +120,7 @@ public class Basket {
         Basket copy = new Basket();
         copy.setTotalExpenses(this.totalExpenses);
         copy.setTotalProductionHours(this.totalProductionHours);
-        copy.setProducts(products);
+        copy.setProducts(this.products);
         return copy;
     }
 

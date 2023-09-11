@@ -1,13 +1,4 @@
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 import pojo.Basket;
 import pojo.Invoice;
@@ -31,19 +22,19 @@ public class Main {
         //Product photo11 = new Product(11, "Glass 100 x 150 mat", new BigDecimal("82.50"), 20);
         //Product photo12 = new Product(12, "Glass 100 x 150 high gloss", new BigDecimal("82.50"), 20);
 
-        // ShopPresentation shopPresentation = new ShopPresentation();
-        // shopPresentation.startApp();
+        ShopPresentation shopPresentation = new ShopPresentation();
+        shopPresentation.startApp();
 
         // look into this for splitting Scanner input on ":"
         // https://stackoverflow.com/questions/41473861/how-do-i-split-user-input-from-the-console
         // https://stackoverflow.com/questions/3481828/how-do-i-split-a-string-in-java 
 
-        Scanner scan = new Scanner(System.in);
-        OrderService shopService = new OrderService();
-        shopService.createOrder();
+        // Scanner scan = new Scanner(System.in);
+        // OrderService shopService = new OrderService();
+        // shopService.createOrder();
 
-        System.out.print("Please enter the products to add: ");
-        String response = scan.nextLine();
+        // System.out.print("Please enter the products to add: ");
+        // String response = scan.nextLine();
 
 
         // user input can vary from 1, 1:1, productname : 3 and just productname
@@ -55,87 +46,53 @@ public class Main {
         // if it isn't -> validate if it's a product name and if it isn't, keep asking, otherwise add product
         // there has to be an extra check if the user decided to type a number the second try
 
-        if (response.contains(":")) {
-            //response = scan.nextLine();
-            String[] responseParts = response.split(":");
+    //     while (!scan.hasNext()) {
+    //         if (response.contains(":")) {
+    //             //response = scan.nextLine();
+    //             String[] responseParts = response.split(":");
 
-            // TODO trim out spaces?
-            System.out.println(responseParts[0]);
-            System.out.println(responseParts[1]);
+    //             // TODO trim out spaces?
+    //             System.out.println(responseParts[0]);
+    //             System.out.println(responseParts[1]);
 
-            // check if input is numerical or not (isNumber is faster)
-            if (responseParts[0].matches("[0-9]+")) {
-                if (isInteger(responseParts[1])) {
-                    int product = Integer.parseInt(responseParts[0]);
-                    int quantity = Integer.parseInt(responseParts[1]);
-                    shopService.addProducts(product, quantity);
-                    System.out.println("Product has been added to the shopping cart.");
-                    System.out.println(shopService.showBasket());
-                } else {
-                    // ask for input again (?)
-                    System.out.print("Please enter valid input.");
-                }
-            } else if (shopService.isProduct(responseParts[0])) {
-                if (isInteger(responseParts[1])) {
-                    int quantity = Integer.parseInt(responseParts[1]);
-                    shopService.addProducts(responseParts[0], quantity);
-                    System.out.println("Product has been added to the shopping cart.");
-                    System.out.println(shopService.showBasket());
-                } else {
-                    // ask for input again (?)
-                    System.out.print("Please enter valid input.");
-                }
-            }
+    //             // check if input is numerical or not (isNumber is faster)
+    //             if (responseParts[0].matches("[0-9]+")) {
+    //                 if (isInteger(responseParts[1])) {
+    //                     int product = Integer.parseInt(responseParts[0]);
+    //                     int quantity = Integer.parseInt(responseParts[1]);
+    //                     shopService.addProducts(product, quantity);
+    //                     System.out.println("Product has been added to the shopping cart.");
+    //                     System.out.println(shopService.showBasket());
+    //                 } else {
+    //                     // ask for input again (?)
+    //                     System.out.print("Please enter valid input.");
+    //                 }
+    //             } else if (shopService.isProduct(responseParts[0])) {
+    //                 if (isInteger(responseParts[1])) {
+    //                     int quantity = Integer.parseInt(responseParts[1]);
+    //                     shopService.addProducts(responseParts[0], quantity);
+    //                     System.out.println("Product has been added to the shopping cart.");
+    //                     System.out.println(shopService.showBasket());
+    //                 } else {
+    //                     // ask for input again (?)
+    //                     System.out.print("Please enter valid input.");
+    //                 }
+    //             }
 
-        } else {
-            if (isInteger(response)) {
-                int product = Integer.parseInt(response);
-                shopService.addProducts(product, 1);
-                System.out.println("Product has been added to the shopping cart.");
-                System.out.println(shopService.showBasket());
-            } else if (shopService.isProduct(response)) {
-                shopService.addProducts(response, 1);
-                System.out.println("Product has been added to the shopping cart.");
-                System.out.println(shopService.showBasket());
-            }
-        }
-
-
-
-
-        // while (!response.contains(":")) {
-        //     response = scan.nextLine();
-        //     String[] responseParts = response.split(":");
-
-        //     System.out.println(responseParts[0]);
-        //     System.out.println(responseParts[1]);
-
-        //     // argument validation for things like 2:1:2 and so? should I catch that with scan.next() ?
-        //     if (responseParts.length > 2) {
-        //         System.out.println("Please enter product additions in the correct format (1:3) or (Paper 10 x 15 mat:3)!");
-        //         response = "";
-        //         continue;
-        //     }
-
-        //     if (shopService.isProduct(responseParts[0])) {
-
-        //         int quantity;
-        //         try {
-        //             quantity = Integer.parseInt(responseParts[0]); // how do I catch this exception?
-        //         } catch (Exception e) {
-        //             System.out.println(e);
-        //             quantity = 0;
-        //             continue;
-        //         } 
-                
-        //         shopService.addProducts(responseParts[0], quantity);
-        //     } 
-        //     // responseParts[0] -> is it a product name, if no, is it a valid index?
-        //     // responseParts[1] -> add the product that many times
-
-        // }
-
-        scan.close();
+    //         } else {
+    //             if (isInteger(response)) {
+    //                 int product = Integer.parseInt(response);
+    //                 shopService.addProducts(product, 1);
+    //                 System.out.println("Product has been added to the shopping cart.");
+    //                 System.out.println(shopService.showBasket());
+    //             } else if (shopService.isProduct(response)) {
+    //                 shopService.addProducts(response, 1);
+    //                 System.out.println("Product has been added to the shopping cart.");
+    //                 System.out.println(shopService.showBasket());
+    //             }
+    //         }
+    //     }
+    //     scan.close();
     }
 
     public static boolean isInteger(String text){

@@ -71,15 +71,14 @@ public class ShopPresentation {
 
         int menuChoice = validateInput(5);
         switch (menuChoice) {
-            case 1: showProductCatalogue(); break;
-            case 2: showCurrentOrder(); break;
-            case 3: showCustomerData(); break;
-            case 4: checkOut(); break;
-            case 5: closeApp(); break;
+            case 1: showProductCatalogue();
+            case 2: showCurrentOrder();
+            case 3: showCustomerData();
+            case 4: checkOut();
+            case 5: closeApp();
             default:
                 System.out.println("Please enter a correct menu index."); // case 0 is not handled, so don't throw an exeception here
                 showMainMenu();
-                break;
             }
         }
 
@@ -96,14 +95,19 @@ public class ShopPresentation {
         System.out.println("\nPRODUCT CATALOG");
         printProductCatalogue();
 
-        System.out.println("Please enter the corresponding no. or name of the product to add to your order.");
-        System.out.println("You can add multiple products at once by specifying id and quantity like (2:3).");
+        System.out.println("You can add multiple products at once by specifying id or name and quantity like (2:3).");
         System.out.println("To return to the main menu, enter 0.");
+        System.out.println("Please enter the corresponding no. or name of the product to add to your order: ");
 
-        int index;
-        if (scan.hasNextInt()) {
+        scan.nextLine(); // throwaway next line
+        String input = scan.nextLine();
+        if (input.contains(":")) {
+            // if the user enters anything with ":", go on validate that
+            validateMultipleInput(input);
+
+        } else if (isInteger(input)) {
             // if the user enters numbers, validate and use that imput
-            index = validateInput(shopService.productCatalog.length); // the range is the amount of products in the catalogue
+            int index = validateInput(shopService.productCatalog.length); // the range is the amount of products in the catalogue
             
             if (index == 0) {
             showMainMenu();
@@ -113,24 +117,22 @@ public class ShopPresentation {
             System.out.println("Product " + shopService.productCatalog[index - 1].getName() + " has been added."); // TODO print the name of the product instead
 
         } else {
-            // if the user enters a string, use that
-            String productName = promptProductName();
+            // if the user enters a (single) string, use that
+            String productName = validateProductName(input);
             shopService.addProducts(productName, 1);
             System.out.println(productName + " has been added.");
         }
 
+        System.out.println(shopService.showBasket());
         System.out.println("Would you like to add another product? ");
         System.out.print("Enter 0 for no, 1 for yes: ");
 
         int response = validateInput(1);
         switch (response) {
-            case 0: showMainMenu(); break;
+            case 0: showMainMenu();
             case 1: showProductCatalogue();
-            default:
-                throw new InputMismatchException("Input for showProductCatalogue() isn't correctly validated!");
+            default: throw new InputMismatchException("Input for showProductCatalogue() isn't correctly validated!");
         }
-
-        showMainMenu();
     }
     
     public void printProductCatalogue() {
@@ -154,27 +156,25 @@ public class ShopPresentation {
         
         int response = validateInput(4);
         switch (response) {
-            case 0: showMainMenu(); break;
-            case 1: showProductCatalogue(); break;
+            case 0: showMainMenu();
+            case 1: showProductCatalogue();
             case 2: 
                 System.out.println(shopService.showBasket());
-                System.out.print("Which product would you like to remove? "); // TODO prompt for strings / product names too
+                System.out.print("Which product would you like to remove? ");
                 
                 // if (scan.hasNextInt()) {
                 //     validateInput(shopService.basketSize());
                 //     // match index on right product
                 // }
 
-                String productName = promptProductName();
+                String productName = validateProductName(scan.nextLine());
                 shopService.removeProducts(productName, 1);
                 System.out.println(productName + " has been removed.\n");
                 showCurrentOrder();
-                break;
-            case 3: showCustomerData(); break;
-            case 4: checkOut(); break;
+            case 3: showCustomerData();
+            case 4: checkOut();
             default: throw new InputMismatchException("Input for showCurrentOrder() isn't correctly validated!");
         }
-        showMainMenu();
     }
     
     public void showCustomerData() {
@@ -187,7 +187,7 @@ public class ShopPresentation {
 
             int response = validateInput(1);
             switch (response) {
-                case 0: showMainMenu(); break;
+                case 0: showMainMenu();
                 case 1: promptCustomerData();
                         System.out.println("Customer data updated.");
                         showCustomerData();
@@ -205,11 +205,13 @@ public class ShopPresentation {
     public void checkOut() {
         System.out.println("CREATE INVOICE");
 
+        // making sure the basket contains products before proceeding
         if(!shopService.hasProducts()) {
             System.out.println("There are no projects in this order yet!");
             showProductCatalogue();
         }
 
+        // making sure there is customer data for this order
         if (!shopService.hasCustomer()) {
             System.out.println("There is no customer data for this order yet!");
             promptCustomerData();
@@ -253,14 +255,14 @@ public class ShopPresentation {
         return response;
     }
 
-    public String promptProductName() {
+    public String validateProductName(String productName) {
 
         // as long as scan.next() is not a product name, keep asking
         // if it is a product name, return it as a string and let the menu decide what to do with it
 
-        scan.nextLine(); // throwaway line for nextInt()
+        //scan.nextLine(); // throwaway line for nextInt()
 
-        String productName = scan.nextLine();
+        //String productName = scan.nextLine();
         while (!shopService.isProduct(productName)) {
             System.out.println("You haven't entered a correct product name. Please try again. ");
             productName = scan.nextLine();
@@ -268,20 +270,55 @@ public class ShopPresentation {
         return productName;
     }
 
-    public void validateMultipleInput() {
+    public void validateMultipleInput(String response) {
 
-        scan.nextLine(); // throwaway line for nextInt()
-        String response = scan.nextLine();
+        String[] responseParts = response.split(":");
+        int quantity;
 
-        if (response.contains(":")) {
-            String[] responseParts = response.split(":");
-            // argument validation for things like 2:1:2 and so? should I catch that with scan.next() ?
-            // responseParts[0] -> is it a product name, if no, is it a valid index?
-            // responseParts[1] -> add the product that many times
-        } else {
-            if (scan.hasNextInt()) {
-                // validateInput(0); which range??
+        // TODO trim out spaces?
+        System.out.println(responseParts[0]);
+        System.out.println(responseParts[1]);
+
+        // check if input before ":" is numerical
+        if (isInteger(responseParts[0])) {
+            int product = Integer.parseInt(responseParts[0]);
+            if (isInteger(responseParts[1])) {
+                
+                quantity = Integer.parseInt(responseParts[1]);
+                shopService.addProducts(product - 1, quantity); // product id's start at 1 instead of 0                
+            } else {
+                // if input after ":" isn't a number, ask again
+                System.out.println("Please enter a number after : .");
+                System.out.println("How many of " + shopService.productCatalog[product] + " would you like to add? ");
+                quantity = validateInput(99); // let's assume no one would like to add more than 99 products at once
+                shopService.addProducts(product, quantity);
             }
+            System.out.println(shopService.productCatalog[product] + " has been added to the shopping cart.");
+
+        // if input is not numerical, it should be a product's name
+        } else if (shopService.isProduct(responseParts[0])) {
+            
+            if (isInteger(responseParts[1])) {
+                quantity = Integer.parseInt(responseParts[1]);
+            } else {
+                // if input after : isn't a number, ask again
+                System.out.println("Please enter a number after : .");
+                System.out.println("How many of " + shopService.getProduct(responseParts[0]) + " would you like to add? ");
+                quantity = validateInput(99); // let's assume no one would like to add more than 99 products at once
+            }
+            shopService.addProducts(responseParts[0], quantity);
+            System.out.println(responseParts[0] + " has been added to the shopping cart.");
+        } else {
+            // first part of command is not understandable at all
+            System.out.println("Please enter a correct product name or id.");
         }
+    }
+
+    private boolean isInteger(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) { }
+        return false;
     }
 }
