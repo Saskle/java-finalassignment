@@ -26,7 +26,7 @@ public class ShopPresentation {
         System.out.println("You can also close the application by entering 0.");
         System.out.print("Please enter the corresponding number of your choice: ");
         
-        int response = validateInput(2); // we want either 0 or 1 or 2
+        int response = validateNumericalInput(2); // we want either 0 or 1 or 2
 
         switch (response) {
             case 0: closeApp();
@@ -69,7 +69,7 @@ public class ShopPresentation {
         System.out.println("\nMAIN MENU");
         printMainMenu();
 
-        int menuChoice = validateInput(5);
+        int menuChoice = validateNumericalInput(5);
         switch (menuChoice) {
             case 1: showProductCatalogue();
             case 2: showCurrentOrder();
@@ -103,18 +103,19 @@ public class ShopPresentation {
         String input = scan.nextLine();
         if (input.contains(":")) {
             // if the user enters anything with ":", go on validate that
-            validateMultipleInput(input);
+            validateMultipleInput(input, shopService.productCatalog.length);
 
         } else if (isInteger(input)) {
             // if the user enters numbers, validate and use that imput
-            int index = validateInput(shopService.productCatalog.length); // the range is the amount of products in the catalogue
-            
+            int index = Integer.parseInt(input);
+
+            // index 0 is reserved for returning to the main menu
             if (index == 0) {
             showMainMenu();
             }
 
             shopService.addProducts(index - 1, 1); // product id's start at 1 instead of 0
-            System.out.println("Product " + shopService.productCatalog[index - 1].getName() + " has been added."); // TODO print the name of the product instead
+            System.out.println("Product " + shopService.productCatalog[index - 1].getName() + " has been added."); 
 
         } else {
             // if the user enters a (single) string, use that
@@ -127,7 +128,7 @@ public class ShopPresentation {
         System.out.println("Would you like to add another product? ");
         System.out.print("Enter 0 for no, 1 for yes: ");
 
-        int response = validateInput(1);
+        int response = validateNumericalInput(1);
         switch (response) {
             case 0: showMainMenu();
             case 1: showProductCatalogue();
@@ -154,7 +155,7 @@ public class ShopPresentation {
                             "\t 0 - return to the Main Menu"); 
         System.out.print("Please enter the corresponding no.: ");
         
-        int response = validateInput(4);
+        int response = validateNumericalInput(4);
         switch (response) {
             case 0: showMainMenu();
             case 1: showProductCatalogue();
@@ -185,7 +186,7 @@ public class ShopPresentation {
             System.out.println("Do you want to change this info?");
             System.out.print("Enter 0 for returning to the main menu, 1 for editing customer data: ");
 
-            int response = validateInput(1);
+            int response = validateNumericalInput(1);
             switch (response) {
                 case 0: showMainMenu();
                 case 1: promptCustomerData();
@@ -239,7 +240,7 @@ public class ShopPresentation {
         shopService.createCustomer(firstName, lastName, email);
     }
 
-    public int validateInput(int range) {
+    public int validateNumericalInput(int range) {
         // first check if there is actually numberical input
         while (!scan.hasNextInt()) {
             System.out.println("You haven't entered a number. Please try again. ");
@@ -248,21 +249,30 @@ public class ShopPresentation {
         int response = scan.nextInt();
 
         // if there is, is it within the range (inclusive) we want?
-        if (response < 0 || response > range) {
+        if (response <= 0 || response > range) {
             System.out.println("You haven't entered a number in the correct range. Please try again. ");
-            response = validateInput(range);
+            response = validateNumericalInput(range);
+        }
+        return response;
+    }
+
+    public int validateNumericalInput(String text, int range) {
+        // first check if there is actually numberical input
+        while (!isInteger(text)) {
+            System.out.println("You haven't entered a number. Please try again. ");
+            text = scan.next();
+        }
+        int response = Integer.parseInt(text);
+
+        // if there is, is it within the range (inclusive) we want?
+        if (response <= 0 || response > range) {
+            System.out.println("You haven't entered a number in the correct range. Please try again. ");
+            response = validateNumericalInput(range);
         }
         return response;
     }
 
     public String validateProductName(String productName) {
-
-        // as long as scan.next() is not a product name, keep asking
-        // if it is a product name, return it as a string and let the menu decide what to do with it
-
-        //scan.nextLine(); // throwaway line for nextInt()
-
-        //String productName = scan.nextLine();
         while (!shopService.isProduct(productName)) {
             System.out.println("You haven't entered a correct product name. Please try again. ");
             productName = scan.nextLine();
@@ -270,46 +280,50 @@ public class ShopPresentation {
         return productName;
     }
 
-    public void validateMultipleInput(String response) {
+    public void validateMultipleInput(String response, int range) {
 
         String[] responseParts = response.split(":");
         int quantity;
 
-        // TODO trim out spaces?
-        System.out.println(responseParts[0]);
-        System.out.println(responseParts[1]);
-
         // check if input before ":" is numerical
         if (isInteger(responseParts[0])) {
-            int product = Integer.parseInt(responseParts[0]);
-            if (isInteger(responseParts[1])) {
+            
+            int productID = validateNumericalInput(responseParts[0], shopService.productCatalog.length);
+
+            // if (isInteger(responseParts[1])) {
                 
-                quantity = Integer.parseInt(responseParts[1]);
-                shopService.addProducts(product - 1, quantity); // product id's start at 1 instead of 0                
-            } else {
-                // if input after ":" isn't a number, ask again
-                System.out.println("Please enter a number after : .");
-                System.out.println("How many of " + shopService.productCatalog[product] + " would you like to add? ");
-                quantity = validateInput(99); // let's assume no one would like to add more than 99 products at once
-                shopService.addProducts(product, quantity);
-            }
-            System.out.println(shopService.productCatalog[product] + " has been added to the shopping cart.");
+            //     quantity = Integer.parseInt(responseParts[1]);
+            //     shopService.addProducts(productID - 1, quantity); // product id's start at 1 instead of 0                
+            // } else {
+            //     // if input after ":" isn't a number, ask again
+            //     System.out.println("Please enter a number after : .");
+            //     System.out.println("How many of " + shopService.productCatalog[productID].getName() + " would you like to add? ");
+            //     quantity = validateNumericalInput(99); // let's assume no one would like to add more than 99 products at once
+            //     shopService.addProducts(productID - 1, quantity);
+            // }
+
+            quantity = validateNumericalInput(responseParts[1], 99);
+            shopService.addProducts(productID - 1, quantity);
+            System.out.println(shopService.productCatalog[productID - 1].getName() + " has been added to the shopping cart.");
 
         // if input is not numerical, it should be a product's name
         } else if (shopService.isProduct(responseParts[0])) {
             
-            if (isInteger(responseParts[1])) {
-                quantity = Integer.parseInt(responseParts[1]);
-            } else {
-                // if input after : isn't a number, ask again
-                System.out.println("Please enter a number after : .");
-                System.out.println("How many of " + shopService.getProduct(responseParts[0]) + " would you like to add? ");
-                quantity = validateInput(99); // let's assume no one would like to add more than 99 products at once
-            }
+            // if (isInteger(responseParts[1])) {
+            //     quantity = Integer.parseInt(responseParts[1]);
+            // } else {
+            //     // if input after : isn't a number, ask again
+            //     System.out.println("Please enter a number after : .");
+            //     System.out.println("How many of " + shopService.getProduct(responseParts[0]).getName() + " would you like to add? ");
+            //     quantity = validateNumericalInput(99); // let's assume no one would like to add more than 99 products at once
+            // }
+
+            quantity = validateNumericalInput(responseParts[1], 99);
             shopService.addProducts(responseParts[0], quantity);
             System.out.println(responseParts[0] + " has been added to the shopping cart.");
+
         } else {
-            // first part of command is not understandable at all
+            // first part of command is not understandable at all, give up and show menu instead
             System.out.println("Please enter a correct product name or id.");
         }
     }

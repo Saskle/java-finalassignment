@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import pojo.Basket;
 import pojo.Invoice;
@@ -29,77 +30,21 @@ public class Main {
         // https://stackoverflow.com/questions/41473861/how-do-i-split-user-input-from-the-console
         // https://stackoverflow.com/questions/3481828/how-do-i-split-a-string-in-java 
 
-        // Scanner scan = new Scanner(System.in);
-        // OrderService shopService = new OrderService();
-        // shopService.createOrder();
+        // ArrayList<Object> arraylist = new ArrayList<>();
 
-        // System.out.print("Please enter the products to add: ");
-        // String response = scan.nextLine();
+        // arraylist.add("Product name");
+        // arraylist.add(12);
 
+        // System.out.println(arraylist);
 
-        // user input can vary from 1, 1:1, productname : 3 and just productname
+        // Object[] array = new Object[2];
 
-        // check first if there's an : 
-        // if there is, split and trim
-        // then, is it an integer or not (regex for validation?)
-        // if it is -> validate range and add product + quantity if there was a :
-        // if it isn't -> validate if it's a product name and if it isn't, keep asking, otherwise add product
-        // there has to be an extra check if the user decided to type a number the second try
+        // array[0] = "Product name";
+        // array[1] = 2;
 
-    //     while (!scan.hasNext()) {
-    //         if (response.contains(":")) {
-    //             //response = scan.nextLine();
-    //             String[] responseParts = response.split(":");
+        // System.out.println(array.toString());
 
-    //             // TODO trim out spaces?
-    //             System.out.println(responseParts[0]);
-    //             System.out.println(responseParts[1]);
-
-    //             // check if input is numerical or not (isNumber is faster)
-    //             if (responseParts[0].matches("[0-9]+")) {
-    //                 if (isInteger(responseParts[1])) {
-    //                     int product = Integer.parseInt(responseParts[0]);
-    //                     int quantity = Integer.parseInt(responseParts[1]);
-    //                     shopService.addProducts(product, quantity);
-    //                     System.out.println("Product has been added to the shopping cart.");
-    //                     System.out.println(shopService.showBasket());
-    //                 } else {
-    //                     // ask for input again (?)
-    //                     System.out.print("Please enter valid input.");
-    //                 }
-    //             } else if (shopService.isProduct(responseParts[0])) {
-    //                 if (isInteger(responseParts[1])) {
-    //                     int quantity = Integer.parseInt(responseParts[1]);
-    //                     shopService.addProducts(responseParts[0], quantity);
-    //                     System.out.println("Product has been added to the shopping cart.");
-    //                     System.out.println(shopService.showBasket());
-    //                 } else {
-    //                     // ask for input again (?)
-    //                     System.out.print("Please enter valid input.");
-    //                 }
-    //             }
-
-    //         } else {
-    //             if (isInteger(response)) {
-    //                 int product = Integer.parseInt(response);
-    //                 shopService.addProducts(product, 1);
-    //                 System.out.println("Product has been added to the shopping cart.");
-    //                 System.out.println(shopService.showBasket());
-    //             } else if (shopService.isProduct(response)) {
-    //                 shopService.addProducts(response, 1);
-    //                 System.out.println("Product has been added to the shopping cart.");
-    //                 System.out.println(shopService.showBasket());
-    //             }
-    //         }
-    //     }
-    //     scan.close();
-    }
-
-    public static boolean isInteger(String text){
-        try {
-            Integer.parseInt(text);
-            return true;
-        } catch (NumberFormatException e) {}
-        return false;
+        // int number = 2;
+        // System.out.println(number);
     }
 }
