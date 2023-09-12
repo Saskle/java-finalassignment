@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import pojo.Day;
 import pojo.Invoice;
 import pojo.Product;
 import presentation.*;
+import repository.CSVhandler;
 import service.OrderService;
 
 public class Main {
@@ -50,57 +52,18 @@ public class Main {
          *          - cast data to right data type
          */
 
-        try {
-            Path path = Paths.get("data\\PhotoShop_OpeningHours.csv");
-            List<String> lines = Files.lines(path)
-                            .skip(1) // first line in csv's are headers/labels
-                            .toList();
-            
-            // initalizing workday Collection
-            Day[] workDays = new Day[7];
+        Path filePath = Paths.get("data\\PhotoShop_PriceList.csv");
+        Product[] productCatalogue = CSVhandler.readProducts(filePath);
 
-            // going through each line (assuming that the file only contains 7 rows for each day)
-            for (int i = 0; i < lines.size(); i++) {
-
-                // splitting the values of this line
-                String[] values = lines.get(i).split(";"); // TODO make this regex a constant
-            
-                int dayID = 0;
-                int openingHour = 0;
-                int openingMinute = 0;
-                int closingHour = 0;
-                int closingMinute = 0;
-
-                String[] openingTime = values[2].split(":");
-                String[] closingTime = values[3].split(":");
-
-                try {
-                    dayID = Integer.parseInt(values[0]);
-                    openingHour = Integer.parseInt(openingTime[0]);
-                    openingMinute = Integer.parseInt(openingTime[1]);
-                    closingHour = Integer.parseInt(closingTime[0]);
-                    closingMinute = Integer.parseInt(closingTime[1]);
-                } catch (NumberFormatException exception) {
-                    System.out.println(exception);
-                }
-
-                // first row (index 0) is id
-                // second row [1] is name
-                // third and fourth row [2] [3] are opening and closing times
-
-                
-                LocalTime opening = LocalTime.of(openingHour, openingMinute);
-                LocalTime closing = LocalTime.of(closingHour, closingMinute);
-
-                workDays[i] = new Day(dayID, values[1], opening, closing);
-                System.out.println(workDays[i]);
-
-            }
-        } catch (IOException exception) {
-            exception.printStackTrace();
+        for (Product product : productCatalogue) {
+            System.out.println(product);
         }
 
-        // helo
-    }
+        Path path = Paths.get("data\\PhotoShop_OpeningHours.csv");
+        Day[] workDays = CSVhandler.readOpeningTimes(path);
 
+        for (Day day : workDays) {
+            System.out.println(day);
+        }
+    }
 }
