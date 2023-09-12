@@ -9,22 +9,6 @@ import pojo.*;
 // ----------------- PURPOSE: handling order, product and customer data -----------------
 
 public class OrderService {
-    
-    // hardcoded product info, remove when implementing csv reader!
-    // public Product[] productCatalog = new Product[] {
-    //     new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1),
-    //     new Product(2, "Paper 10 x 15 high gloss", new BigDecimal("1.50"), 1),
-    //     new Product(3, "Paper 30 x 40 mat", new BigDecimal("4.50"), 2),
-    //     new Product(4, "Paper 30 x 40 high gloss", new BigDecimal("5.00"), 2),
-    //     new Product(5, "Canvas 30 x 40 mat", new BigDecimal("24.00"), 12),
-    //     new Product(6, "Canvas 30 x 40 high gloss", new BigDecimal("27.50"), 2),
-    //     new Product(7, "Canvas 100 x 150 mat", new BigDecimal("64.75"), 16),
-    //     new Product(8, "Canvas 100 x 150 high gloss", new BigDecimal("72.50"), 16),
-    //     new Product(9, "Glass 30 x 40 mat", new BigDecimal("27.50"), 14),
-    //     new Product(10, "Glass 30 x 40 high gloss", new BigDecimal("27.50"), 14),
-    //     new Product(11, "Glass 100 x 150 mat", new BigDecimal("82.50"), 20),
-    //     new Product(12, "Glass 100 x 150 high gloss", new BigDecimal("82.50"), 20)
-    //  };
 
     //private JSONhandler jsonHandler;
 

@@ -81,7 +81,6 @@ public abstract class CSVhandler {
 
             // creating a new day in the array
             workDays[i] = new Day(id, dayName, opening, closing);
-            System.out.println(workDays[i]);
         }
         return workDays;
     }
@@ -123,7 +122,6 @@ public abstract class CSVhandler {
 
             // add a new Product using the parsed values to the array
             products[i] = new Product(id, values[1], price, workingHours);
-            System.out.println(products[i]);
         }
         return products;
     }

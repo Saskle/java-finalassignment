@@ -7,27 +7,29 @@ import java.util.Objects;
 // ----------------- PURPOSE: Defining & validating (work) day data -----------------
 
 public class Day {
-    private int dayID;
-    //private String dayName;
+    private int id;
     private DayOfWeek dayName;
     private LocalTime openingTime;
     private LocalTime closingTime;
 
     // TODO argument validation
 
-    public Day(int dayID, DayOfWeek dayName, LocalTime openingTime, LocalTime closingTime) {
-        setDayID(dayID);
+    public Day(int id, DayOfWeek dayName, LocalTime openingTime, LocalTime closingTime) {
+        setId(id);
         setDayName(dayName);
         setOpeningTime(openingTime);
         setClosingTime(closingTime);
     }
 
     // GETTERS & SETTERS
-    public int getDayID() {
-        return this.dayID;
+    public int getId() {
+        return this.id;
     }
-    public void setDayID(int dayID) {
-        this.dayID = dayID;
+    public void setId(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("A day's ID cannot be 0 or negative.");
+        }
+        this.id = id;
     }
     public DayOfWeek getDayName() {
         return this.dayName;
@@ -57,9 +59,8 @@ public class Day {
 
     @Override
     public Day clone() {
-        return new Day(dayID, dayName, openingTime, closingTime);
+        return new Day(id, dayName, openingTime, closingTime);
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -69,12 +70,12 @@ public class Day {
             return false;
         }
         Day day = (Day) o;
-        return dayID == day.dayID && Objects.equals(dayName, day.dayName) && Objects.equals(openingTime, day.openingTime) && Objects.equals(closingTime, day.closingTime);
+        return id == day.id && Objects.equals(dayName, day.dayName) && Objects.equals(openingTime, day.openingTime) && Objects.equals(closingTime, day.closingTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dayID, dayName, openingTime, closingTime);
+        return Objects.hash(id, dayName, openingTime, closingTime);
     }
 
 
