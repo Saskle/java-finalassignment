@@ -56,6 +56,8 @@ public class Basket {
     }
 
     private void updateProductionHours() {
+        // reset production hours
+        totalProductionHours = 0;
         // loop through products, multiply their production hours with their quantity and add to this basket's total
         products.forEach((product, quantity) -> totalProductionHours += product.getCreatingHours() * quantity);
     }
@@ -100,10 +102,15 @@ public class Basket {
     private String productsToString() {
         String productsAsString = "";
 
-        // for every product in the HashMap, concat the string with the product.toString(), quantity and price subtotal
-        for (Map.Entry<Product, Integer> set : products.entrySet()) {
-            BigDecimal productSubTotal = set.getKey().getPrice().multiply(new BigDecimal(set.getValue()));
-            productsAsString = productsAsString.concat(set.getKey() + "\t" + set.getValue() + "\t" + productSubTotal + "\n");
+        if (products.isEmpty()) {
+            // if there are no products in the basket, say so
+            productsAsString = "\tNo products\n";
+        } else {
+            // for every product in the HashMap, concat the string with the product.toString(), quantity and price subtotal
+            for (Map.Entry<Product, Integer> set : products.entrySet()) {
+                BigDecimal productSubTotal = set.getKey().getPrice().multiply(new BigDecimal(set.getValue()));
+                productsAsString = productsAsString.concat(set.getKey() + "\t" + set.getValue() + "\t" + productSubTotal + "\n");
+            }
         }
         return productsAsString;
     }

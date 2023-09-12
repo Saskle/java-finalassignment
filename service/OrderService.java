@@ -61,14 +61,8 @@ public class OrderService {
 
     
     public String showOrder() {
-        String customer = "";
-        if (this.order.hasCustomer()) {
-            customer = order.getCustomer().toString();
-        } else {
-            customer = "No customer found.";
-        }
         return  "Order no. " + order.getId() + "\n" +
-                "Customer info \n" + customer + " \n" +
+                "Customer info \n" + showCustomer() + " \n" +
                 "Products\n" + 
                 order.basket + "\n";
     }
@@ -82,7 +76,7 @@ public class OrderService {
         if (this.order.hasCustomer()) {
             return this.order.getCustomer().toString();
         } else {
-            return "No customer found.";
+            return "\tNo customer found.";
         }
     }
 
