@@ -1,29 +1,38 @@
 package service;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import pojo.Day;
+import repository.CSVhandler;
 
 // ----------------- PURPOSE: Calculate pickuptime based on current time, shop opening times and product creation hours ---------------
 
 public class PickupTime {
     
-    // private OpeningHours openingHours;
+    private Day[] workingDays;
     private LocalDateTime now;
     private LocalDateTime pickUpTime;
     private int totalWorkMinutes; // this class is independent of type order, and calculates with minutes instead of hours
     private int dayCounter = 0;
 
+    private final static Path openingTimesPath = Paths.get("data\\PhotoShop_OpeningHours.csv");
+
     // hardcoded data, remove when CSVHandler works (and add OpeningHours)
-    public String[][] openingHours = new String[][] {
-            { "SUNDAY", "00:00", "00:00" },
-            { "MONDAY", "09:00", "18:00" },
-            { "TUESDAY", "10:00", "18:00" },
-            { "WEDNESDAY", "09:00", "18:00" },
-            { "THURSDAY", "09:00", "18:00" },
-            { "FRIDAY", "09:00", "21:00" },
-            { "SATURDAY", "09:00", "16:00" }
-    };
+    // public String[][] openingHours = new String[][] {
+    //         { "SUNDAY", "00:00", "00:00" },
+    //         { "MONDAY", "09:00", "18:00" },
+    //         { "TUESDAY", "10:00", "18:00" },
+    //         { "WEDNESDAY", "09:00", "18:00" },
+    //         { "THURSDAY", "09:00", "18:00" },
+    //         { "FRIDAY", "09:00", "21:00" },
+    //         { "SATURDAY", "09:00", "16:00" }
+    // };
 
     public PickupTime(int totalWorkHours) {
+        workingDays = CSVhandler.readOpeningTimes(openingTimesPath);
         this.now = LocalDateTime.now();
         this.totalWorkMinutes = totalWorkHours * 60;
         setPickUpTime();
@@ -38,8 +47,8 @@ public class PickupTime {
         int dayIndex = getStartDay();
 
         // get the opening and closing hour for the day
-        LocalDateTime openingTime = getShopTime(dayIndex, 1);
-        LocalDateTime closingTime = getShopTime(dayIndex, 2);
+        LocalDateTime openingTime = LocalDateTime.of(now.toLocalDate(), workingDays[dayIndex].getOpeningTime());
+        LocalDateTime closingTime = LocalDateTime.of(now.toLocalDate(), workingDays[dayIndex].getClosingTime());
 
         // check if the shop is open right now (between opening hours)
         if (now.isAfter(openingTime) && now.isBefore(closingTime)) { 
@@ -74,9 +83,9 @@ public class PickupTime {
         int productionMinutes = totalWorkMinutes;
         
         // get the opening and closing times for the day (first column is opening hour, second is closing hour)
-        LocalDateTime openingTime = getShopTime(dayIndex, 1);
-        LocalDateTime closingTime = getShopTime(dayIndex, 2);
-
+        LocalDateTime openingTime = LocalDateTime.of(now.toLocalDate(), workingDays[dayIndex].getOpeningTime());
+        LocalDateTime closingTime = LocalDateTime.of(now.toLocalDate(), workingDays[dayIndex].getClosingTime());
+        
         // calculate amount of work minutes in this day and substract production time
         int workMinutesInThisDay = (closingTime.getHour() - openingTime.getHour()) * 60 + (closingTime.getMinute() - openingTime.getMinute());
         productionMinutes -= workMinutesInThisDay;
@@ -95,7 +104,7 @@ public class PickupTime {
             dayIndex++;
 
             // if it's Saturday, start at the beginning again
-            if (dayIndex == openingHours.length) {
+            if (dayIndex == workingDays.length) {
                 dayIndex = 0;
             }
             pickUpTime = pickupTime(productionMinutes, dayIndex);
@@ -105,28 +114,30 @@ public class PickupTime {
 
     private int getStartDay() {
         // find at which day (row of CSV) to start calculating
-        for (int i = 0; i < openingHours.length; i++) {
-            if (openingHours[i][0].equals(now.getDayOfWeek().toString())) {
+        for (int i = 0; i < workingDays.length; i++) {
+            if (workingDays[i].getDayName().equals(now.getDayOfWeek())) {
                 return i;
             }
         }
         return -1; // TODO this should not happen
     }
 
-    private LocalDateTime getShopTime(int dayIndex, int index) {
-        // get the opening and closing hour for the day (split the string on ":" -> index 0 is hours and index 1 is minutes)
-        String[] workingHours = openingHours[dayIndex][index].split(":");
+    // private LocalDateTime getShopTime(int dayIndex, int index) {
+    //     // get the opening and closing hour for the day (split the string on ":" -> index 0 is hours and index 1 is minutes)
+    //     String[] workingHours = openingHours[dayIndex][index].split(":");
         
-        int openingHour = 0;
-        int openingMinute = 0;
+    //     int openingHour = 0;
+    //     int openingMinute = 0;
 
-        try {
-            openingHour = Integer.parseInt(workingHours[0]);
-            openingMinute = Integer.parseInt(workingHours[1]);
-        } catch (NumberFormatException exception) {
-            System.out.println(exception);
-        }
+    //     try {
+    //         openingHour = Integer.parseInt(workingHours[0]);
+    //         openingMinute = Integer.parseInt(workingHours[1]);
+    //     } catch (NumberFormatException exception) {
+    //         System.out.println(exception);
+    //     }
 
-        return LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), openingHour, openingMinute);
-    }
+    //     return LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), openingHour, openingMinute);
+    // }
+
+
 }

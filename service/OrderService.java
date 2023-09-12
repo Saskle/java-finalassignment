@@ -32,7 +32,6 @@ public class OrderService {
     
     public Product[] productCatalog;
 
-    private final static Path openingTimesPath = Paths.get("data\\PhotoShop_OpeningHours.csv");
     private final static Path productsPath = Paths.get("data\\PhotoShop_PriceList.csv");
  
     // TODO format Strings to print for presentation, but final formatting is for the presentation layer
