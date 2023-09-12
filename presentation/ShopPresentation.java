@@ -102,10 +102,10 @@ public class ShopPresentation {
         String product = "";
         int quantity = 1; // if not specified, the user wants to add 1 product
 
+        // TODO can this be a method?
         scan.nextLine(); // throwaway next line
         String input = scan.nextLine();
         if (input.contains(":")) {
-
             // split imput into two strings
             String[] splitInput = input.split(":");
             product = splitInput[0];
@@ -176,17 +176,48 @@ public class ShopPresentation {
             case 1: showProductCatalogue();
             case 2: 
                 System.out.println(shopService.showBasket());
+                System.out.println("You can add remove products at once by specifying name and quantity like (Paper 10 x 15 mat:3).");
+                System.out.println("To return to the main menu, enter 0.");
                 System.out.print("Which product would you like to remove? ");
                 
-                // if (scan.hasNextInt()) {
-                //     validateInput(shopService.basketSize());
-                //     // match index on right product
-                // }
+                String product = "";
+                int quantity = 1; // if not specified, the user wants to add 1 product
 
+                // TODO can this be a method?
                 scan.nextLine(); // throwaway next line
-                String productName = validateProductName(scan.nextLine());
-                shopService.removeProducts(productName, 1);
-                System.out.println(productName + " has been removed.\n");
+                String input = scan.nextLine();
+                if (input.contains(":")) {
+                    // split imput into two strings
+                    String[] splitInput = input.split(":");
+                    product = splitInput[0];
+                    
+                    // check if the input after ":" is a number, larger than 0
+                    quantity = validateNumericalInput(splitInput[1], 99, false);
+        
+                } else {
+                    // if there's no ":", the input only specifies the product
+                    product = input;
+                }
+        
+                if (isInteger(product)) {
+                    // if the user entered a product ID, validate and use that imput
+                    int index = validateNumericalInput(product, shopService.productCatalog.length, true);
+        
+                    // index 0 is reserved for returning to the main menu
+                    if (index == 0) {
+                        showMainMenu();
+                    }
+        
+                    // remove product (product ID's start at 1 instead of 0)
+                    shopService.removeProducts(index - 1, quantity); 
+                    System.out.println(quantity + " x " + shopService.productCatalog[index - 1].getName() + " has been removed."); 
+        
+                } else {
+                    // product must be a product's name
+                    product = validateProductName(product);
+                    shopService.removeProducts(product, quantity);
+                    System.out.println(quantity + " x " + product + " has been removed.");
+                }
                 showCurrentOrder();
             case 3: showCustomerData();
             case 4: checkOut();
@@ -304,6 +335,7 @@ public class ShopPresentation {
         return productName;
     }
 
+    // TODO remove this
     public void validateMultipleInput(String response, int range) {
 
         String[] responseParts = response.split(":");
