@@ -1,7 +1,19 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import pojo.Basket;
+import pojo.Day;
 import pojo.Invoice;
 import pojo.Product;
 import presentation.*;
@@ -23,28 +35,72 @@ public class Main {
         //Product photo11 = new Product(11, "Glass 100 x 150 mat", new BigDecimal("82.50"), 20);
         //Product photo12 = new Product(12, "Glass 100 x 150 high gloss", new BigDecimal("82.50"), 20);
 
-        ShopPresentation shopPresentation = new ShopPresentation();
-        shopPresentation.startApp();
+        //ShopPresentation shopPresentation = new ShopPresentation();
+        //shopPresentation.startApp();
 
-        // look into this for splitting Scanner input on ":"
-        // https://stackoverflow.com/questions/41473861/how-do-i-split-user-input-from-the-console
-        // https://stackoverflow.com/questions/3481828/how-do-i-split-a-string-in-java 
 
-        // ArrayList<Object> arraylist = new ArrayList<>();
+        /* 1. file to lines in something iterate-able, skip first line
+         * 2. loop through each line, skip first one (headers) -> list of lines
+         *          - for OPENINGHOURS, create a day for each line
+         *          - get opening hours and split minutes / hours by string.split
+         *          - fill correct parameters in day object
+         *          - opening hours service should hold a collection of days (array)
+         * 
+         *          - for PRODUCTS, create a product for each line
+         *          - cast data to right data type
+         */
 
-        // arraylist.add("Product name");
-        // arraylist.add(12);
+        try {
+            Path path = Paths.get("data\\PhotoShop_OpeningHours.csv");
+            List<String> lines = Files.lines(path)
+                            .skip(1) // first line in csv's are headers/labels
+                            .toList();
+            
+            // initalizing workday Collection
+            Day[] workDays = new Day[7];
 
-        // System.out.println(arraylist);
+            // going through each line (assuming that the file only contains 7 rows for each day)
+            for (int i = 0; i < lines.size(); i++) {
 
-        // Object[] array = new Object[2];
+                // splitting the values of this line
+                String[] values = lines.get(i).split(";"); // TODO make this regex a constant
+            
+                int dayID = 0;
+                int openingHour = 0;
+                int openingMinute = 0;
+                int closingHour = 0;
+                int closingMinute = 0;
 
-        // array[0] = "Product name";
-        // array[1] = 2;
+                String[] openingTime = values[2].split(":");
+                String[] closingTime = values[3].split(":");
 
-        // System.out.println(array.toString());
+                try {
+                    dayID = Integer.parseInt(values[0]);
+                    openingHour = Integer.parseInt(openingTime[0]);
+                    openingMinute = Integer.parseInt(openingTime[1]);
+                    closingHour = Integer.parseInt(closingTime[0]);
+                    closingMinute = Integer.parseInt(closingTime[1]);
+                } catch (NumberFormatException exception) {
+                    System.out.println(exception);
+                }
 
-        // int number = 2;
-        // System.out.println(number);
+                // first row (index 0) is id
+                // second row [1] is name
+                // third and fourth row [2] [3] are opening and closing times
+
+                
+                LocalTime opening = LocalTime.of(openingHour, openingMinute);
+                LocalTime closing = LocalTime.of(closingHour, closingMinute);
+
+                workDays[i] = new Day(dayID, values[1], opening, closing);
+                System.out.println(workDays[i]);
+
+            }
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
+        // helo
     }
+
 }

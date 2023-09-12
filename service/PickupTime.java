@@ -119,7 +119,7 @@ public class PickupTime {
         // check if the shop is open right now (between opening hours)
         if (now.isAfter(openingTime) && now.isBefore(closingTime)) { 
 
-            // if yes, calculate the remaining working hours
+            // if yes, calculate the remaining working hours (in minutes)
             int minutesRemaining = (closingTime.getHour() - now.getHour()) * 60 - now.getMinute();
             
             // if there is enought time left today to complete it, return today, otherwise substract and go to the next day
@@ -198,8 +198,8 @@ public class PickupTime {
         try {
             openingHour = Integer.parseInt(workingHours[0]);
             openingMinute = Integer.parseInt(workingHours[1]);
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (NumberFormatException exception) {
+            System.out.println(exception);
         }
 
         return LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), openingHour, openingMinute);
