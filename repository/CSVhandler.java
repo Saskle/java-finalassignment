@@ -13,24 +13,6 @@ import pojo.Product;
 
 public abstract class CSVhandler {
 
-    // OpeningHours.csv
-    // 3;Tuesday;09:00;18:00
-    // 4;Wednesday;09:00;18:00
-    // 5;Thursday;09:00;18:00
-    // 6;Friday;09:00;21:00
-    // 7;Satuday;09:00;16:00
-    
-    // PriceList.csv
-    // 5;Canvas 30 x 40 matte;24.00;12:00
-    // 6;Canvas 30 x 40 high gloss;27.50;12:00
-    // 7;Canvas 100 x 150 matte;64.75;16:00
-    // 8;Canvas 100 x 150 high gloss;72.50;16:00
-
-    // fuction reading for this needs to be uniform, handling the specific data is going to be in the classes (?)
-    // that means the data will be stored in a 2DArray<String>?
-
-    // make the day names uppercase so it complies with DayOfWeek enum!
-
     private static List<String> lines;
 
     // define here the delimiter for all CSVs
@@ -50,7 +32,6 @@ public abstract class CSVhandler {
             System.out.println(exception);
         }
     }
-
 
     public static Day[] readOpeningTimes(Path path) {
 
@@ -140,17 +121,11 @@ public abstract class CSVhandler {
                 System.out.println(exception);
             }
 
-            // create a new Product using the parsed values
+            // add a new Product using the parsed values to the array
             products[i] = new Product(id, values[1], price, workingHours);
             System.out.println(products[i]);
         }
         return products;
-
     }
-
-
-
-
-
 
 }
