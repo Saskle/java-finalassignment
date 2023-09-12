@@ -21,8 +21,11 @@ public class Basket {
         this.totalProductionHours = 0;
     }
 
+    // GETTERS & SETTERS (private setters as they only serve the clone() override)
     public HashMap<Product,Integer> getProducts() {
-        return this.products; // TODO is this unsafe?
+        HashMap<Product, Integer> copy = new HashMap<>();
+        copy.putAll(products);
+        return copy;
     }
     private void setProducts(HashMap<Product,Integer> products) {
         for (Map.Entry<Product, Integer> set : products.entrySet()) {

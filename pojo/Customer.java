@@ -22,6 +22,7 @@ public class Customer {
         setEmail(email);
     }
 
+    // GETTERS & SETTERS
     public int getId() {
         return this.id;
     }
