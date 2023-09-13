@@ -3,6 +3,9 @@ package pojo;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 // ----------------- PURPOSE: Defining & validating Product data -----------------
 
 public class Product {
@@ -11,8 +14,12 @@ public class Product {
     private BigDecimal price;
     private int creatingHours;
 
-    // might remove this later, need it for testing order / invoice setting
-    public Product(int id, String name, BigDecimal price, int creatingHours) {
+    // all-argument constructor for Jackson's JSON reading and writing
+    @JsonCreator
+    public Product( @JsonProperty("id") int id, 
+                    @JsonProperty("name") String name, 
+                    @JsonProperty("price") BigDecimal price, 
+                    @JsonProperty("creatingHours") int creatingHours) {
         setId(id);
         setName(name);
         setPrice(price);

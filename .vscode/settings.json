@@ -1,0 +1,8 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\deKlerkSaskia(Calco)\\OneDrive - Calco\\Documenten\\Java\\Assignment\\jackson-core-2.15.2.jar",
+        "c:\\Users\\deKlerkSaskia(Calco)\\OneDrive - Calco\\Documenten\\Java\\Assignment\\jackson-databind-2.15.2.jar",
+        "c:\\Users\\deKlerkSaskia(Calco)\\OneDrive - Calco\\Documenten\\Java\\Assignment\\jackson-annotations-2.15.2.jar"
+    ]
+}

@@ -2,6 +2,9 @@ package pojo;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 // ----------------- PURPOSE: Defining & validating Customer data -----------------
 
 public class Customer {
@@ -14,12 +17,32 @@ public class Customer {
     private String email;
     private String phoneNr; // I need a way to save the 0 in 0612345678, might check if it is actually a number tho
 
-    // first name, last name and email are obligatory, rest is not
+    // first name, last name and email are obligatory, rest is not -> argument validation in service layer
     public Customer(int id, String firstName, String lastName, String email) {
         setId(id);
         setFirstName(firstName);
         setLastName(lastName);
         setEmail(email);
+    }
+
+    // all-argument constructor for Jackson's JSON reading and writing
+    @JsonCreator
+    public Customer(    @JsonProperty("id") int id, 
+                        @JsonProperty("firstName") String firstName, 
+                        @JsonProperty("lastName") String lastName, 
+                        @JsonProperty("address") String address, 
+                        @JsonProperty("postalCode") String postalCode, 
+                        @JsonProperty("city") String city, 
+                        @JsonProperty("email") String email, 
+                        @JsonProperty("phoneNr") String phoneNr) {
+        setId(id);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setAddress(address);
+        setPostalCode(postalCode);
+        setCity(city);
+        setEmail(email);
+        setPhoneNr(phoneNr);
     }
 
     // GETTERS & SETTERS
