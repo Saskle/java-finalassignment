@@ -9,32 +9,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 // ----------------- PURPOSE: Defining & validating Product data -----------------
 
 public class Product {
-    private int id; 
+    private int productID; 
     private String name;
     private BigDecimal price;
     private int creatingHours;
 
     // all-argument constructor for Jackson's JSON reading and writing
     @JsonCreator
-    public Product( @JsonProperty("id") int id, 
+    public Product( @JsonProperty("productID") int productID, 
                     @JsonProperty("name") String name, 
                     @JsonProperty("price") BigDecimal price, 
                     @JsonProperty("creatingHours") int creatingHours) {
-        setId(id);
+        setProductID(productID);
         setName(name);
         setPrice(price);
         setCreatingHours(creatingHours);
     }
 
     // all this needs to be loaded in from .csv, so no argument checkers?
-    public int getId() {
-        return this.id;
+    public int getProductID() {
+        return this.productID;
     }
-    public void setId(int id) {
+    public void setProductID(int id) {
         if (id < 0) {
             throw new IllegalArgumentException("Product's id cannot be negative.");
         }
-        this.id = id;
+        this.productID = id;
     }
     public String getName() {
         return this.name;
@@ -66,7 +66,7 @@ public class Product {
 
     @Override
     public Product clone() {
-        return new Product(this.id, this.name, this.price, this.creatingHours);
+        return new Product(this.productID, this.name, this.price, this.creatingHours);
     }
 
     @Override
@@ -86,11 +86,11 @@ public class Product {
             return false;
         }
         Product product = (Product) o;
-        return id == product.id && Objects.equals(name, product.name) && Objects.equals(price, product.price) && creatingHours == product.creatingHours;
+        return productID == product.productID && Objects.equals(name, product.name) && Objects.equals(price, product.price) && creatingHours == product.creatingHours;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, creatingHours);
+        return Objects.hash(productID, name, price, creatingHours);
     }
 }

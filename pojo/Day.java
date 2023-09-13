@@ -7,7 +7,7 @@ import java.util.Objects;
 // ----------------- PURPOSE: Defining & validating (work) day data -----------------
 
 public class Day {
-    private int id;
+    private int dayID;
     private DayOfWeek dayName;
     private LocalTime openingTime;
     private LocalTime closingTime;
@@ -15,21 +15,21 @@ public class Day {
     // TODO argument validation
 
     public Day(int id, DayOfWeek dayName, LocalTime openingTime, LocalTime closingTime) {
-        setId(id);
+        setDayID(id);
         setDayName(dayName);
         setOpeningTime(openingTime);
         setClosingTime(closingTime);
     }
 
     // GETTERS & SETTERS
-    public int getId() {
-        return this.id;
+    public int getDayID() {
+        return this.dayID;
     }
-    public void setId(int id) {
+    public void setDayID(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("A day's ID cannot be 0 or negative.");
         }
-        this.id = id;
+        this.dayID = id;
     }
     public DayOfWeek getDayName() {
         return this.dayName;
@@ -59,7 +59,7 @@ public class Day {
 
     @Override
     public Day clone() {
-        return new Day(id, dayName, openingTime, closingTime);
+        return new Day(dayID, dayName, openingTime, closingTime);
     }
 
     @Override
@@ -70,12 +70,12 @@ public class Day {
             return false;
         }
         Day day = (Day) o;
-        return id == day.id && Objects.equals(dayName, day.dayName) && Objects.equals(openingTime, day.openingTime) && Objects.equals(closingTime, day.closingTime);
+        return dayID == day.dayID && Objects.equals(dayName, day.dayName) && Objects.equals(openingTime, day.openingTime) && Objects.equals(closingTime, day.closingTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dayName, openingTime, closingTime);
+        return Objects.hash(dayID, dayName, openingTime, closingTime);
     }
 
 

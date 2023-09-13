@@ -6,22 +6,22 @@ import java.util.Objects;
 // ----------------- PURPOSE: Defining & validating Order data -----------------
 
 public class Order {
-    private int id;
+    private int orderID;
     private LocalDateTime orderTime; // when the order is placed (invoice is printed)
     private LocalDateTime pickUpTime; // when order is ready for pickup
     private Customer customer;
     public Basket basket; // why not talk to the basket directly? or shall I make it independent and therefore have loose coupling?
 
     public Order(int id) {
-        setId(id);
+        setOrderID(id);
         this.basket = new Basket();
     }
 
-    public int getId() {
-        return this.id;
+    public int getOrderID() {
+        return this.orderID;
     }
-    public void setId(int id) {
-        this.id = id;
+    public void setOrderID(int id) {
+        this.orderID = id;
     }
     public LocalDateTime getOrderTime() {
         return this.orderTime;
@@ -47,7 +47,7 @@ public class Order {
 
     @Override
     public Order clone() { // deep copy of this order
-        Order copy = new Order(this.id);
+        Order copy = new Order(this.orderID);
         if (this.hasCustomer()) {
             copy.setCustomer(this.customer.clone());
         }
@@ -66,7 +66,7 @@ public class Order {
         }
 
         return "{" +
-            " id='" + getId() + "'" +
+            " id='" + getOrderID() + "'" +
             ", customer='" + customer + "'" +
             ", products='" + basket + "'" +
             "}";
@@ -80,11 +80,11 @@ public class Order {
             return false;
         }
         Order order = (Order) o;
-        return id == order.id && Objects.equals(orderTime, order.orderTime) && Objects.equals(pickUpTime, order.pickUpTime) && Objects.equals(customer, order.customer) && Objects.equals(basket, order.basket);
+        return orderID == order.orderID && Objects.equals(orderTime, order.orderTime) && Objects.equals(pickUpTime, order.pickUpTime) && Objects.equals(customer, order.customer) && Objects.equals(basket, order.basket);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, orderTime, pickUpTime, customer, basket);
+        return Objects.hash(orderID, orderTime, pickUpTime, customer, basket);
     }
 }

@@ -17,11 +17,11 @@ public class Basket {
     public Basket() {
         // upon creating a new order, initialize the HashMap and set expenses and production hours to zero
         this.products = new HashMap<>();
-        this.totalExpenses = BigDecimal.ZERO;
-        this.totalProductionHours = 0;
+        setTotalExpenses(BigDecimal.ZERO);
+        setTotalProductionHours(0);
     }
 
-    // GETTERS & SETTERS (private setters as they only serve the clone() override)
+    // GETTERS & SETTERS (private setters as they only serve the constructor & clone() override)
     public HashMap<Product,Integer> getProducts() {
         HashMap<Product, Integer> copy = new HashMap<>();
         copy.putAll(products);

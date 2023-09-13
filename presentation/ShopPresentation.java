@@ -36,7 +36,7 @@ public class ShopPresentation {
                 loadedOrder.basket.addProducts(new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1), 2);
                 loadedOrder.setCustomer(new Customer(1, "Saskia", "de Klerk", "saskle@calco.nl"));;
 
-                System.out.println("The last saved order no. " + loadedOrder.getId() + " was made by " + loadedOrder.getCustomer().getFirstName() + " " + loadedOrder.getCustomer().getLastName());
+                System.out.println("The last saved order no. " + loadedOrder.getOrderID() + " was made by " + loadedOrder.getCustomer().getFirstName() + " " + loadedOrder.getCustomer().getLastName());
                 System.out.println("Please enter the order no. of the order you'd like to restore.");
                 scan.nextLine(); // this one is eaten by nextInt();
                 scan.nextLine();

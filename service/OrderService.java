@@ -49,7 +49,7 @@ public class OrderService {
 
     
     public String showOrder() {
-        return  "Order no. " + order.getId() + "\n" +
+        return  "Order no. " + order.getOrderID() + "\n" +
                 "Customer info \n" + showCustomer() + " \n" +
                 "Products\n" + 
                 order.basket + "\n";

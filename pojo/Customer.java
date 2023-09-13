@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 // ----------------- PURPOSE: Defining & validating Customer data -----------------
 
 public class Customer {
-    private int id; 
+    private int customerID; 
     private String firstName;
     private String lastName;
     private String address;
@@ -19,7 +19,7 @@ public class Customer {
 
     // first name, last name and email are obligatory, rest is not -> argument validation in service layer
     public Customer(int id, String firstName, String lastName, String email) {
-        setId(id);
+        setCustomerID(id);
         setFirstName(firstName);
         setLastName(lastName);
         setEmail(email);
@@ -27,7 +27,7 @@ public class Customer {
 
     // all-argument constructor for Jackson's JSON reading and writing
     @JsonCreator
-    public Customer(    @JsonProperty("id") int id, 
+    public Customer(    @JsonProperty("customerID") int customerID, 
                         @JsonProperty("firstName") String firstName, 
                         @JsonProperty("lastName") String lastName, 
                         @JsonProperty("address") String address, 
@@ -35,7 +35,7 @@ public class Customer {
                         @JsonProperty("city") String city, 
                         @JsonProperty("email") String email, 
                         @JsonProperty("phoneNr") String phoneNr) {
-        setId(id);
+        setCustomerID(customerID);
         setFirstName(firstName);
         setLastName(lastName);
         setAddress(address);
@@ -46,14 +46,14 @@ public class Customer {
     }
 
     // GETTERS & SETTERS
-    public int getId() {
-        return this.id;
+    public int getCustomerID() {
+        return this.customerID;
     }
-    private void setId(int id) {
+    private void setCustomerID(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("Customer's ID cannot be 0 or negative.");
         }
-        this.id = id;
+        this.customerID = id;
     }
     public String getFirstName() {
         return this.firstName;
@@ -121,8 +121,8 @@ public class Customer {
 
     @Override
     public Customer clone() {
-        Customer customer = new Customer(this.id, this.firstName, this.lastName, this.email);
-        customer.setId(this.id);
+        Customer customer = new Customer(this.customerID, this.firstName, this.lastName, this.email);
+        customer.setCustomerID(this.customerID);
         customer.setAddress(this.address);
         customer.setPostalCode(this.postalCode);
         customer.setCity(this.city);
@@ -133,7 +133,7 @@ public class Customer {
     @Override
     public String toString() {
         return 
-            "\tid: \t\t" + getId() + "\n" +
+            "\tid: \t\t" + getCustomerID() + "\n" +
             "\tName: \t\t" + getFirstName() + " " + getLastName() + "\n" +
             "\tAddress: \t" + getAddress() + "\n" +
             "\tPostal code: \t" + getPostalCode() + "\n" +
@@ -150,11 +150,11 @@ public class Customer {
             return false;
         }
         Customer customer = (Customer) o;
-        return id == customer.id && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(address, customer.address) && Objects.equals(postalCode, customer.postalCode) && Objects.equals(city, customer.city) && Objects.equals(email, customer.email) && Objects.equals(phoneNr, customer.phoneNr);
+        return customerID == customer.customerID && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(address, customer.address) && Objects.equals(postalCode, customer.postalCode) && Objects.equals(city, customer.city) && Objects.equals(email, customer.email) && Objects.equals(phoneNr, customer.phoneNr);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, address, postalCode, city, email, phoneNr);
+        return Objects.hash(customerID, firstName, lastName, address, postalCode, city, email, phoneNr);
     }    
 }

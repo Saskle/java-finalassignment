@@ -20,7 +20,7 @@ public class InvoiceService {
         this.pickupTime = new PickupTime(totalWorkHours);
 
         // create new invoice and set pickuptime & totalworkhours
-        this.invoice = new Invoice(order.getId(), order.clone(), this.pickupTime.getPickUpTime());
+        this.invoice = new Invoice(order.getOrderID(), order.clone(), this.pickupTime.getPickUpTime());
         this.invoice.setTotalWorkHours(totalWorkHours);
     }
 
