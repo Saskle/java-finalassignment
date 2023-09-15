@@ -15,7 +15,7 @@ public abstract class CSVhandler {
 
     private static List<String> lines;
 
-    // define here the delimiter for all CSVs
+    // define here the delimiters for all CSVs
     private final static String VALUE_DELIMITER = ";";
     private final static String TIME_DELIMITER = ":";
 

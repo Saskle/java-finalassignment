@@ -5,11 +5,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import json.HashMapDeserializer;
+import json.HashMapSerializer;
+
 import java.util.Objects;
 
 // ----------------- PURPOSE: Defining & validating Basket & products in basket's data -----------------
 
 public class Basket {
+    @JsonSerialize(using = HashMapSerializer.class)
+    @JsonDeserialize(using = HashMapDeserializer.class)
     private HashMap<Product, Integer> products; // the HashMap holds products and their quantity
     private BigDecimal totalExpenses;
     private int totalProductionHours;

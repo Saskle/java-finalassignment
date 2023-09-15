@@ -26,6 +26,8 @@ public class Product {
         setCreatingHours(creatingHours);
     }
 
+    // getters and setters
+
     // all this needs to be loaded in from .csv, so no argument checkers?
     public int getProductID() {
         return this.productID;

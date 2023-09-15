@@ -3,6 +3,9 @@ package pojo;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 // ----------------- PURPOSE: Defining & validating Order data -----------------
 
 public class Order {
@@ -16,6 +19,21 @@ public class Order {
         setOrderID(id);
         this.basket = new Basket();
     }
+
+    // all-argument constructor for Jackson's JSON reading and writing
+    @JsonCreator
+    public Order(   @JsonProperty("orderID") int orderID, 
+                    @JsonProperty("orderTime") LocalDateTime orderTime, 
+                    @JsonProperty("pickUpTime") LocalDateTime pickUpTime, 
+                    @JsonProperty("customber") Customer customer, 
+                    @JsonProperty("basket") Basket basket) {
+        setOrderID(orderID);
+        setOrderTime(orderTime);
+        setPickupTime(pickUpTime);
+        setCustomer(customer);
+        this.basket = basket;
+    }
+    
 
     public int getOrderID() {
         return this.orderID;
@@ -36,7 +54,11 @@ public class Order {
         this.pickUpTime = pickUpTime;
     }
     public Customer getCustomer() {
-        return this.customer.clone();  
+        if (hasCustomer()) {
+            return this.customer.clone();  
+        } else {
+            return null;
+        }
     }
     public void setCustomer(Customer customer) {
         this.customer = customer.clone();
