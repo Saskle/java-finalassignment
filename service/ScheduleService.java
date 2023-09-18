@@ -9,7 +9,7 @@ import repository.OpeningHoursCSVhandler;
 
 // ----------------- PURPOSE: Calculate pickuptime based on current time, shop opening times and product creation hours ---------------
 
-public class PickupTime {
+public class ScheduleService {
     
     private Day[] workingDays;
     private LocalDateTime now;
@@ -19,9 +19,9 @@ public class PickupTime {
 
     private final static Path openingTimesPath = Paths.get("data\\PhotoShop_OpeningHours.csv");
 
-    public PickupTime(int totalWorkHours) {
+    public ScheduleService(int totalWorkHours) {
         OpeningHoursCSVhandler csvReader = new OpeningHoursCSVhandler(openingTimesPath);
-        workingDays = csvReader.readFile();
+        workingDays = csvReader.readCSV();
         this.now = LocalDateTime.now();
         this.totalWorkMinutes = totalWorkHours * 60;
         setPickUpTime();

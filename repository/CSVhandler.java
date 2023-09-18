@@ -30,5 +30,5 @@ public abstract class CSVhandler {
         }
     }
 
-    public abstract Object[] readFile();
+    public abstract Object[] readCSV();
 }

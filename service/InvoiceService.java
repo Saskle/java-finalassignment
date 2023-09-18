@@ -9,14 +9,14 @@ public class InvoiceService {
     
     private Invoice invoice;
     private int totalWorkHours;
-    private PickupTime pickupTime;
+    private ScheduleService pickupTime;
 
     public void createInvoice(Order order) {
         // set total production hours by iterating through all products
         this.totalWorkHours = order.basket.getTotalProductionHours();
 
         // intitalize PickUpTime & calculate pickup time
-        this.pickupTime = new PickupTime(totalWorkHours);
+        this.pickupTime = new ScheduleService(totalWorkHours);
 
         // create new invoice and set pickuptime & totalworkhours
         this.invoice = new Invoice(order.getOrderID(), order.clone(), this.pickupTime.getPickUpTime());
@@ -34,10 +34,10 @@ public class InvoiceService {
     public void setTotalWorkHours(int totalWorkHours) {
         this.totalWorkHours = totalWorkHours;
     }
-    public PickupTime getPickupTime() {
+    public ScheduleService getPickupTime() {
         return this.pickupTime;
     }
-    public void setPickupTime(PickupTime pickupTime) {
+    public void setPickupTime(ScheduleService pickupTime) {
         this.pickupTime = pickupTime;
     }
 

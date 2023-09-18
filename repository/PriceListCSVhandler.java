@@ -13,7 +13,7 @@ public class PriceListCSVhandler extends CSVhandler {
         setLines(path);
     }
     
-    public Product[] readFile() {
+    public Product[] readCSV() {
 
         // Format of PriceList.CSV:
         // [0] (first row) is id

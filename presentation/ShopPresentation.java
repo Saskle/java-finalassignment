@@ -7,19 +7,28 @@ import java.util.Scanner;
 import pojo.Customer; // remove this when json reader is implemented
 import pojo.Order; // remove this when json reader is implemented
 import pojo.Product; // remove this when json reader is implemented
+import service.BasketService;
+import service.CustomerService;
 import service.InvoiceService;
 import service.OrderService;
+import service.ProductService;
 
 // ----------------- PURPOSE: Print application info to user, interpretet user input, start & close app -----------------
 
 public class ShopPresentation {
  
     private Scanner scan = new Scanner(System.in);
-    private OrderService shopService;
+    private OrderService orderService; 
+    private BasketService basketService;
+    private CustomerService customerService;
+    private ProductService productService;
 
     public void startApp() {
-        // intialize service
-        shopService = new OrderService();
+        // intialize services
+        orderService = new OrderService();
+        basketService = new BasketService();
+        customerService = new CustomerService();
+        productService = new ProductService();
 
         System.out.println("\nWelcome to PhotoShop! ");
         System.out.println("Do you want to retrieve a previously saved order (1), or create a new order (2) ?");
@@ -41,15 +50,16 @@ public class ShopPresentation {
                 scan.nextLine(); // this one is eaten by nextInt();
                 scan.nextLine();
 
-                // pass dummyorder to shopservice
-                shopService.setOrder(loadedOrder);
-                shopService.createCustomer("Saskia", "de Klerk", "saskle@calco.nl");
+                // pass dummyorder to orderservice
+                orderService.setOrder(loadedOrder);
+                // set current customer data to dummyorder's customer
+                customerService.setCustomer(loadedOrder.getCustomer());
                 showMainMenu();
                 break;
 
             case 2: 
                 System.out.println("Creating new order...");
-                shopService.createOrder();
+                orderService.createOrder();
                 showMainMenu();
                 break;
 
@@ -120,7 +130,7 @@ public class ShopPresentation {
 
         if (isInteger(product)) {
             // if the user entered a product ID, validate and use that imput
-            int index = validateNumericalInput(product, shopService.productCatalog.length, true);
+            int index = validateNumericalInput(product, productService.catalogue.length, true);
 
             // index 0 is reserved for returning to the main menu
             if (index == 0) {
@@ -128,17 +138,17 @@ public class ShopPresentation {
             }
 
             // add product (product ID's start at 1 instead of 0)
-            shopService.addProducts(index - 1, quantity); 
-            System.out.println(quantity + " x " + shopService.productCatalog[index - 1].getName() + " has been added."); 
+            basketService.addProducts(index - 1, quantity); 
+            System.out.println(quantity + " x " + productService.catalogue[index - 1].getName() + " has been added."); 
 
         } else {
             // product must be a product's name
             product = validateProductName(product);
-            shopService.addProducts(product, quantity);
+            basketService.addProducts(product, quantity);
             System.out.println(quantity + " x " + product + " has been added.");
         }
 
-        System.out.println("\n" + shopService.showBasket());
+        System.out.println("\n" + basketService.showBasket());
         System.out.println("Would you like to add another product? ");
         System.out.print("Enter 0 for no, 1 for yes: ");
 
@@ -153,15 +163,18 @@ public class ShopPresentation {
     public void printProductCatalogue() {
         System.out.println("ID \tName \t\t\t\tPrice");
         // printing all products in catalogue, adding 1 to i so 0 is available for going back to main menu
-        for (int i = 0; i < shopService.productCatalog.length; i++) {
-            System.out.println((i + 1) + ". " + shopService.productCatalog[i]);
+        for (int i = 0; i < productService.catalogue.length; i++) {
+            System.out.println((i + 1) + ". " + productService.catalogue[i]);
         }
         System.out.println();
     }
 
     public void showCurrentOrder() {
         System.out.println("\nCURRENT ORDER OVERVIEW");
-        System.out.println(shopService.showOrder());
+        //System.out.println(orderService.showOrder()); // TODO showOrder should be reserved for invoice
+
+        System.out.println(customerService.showCustomer());
+        System.out.println(basketService.showBasket());
         System.out.println( "Would you like to: \n" +
                             "\t 1 - add new products to this order\n" +
                             "\t 2 - remove products from this order\n" + 
@@ -175,7 +188,7 @@ public class ShopPresentation {
             case 0: showMainMenu();
             case 1: showProductCatalogue();
             case 2: 
-                System.out.println(shopService.showBasket());
+                System.out.println(basketService.showBasket());
                 System.out.println("You can add remove products at once by specifying name and quantity like (Paper 10 x 15 mat:3).");
                 System.out.println("To return to the main menu, enter 0.");
                 System.out.print("Which product would you like to remove? ");
@@ -201,7 +214,7 @@ public class ShopPresentation {
         
                 if (isInteger(product)) {
                     // if the user entered a product ID, validate and use that imput
-                    int index = validateNumericalInput(product, shopService.productCatalog.length, true);
+                    int index = validateNumericalInput(product, productService.catalogue.length, true);
         
                     // index 0 is reserved for returning to the main menu
                     if (index == 0) {
@@ -209,13 +222,13 @@ public class ShopPresentation {
                     }
         
                     // remove product (product ID's start at 1 instead of 0)
-                    shopService.removeProducts(index - 1, quantity); 
-                    System.out.println(quantity + " x " + shopService.productCatalog[index - 1].getName() + " has been removed."); 
+                    basketService.removeProducts(index - 1, quantity); 
+                    System.out.println(quantity + " x " + productService.catalogue[index - 1].getName() + " has been removed."); 
         
                 } else {
                     // product must be a product's name
                     product = validateProductName(product);
-                    shopService.removeProducts(product, quantity);
+                    basketService.removeProducts(product, quantity);
                     System.out.println(quantity + " x " + product + " has been removed.");
                 }
                 showCurrentOrder();
@@ -228,8 +241,8 @@ public class ShopPresentation {
     public void showCustomerData() {
         System.out.println("CUSTOMER INFO");
         
-        if (shopService.hasCustomer()) {
-            System.out.println(shopService.showCustomer());
+        if (customerService.hasCustomer()) {
+            System.out.println(customerService.showCustomer());
             System.out.println("Do you want to change this info?");
             System.out.print("Enter 0 for returning to the main menu, 1 for editing customer data: ");
 
@@ -254,18 +267,18 @@ public class ShopPresentation {
         System.out.println("CREATE INVOICE");
 
         // making sure the basket contains products before proceeding
-        if(!shopService.hasProducts()) {
+        if(!basketService.hasProducts()) {
             System.out.println("There are no projects in this order yet!");
             showProductCatalogue();
         }
 
         // making sure there is customer data for this order
-        if (!shopService.hasCustomer()) {
+        if (!customerService.hasCustomer()) {
             System.out.println("There is no customer data for this order yet!");
             promptCustomerData();
         }   
         InvoiceService invoiceService = new InvoiceService();
-        invoiceService.createInvoice(shopService.getOrder());
+        invoiceService.createInvoice(orderService.getOrder());
         System.out.println("Total work hours for this order is: " + invoiceService.getTotalWorkHours());
         System.out.println(invoiceService.getInvoice());
 
@@ -284,7 +297,7 @@ public class ShopPresentation {
         System.out.print("Please add your email address: ");
         String email = scan.nextLine();
 
-        shopService.createCustomer(firstName, lastName, email);
+        customerService.createCustomer(firstName, lastName, email);
     }
 
     // TODO remove this overload?
@@ -328,7 +341,7 @@ public class ShopPresentation {
     }
 
     public String validateProductName(String productName) {
-        while (!shopService.isProduct(productName)) {
+        while (!productService.isProduct(productName)) {
             System.out.println("You haven't entered a correct product name. Please try again. ");
             productName = scan.nextLine();
         }
@@ -344,7 +357,7 @@ public class ShopPresentation {
         // check if input before ":" is numerical
         if (isInteger(responseParts[0])) {
             
-            int productID = validateNumericalInput(responseParts[0], shopService.productCatalog.length, true);
+            int productID = validateNumericalInput(responseParts[0], productService.catalogue.length, true);
 
             // if (isInteger(responseParts[1])) {
                 
@@ -359,11 +372,11 @@ public class ShopPresentation {
             // }
 
             quantity = validateNumericalInput(responseParts[1], 99, false);
-            shopService.addProducts(productID - 1, quantity);
-            System.out.println(shopService.productCatalog[productID - 1].getName() + " has been added to the shopping cart.");
+            basketService.addProducts(productID - 1, quantity);
+            System.out.println(productService.catalogue[productID - 1].getName() + " has been added to the shopping cart.");
 
         // if input is not numerical, it should be a product's name
-        } else if (shopService.isProduct(responseParts[0])) {
+        } else if (productService.isProduct(responseParts[0])) {
             
             // if (isInteger(responseParts[1])) {
             //     quantity = Integer.parseInt(responseParts[1]);
@@ -375,7 +388,7 @@ public class ShopPresentation {
             // }
 
             quantity = validateNumericalInput(responseParts[1], 99, false);
-            shopService.addProducts(responseParts[0], quantity);
+            basketService.addProducts(responseParts[0], quantity);
             System.out.println(responseParts[0] + " has been added to the shopping cart.");
 
         } else {

@@ -92,9 +92,9 @@ public class Order {
             customer = this.customer.toString();
         }
 
-        return "id:\t" + getOrderID() + "'" +
+        return "id:\t" + getOrderID() + "\n" +
             "customer:\n" + customer + "\n" +
-            basket + "\n" +
+            "products: " + basket + "\n" +
             "order placed at: " + getOrderTime() + 
             "order can be picked up at: " + getPickUpTime();
     }

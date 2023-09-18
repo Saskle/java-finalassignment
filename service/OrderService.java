@@ -1,35 +1,24 @@
 package service;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import repository.*;
 import pojo.*;
 
-// ----------------- PURPOSE: handling order, product and customer data -----------------
+// ----------------- PURPOSE: handling order data & starting app -----------------
 
-public class OrderService {
+public class OrderService extends Service {
 
-    //private JSONhandler jsonHandler;
-
+    private JSONhandler jsonHandler;
+    private ScheduleService scheduleService;
     private Order order; // only current order is stored
-    
-    public Product[] productCatalog;
-
-    private final static Path productsPath = Paths.get("data\\PhotoShop_PriceList.csv");
  
     // TODO format Strings to print for presentation, but final formatting is for the presentation layer
 
     public OrderService() {
-        // upon intialisation, create product catalog string to fill with all products
-        PriceListCSVhandler csvReader = new PriceListCSVhandler(productsPath);
-        productCatalog = csvReader.readFile();
-
     }
 
     // what do these methods return to the presentation layer? strings? 
     public void createOrder() {
-        int id = createID();
+        int id = generateID();
         // check if order exists in json by checking equals / id (?)
         this.order = new Order(id);
 
@@ -50,78 +39,71 @@ public class OrderService {
 
     
     public String showOrder() {
-        return  "Order no. " + order.getOrderID() + "\n" +
-                "Customer info \n" + showCustomer() + " \n" +
-                "Products\n" + 
-                order.basket + "\n";
+        return  order.toString();
     }
 
-    public void createCustomer(String firstName, String lastName, String email) {
-        int id = createID(); // for the sake of simplicity we assume the ID is unique
-        this.order.setCustomer(new Customer(id, firstName, lastName, email));
-    }
+    // public void createCustomer(String firstName, String lastName, String email) {
+    //     int id = createID(); // for the sake of simplicity we assume the ID is unique
+    //     this.order.setCustomer(new Customer(id, firstName, lastName, email));
+    // }
 
-    public String showCustomer() {
-        if (this.order.hasCustomer()) {
-            return this.order.getCustomer().toString();
-        } else {
-            return "\tNo customer found.";
-        }
-    }
+    // public String showCustomer() {
+    //     if (this.order.hasCustomer()) {
+    //         return this.order.getCustomer().toString();
+    //     } else {
+    //         return "\tNo customer found.";
+    //     }
+    // }
 
-    public boolean hasCustomer() {
-        return this.order.hasCustomer(); // TODO think if this can be implemented better
-    }
+    // public boolean hasCustomer() {
+    //     return this.order.hasCustomer(); // TODO think if this can be implemented better
+    // }
     
-    public void addProducts(int id, int quantity) {
-        order.basket.addProducts(productCatalog[id].clone(), quantity);
-    }
-    public void addProducts(String name, int quantity) {
-        Product product = getProduct(name); // is already returning a clone
-        order.basket.addProducts(product, quantity);
-    }
-    public void removeProducts(int id, int quantity) {
-        order.basket.removeProducts(productCatalog[id], quantity);
-    }
-    public void removeProducts(String name, int quantity) { 
-        Product product = getProduct(name);
-        order.basket.removeProducts(product, quantity);
-    }
-    public boolean hasProducts() {
-        return !order.basket.getProducts().isEmpty();
-    }
-    public boolean hasProduct(Product product) {
-        return order.basket.getProducts().containsKey(product);
-    }
-    public Product getProduct(String name) {
-        for (int i = 0; i < productCatalog.length; i++) {
-            if (productCatalog[i].getName().equals(name)) {
-                return productCatalog[i].clone();
-            }
-        }
-        return null; // not sure if this is right
-    }
-    public boolean isProduct(String name) {
-        for (int i = 0; i < productCatalog.length; i++) {
-            if (productCatalog[i].getName().equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    // public void addProducts(int id, int quantity) {
+    //     order.basket.addProducts(productCatalog[id].clone(), quantity);
+    // }
+    // public void addProducts(String name, int quantity) {
+    //     Product product = getProduct(name); // is already returning a clone
+    //     order.basket.addProducts(product, quantity);
+    // }
+    // public void removeProducts(int id, int quantity) {
+    //     order.basket.removeProducts(productCatalog[id], quantity);
+    // }
+    // public void removeProducts(String name, int quantity) { 
+    //     Product product = getProduct(name);
+    //     order.basket.removeProducts(product, quantity);
+    // }
+    // public boolean hasProducts() {
+    //     return !order.basket.getProducts().isEmpty();
+    // }
+    // public boolean hasProduct(Product product) {
+    //     return order.basket.getProducts().containsKey(product);
+    // }
+    // public Product getProduct(String name) {
+    //     for (int i = 0; i < productCatalog.length; i++) {
+    //         if (productCatalog[i].getName().equals(name)) {
+    //             return productCatalog[i].clone();
+    //         }
+    //     }
+    //     return null; // not sure if this is right
+    // }
+    // public boolean isProduct(String name) {
+    //     for (int i = 0; i < productCatalog.length; i++) {
+    //         if (productCatalog[i].getName().equals(name)) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
 
-    public String showBasket() {
-        return order.basket.toString();
-    }
+    // public String showBasket() {
+    //     return order.basket.toString();
+    // }
 
-    public int basketSize() {
-        return order.basket.getProducts().size();
-    }
+    // public int basketSize() {
+    //     return order.basket.getProducts().size();
+    // }
 
-    private int createID() { 
-        // random Id generated between 1 - 10000, so semi-unique 
-        return (int) (Math.random() * 10000 + 1);
-    }
 
     // CSV
     // methods for loading csv info to products, also into catalogue?
