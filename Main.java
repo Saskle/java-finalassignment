@@ -37,31 +37,31 @@ public class Main {
         // simpleModule.addKeyDeserializer(Product.class, new ProductDeserializer());
         // mapper.registerModule(simpleModule);
 
-        Basket basket = new Basket();
-        basket.addProducts(photo3, 2);
-        basket.addProducts(photo1, 4);
+        // Basket basket = new Basket();
+        // basket.addProducts(photo3, 2);
+        // basket.addProducts(photo1, 4);
+
+        // try {
+        //     // writing the Basket object to JSON
+        //     mapper.writeValue(new File("data//basket.json"), basket);
+
+        //     // creating a new Basket object of that JSON
+        //     Basket newBasket = mapper.readValue(new File("data//basket.json"), Basket.class);
+        //     System.out.println(newBasket);
+        // } catch (IOException exception) {
+        //     System.out.println(exception);
+        // }
+
+        // Order order = new Order(2);
+        // Customer customer = new Customer(1, "Saskia", "de Klerk", "saskle@calco.nl");
+        // order.basket.addProducts(photo2, 1);
+        // order.basket.addProducts(photo1, 2);
+        // order.setCustomer(customer);
 
         try {
-            // writing the Basket object to JSON
-            mapper.writeValue(new File("data//basket.json"), basket);
-
-            // creating a new Basket object of that JSON
-            Basket newBasket = mapper.readValue(new File("data//basket.json"), Basket.class);
-            System.out.println(newBasket);
-        } catch (IOException exception) {
-            System.out.println(exception);
-        }
-
-        Order order = new Order(2);
-        Customer customer = new Customer(1, "Saskia", "de Klerk", "saskle@calco.nl");
-        order.basket.addProducts(photo2, 1);
-        order.basket.addProducts(photo1, 2);
-        order.setCustomer(customer);
-
-        try {
-            mapper.writeValue(new File("data//order.json"), order);
-            //Order orderPrint = mapper.readValue(new File("data//order.json"), Order.class);
-            //System.out.println(orderPrint);
+            //mapper.writeValue(new File("data//order.json"), order);
+            Order orderPrint = mapper.readValue(new File("data//order.json"), Order.class);
+            System.out.println(orderPrint);
 
         } catch (Exception e) {
             System.out.println(e);

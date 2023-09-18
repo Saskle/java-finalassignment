@@ -25,7 +25,7 @@ public class Order {
     public Order(   @JsonProperty("orderID") int orderID, 
                     @JsonProperty("orderTime") LocalDateTime orderTime, 
                     @JsonProperty("pickUpTime") LocalDateTime pickUpTime, 
-                    @JsonProperty("customber") Customer customer, 
+                    @JsonProperty("customer") Customer customer, 
                     @JsonProperty("basket") Basket basket) {
         setOrderID(orderID);
         setOrderTime(orderTime);

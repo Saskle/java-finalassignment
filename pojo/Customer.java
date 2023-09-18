@@ -77,27 +77,18 @@ public class Customer {
         return this.address;
     }
     public void setAddress(String address) {
-        //if (address == null || address.isEmpty()) {
-        //    throw new IllegalArgumentException("Customer's address cannot be set to null or empty.");
-        //}
         this.address = address;
     }
     public String getPostalCode() {
         return this.postalCode;
     }
     public void setPostalCode(String postalCode) {
-        //if (postalCode == null || postalCode.isEmpty()) {
-        //    throw new IllegalArgumentException("Customer's postal code cannot be set to null or empty.");
-        //}
         this.postalCode = postalCode;
     }
     public String getCity() {
         return this.city;
     }
     public void setCity(String city) {
-        //if (city == null || city.isEmpty()) {
-        //    throw new IllegalArgumentException("Customer's city cannot be set to null or empty.");
-        //}
         this.city = city;
     }
     public String getEmail() {
@@ -113,21 +104,18 @@ public class Customer {
         return this.phoneNr;
     }
     public void setPhoneNr(String phoneNr) {
-        //if (phoneNr == null || phoneNr.isEmpty()) { // set a maximum size (of digits) too?
-        //    throw new IllegalArgumentException("Customer's phone number cannot be set to null or empty.");
-        //}
         this.phoneNr = phoneNr;
     }
 
     @Override
     public Customer clone() {
-        Customer customer = new Customer(this.customerID, this.firstName, this.lastName, this.email);
-        customer.setCustomerID(this.customerID);
-        customer.setAddress(this.address);
-        customer.setPostalCode(this.postalCode);
-        customer.setCity(this.city);
-        customer.setPhoneNr(this.phoneNr);
-        return customer;
+        Customer copy = new Customer(this.customerID, this.firstName, this.lastName, this.email);
+        copy.setCustomerID(this.customerID);
+        copy.setAddress(this.address);
+        copy.setPostalCode(this.postalCode);
+        copy.setCity(this.city);
+        copy.setPhoneNr(this.phoneNr);
+        return copy;
     }
 
     @Override
