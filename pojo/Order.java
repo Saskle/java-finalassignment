@@ -4,13 +4,16 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 // ----------------- PURPOSE: Defining & validating Order data -----------------
 
 public class Order {
     private int orderID;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime orderTime; // when the order is placed (invoice is printed)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime pickUpTime; // when order is ready for pickup
     private Customer customer;
     public Basket basket; // why not talk to the basket directly? or shall I make it independent and therefore have loose coupling?

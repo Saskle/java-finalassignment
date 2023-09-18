@@ -1,9 +1,14 @@
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import pojo.Basket;
 import pojo.Customer;
@@ -30,7 +35,10 @@ public class Main {
         //ShopPresentation shopPresentation = new ShopPresentation();
         //shopPresentation.startApp();
 
-        ObjectMapper mapper = new ObjectMapper();
+        //ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = JsonMapper.builder()
+            .addModule(new JavaTimeModule())
+            .build();
 
         // adding our custom Key Deserializer for HashMap<Product, Integer> to the mapper
         // SimpleModule simpleModule = new SimpleModule();
@@ -57,11 +65,17 @@ public class Main {
         // order.basket.addProducts(photo2, 1);
         // order.basket.addProducts(photo1, 2);
         // order.setCustomer(customer);
+        // order.setOrderTime(LocalDateTime.now());
+        // order.setPickupTime(LocalDateTime.of(2023, 10, 28, 10, 22, 50));
 
         try {
             //mapper.writeValue(new File("data//order.json"), order);
             Order orderPrint = mapper.readValue(new File("data//order.json"), Order.class);
             System.out.println(orderPrint);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E dd MMMM yyyy HH:mm");
+            System.out.println(orderPrint.getOrderTime().format(formatter));
+            System.out.println(orderPrint.getPickUpTime().format(formatter));
 
         } catch (Exception e) {
             System.out.println(e);
