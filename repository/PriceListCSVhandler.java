@@ -15,7 +15,7 @@ public class PriceListCSVhandler extends CSVhandler {
     
     public Product[] readFile() {
 
-        // Format of .CSV:
+        // Format of PriceList.CSV:
         // [0] (first row) is id
         // [1] product name
         // [2] price, must be parsed to BigDecimal

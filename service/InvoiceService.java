@@ -2,7 +2,6 @@ package service;
 
 import pojo.Invoice;
 import pojo.Order;
-import pojo.Product;
 
 // ----------------- PURPOSE: create & format invoices from orders for printing -----------------
 

@@ -50,7 +50,6 @@ public class Day {
         this.closingTime = closingTime;
     }
 
-
     @Override
     public String toString() {
         return getDayName() + ": " + getOpeningTime() + 

@@ -17,7 +17,7 @@ public class OpeningHoursCSVhandler extends CSVhandler {
 
      public Day[] readFile() {
 
-        // Format of .CSV:
+        // Format of OpeningHours.CSV:
         // [0] (first row) is id
         // [1] is name of day in lowercase
         // [2] opening time in format 00:00

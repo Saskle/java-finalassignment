@@ -29,7 +29,7 @@ public abstract class PrintFormatter {
     }
 
     public static String header(String title) {
-        // caculate amount of white space so title + 2 * header.lenght = 100 
+        // caculate amount of white space so title + 2 * header.lenght = 100 characters long
         int whitespace = MAX_LINE_LENGHT - (2 * HEADER_LINE.length()) - title.length();
         
         // add whitespace to string

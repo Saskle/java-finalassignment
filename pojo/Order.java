@@ -11,13 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Order {
     private int orderID;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime orderTime; // when the order is placed (invoice is printed)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime pickUpTime; // when order is ready for pickup
     private Customer customer;
     public Basket basket; // why not talk to the basket directly? or shall I make it independent and therefore have loose coupling?
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime orderTime; // when the order is placed (invoice is printed)
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime pickUpTime; // when order is ready for pickup
+    
     public Order(int id) {
         setOrderID(id);
         this.basket = new Basket();
@@ -37,7 +39,7 @@ public class Order {
         this.basket = basket;
     }
     
-
+    // GETTERS & SETTERS
     public int getOrderID() {
         return this.orderID;
     }
@@ -90,11 +92,11 @@ public class Order {
             customer = this.customer.toString();
         }
 
-        return "{" +
-            " id='" + getOrderID() + "'" +
-            ", customer='" + customer + "'" +
-            ", products='" + basket + "'" +
-            "}";
+        return "id:\t" + getOrderID() + "'" +
+            "customer:\n" + customer + "\n" +
+            basket + "\n" +
+            "order placed at: " + getOrderTime() + 
+            "order can be picked up at: " + getPickUpTime();
     }
 
     @Override

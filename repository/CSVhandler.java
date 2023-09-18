@@ -17,8 +17,7 @@ public abstract class CSVhandler {
     protected final static String TIME_DELIMITER = ":";
 
     public List<String> getLines() {
-        List<String> copy = new ArrayList<>(lines); // TODO is this safe? do we need this?
-        return copy;
+        return new ArrayList<>(lines); // TODO is this safe? do we need this?
     }
 
     public void setLines(Path path) {
