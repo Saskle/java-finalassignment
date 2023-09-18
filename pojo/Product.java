@@ -74,7 +74,7 @@ public class Product {
     @Override
     public String toString() {
         String nameTabulation = "\t\t";
-        if (getName().length() > 20) {
+        if (getName().length() > 22) {
             nameTabulation = "\t";
         }
         return "\t" + getName() + nameTabulation + getPrice();

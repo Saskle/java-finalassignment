@@ -22,7 +22,8 @@ public class OrderService {
 
     public OrderService() {
         // upon intialisation, create product catalog string to fill with all products
-        productCatalog = CSVhandler.readProducts(productsPath);
+        PriceListCSVhandler csvReader = new PriceListCSVhandler(productsPath);
+        productCatalog = csvReader.readFile();
 
     }
 

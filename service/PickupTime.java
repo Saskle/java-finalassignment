@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
 import pojo.Day;
-import repository.CSVhandler;
+import repository.OpeningHoursCSVhandler;
 
 // ----------------- PURPOSE: Calculate pickuptime based on current time, shop opening times and product creation hours ---------------
 
@@ -20,7 +20,8 @@ public class PickupTime {
     private final static Path openingTimesPath = Paths.get("data\\PhotoShop_OpeningHours.csv");
 
     public PickupTime(int totalWorkHours) {
-        workingDays = CSVhandler.readOpeningTimes(openingTimesPath);
+        OpeningHoursCSVhandler csvReader = new OpeningHoursCSVhandler(openingTimesPath);
+        workingDays = csvReader.readFile();
         this.now = LocalDateTime.now();
         this.totalWorkMinutes = totalWorkHours * 60;
         setPickUpTime();

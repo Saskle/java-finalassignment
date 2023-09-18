@@ -32,13 +32,12 @@ public class Main {
         //Product photo11 = new Product(11, "Glass 100 x 150 mat", new BigDecimal("82.50"), 20);
         //Product photo12 = new Product(12, "Glass 100 x 150 high gloss", new BigDecimal("82.50"), 20);
 
-        //ShopPresentation shopPresentation = new ShopPresentation();
-        //shopPresentation.startApp();
+        ShopPresentation shopPresentation = new ShopPresentation();
+        shopPresentation.startApp();
 
-        //ObjectMapper mapper = new ObjectMapper();
-        ObjectMapper mapper = JsonMapper.builder()
-            .addModule(new JavaTimeModule())
-            .build();
+        // ObjectMapper mapper = JsonMapper.builder()
+        //     .addModule(new JavaTimeModule())
+        //     .build();
 
         // adding our custom Key Deserializer for HashMap<Product, Integer> to the mapper
         // SimpleModule simpleModule = new SimpleModule();
@@ -68,18 +67,18 @@ public class Main {
         // order.setOrderTime(LocalDateTime.now());
         // order.setPickupTime(LocalDateTime.of(2023, 10, 28, 10, 22, 50));
 
-        try {
-            //mapper.writeValue(new File("data//order.json"), order);
-            Order orderPrint = mapper.readValue(new File("data//order.json"), Order.class);
-            System.out.println(orderPrint);
+        // try {
+        //     mapper.writeValue(new File("data//order.json"), order);
+        //     Order orderPrint = mapper.readValue(new File("data//order.json"), Order.class);
+        //     System.out.println(orderPrint);
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E dd MMMM yyyy HH:mm");
-            System.out.println(orderPrint.getOrderTime().format(formatter));
-            System.out.println(orderPrint.getPickUpTime().format(formatter));
+        //     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E dd MMMM yyyy HH:mm");
+        //     System.out.println(orderPrint.getOrderTime().format(formatter));
+        //     System.out.println(orderPrint.getPickUpTime().format(formatter));
 
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        // } catch (Exception e) {
+        //     System.out.println(e);
+        // }
 
         
     }
