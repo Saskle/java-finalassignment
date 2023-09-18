@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Order {
     private int orderID;
     private Customer customer;
-    public Basket basket; // why not talk to the basket directly? or shall I make it independent and therefore have loose coupling?
+    public Basket basket; 
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime orderTime; // when the order is placed (invoice is printed)
@@ -36,7 +36,7 @@ public class Order {
         setOrderTime(orderTime);
         setPickupTime(pickUpTime);
         setCustomer(customer);
-        this.basket = basket;
+        setBasket(basket);
     }
     
     // GETTERS & SETTERS
@@ -44,6 +44,9 @@ public class Order {
         return this.orderID;
     }
     public void setOrderID(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Order's ID cannot be 0 or negative.");
+        }
         this.orderID = id;
     }
     public LocalDateTime getOrderTime() {
@@ -56,6 +59,9 @@ public class Order {
         return this.pickUpTime;
     }
     public void setPickupTime(LocalDateTime pickUpTime) {
+        if (pickUpTime.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("An order's pick up time cannot lie in the past!");
+        }
         this.pickUpTime = pickUpTime;
     }
     public Customer getCustomer() {
@@ -70,6 +76,12 @@ public class Order {
     }
     public boolean hasCustomer() {
         return this.customer != null;
+    }
+    public void setBasket(Basket basket) {
+        this.basket = basket.clone();
+    }
+    public Basket getBasket() {
+        return this.basket;
     }
 
     @Override
@@ -95,7 +107,7 @@ public class Order {
         return "id:\t" + getOrderID() + "\n" +
             "customer:\n" + customer + "\n" +
             "products: " + basket + "\n" +
-            "order placed at: " + getOrderTime() + 
+            "order placed at: " + getOrderTime() + "\n" +
             "order can be picked up at: " + getPickUpTime();
     }
 

@@ -6,8 +6,11 @@ import pojo.Customer;
 
 public class CustomerService extends Service {
     private Customer customer;
+    private OrderService orderService;
 
-    public CustomerService() {
+    // constructor injection -> making sure all services work with the same instance
+    public CustomerService(OrderService orderService) {
+        this.orderService = orderService;
         //initalisation
     }
 
@@ -21,7 +24,6 @@ public class CustomerService extends Service {
         this.customer = customer;
     }
 
-
     public void createCustomer(String firstName, String lastName, String email) {
         // for the sake of simplicity we assume the ID is unique
         int id = generateID(); 
@@ -31,17 +33,17 @@ public class CustomerService extends Service {
     public boolean hasCustomer() {
         if (customer == null) {
             return false;
-        } else {
-            return true;
-        }
+        } return true;
     }
 
     public String showCustomer() {
         if (hasCustomer()) {
             return getCustomer().toString();
-        } else {
-            return "\tNo customer found.";
-        }
+        } return "\tNo customer found.";
+    }
+
+    public void passCustomer() {
+        orderService.setCustomer(customer);
     }
 
     // TODO adding other fields, validating their input

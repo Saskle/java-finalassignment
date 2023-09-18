@@ -9,8 +9,11 @@ import pojo.Product;
 public class BasketService {
     private Basket basket;
     private ProductService productService;
+    private OrderService orderService;
 
-    public BasketService() {
+    // constructor injection -> making sure all services work with the same instance
+    public BasketService(OrderService orderService) {
+        this.orderService = orderService;
         productService = new ProductService();
         basket = new Basket();
     }
@@ -28,7 +31,6 @@ public class BasketService {
     public void setProductService(ProductService productService) {
         this.productService = productService;
     }
-
 
     public void addProducts(int id, int quantity) {
         basket.addProducts(productService.catalogue[id].clone(), quantity);
@@ -55,6 +57,7 @@ public class BasketService {
         return basket.getProducts().containsKey(product);
     }
 
+    // TODO remove this?
     public String showBasket() {
         return basket.toString();
     }
@@ -63,5 +66,8 @@ public class BasketService {
         return basket.getProducts().size();
     }
 
+    public void passBasket() {
+        orderService.setBasket(basket);
+    }
 
 }

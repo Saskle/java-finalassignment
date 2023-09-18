@@ -26,15 +26,13 @@ public class Product {
         setCreatingHours(creatingHours);
     }
 
-    // getters and setters
-
-    // all this needs to be loaded in from .csv, so no argument checkers?
+    // GETTERS & SETTERS
     public int getProductID() {
         return this.productID;
     }
     public void setProductID(int id) {
-        if (id < 0) {
-            throw new IllegalArgumentException("Product's id cannot be negative.");
+        if (id <= 0) {
+            throw new IllegalArgumentException("Product's id cannot be 0 or negative.");
         }
         this.productID = id;
     }

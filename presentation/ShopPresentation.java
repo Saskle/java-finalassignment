@@ -26,8 +26,8 @@ public class ShopPresentation {
     public void startApp() {
         // intialize services
         orderService = new OrderService();
-        basketService = new BasketService();
-        customerService = new CustomerService();
+        basketService = new BasketService(orderService);
+        customerService = new CustomerService(orderService);
         productService = new ProductService();
 
         System.out.println("\nWelcome to PhotoShop! ");
@@ -277,10 +277,18 @@ public class ShopPresentation {
             System.out.println("There is no customer data for this order yet!");
             promptCustomerData();
         }   
-        InvoiceService invoiceService = new InvoiceService();
-        invoiceService.createInvoice(orderService.getOrder());
-        System.out.println("Total work hours for this order is: " + invoiceService.getTotalWorkHours());
-        System.out.println(invoiceService.getInvoice());
+
+        //InvoiceService invoiceService = new InvoiceService();
+        //invoiceService.createInvoice(orderService.getOrder());
+
+        // passing current Customer & Basket to current order
+        customerService.passCustomer();
+        basketService.passBasket();
+        
+        System.out.println(orderService.orderToInvoice());
+
+        //System.out.println("Total work hours for this order is: " + invoiceService.getTotalWorkHours());
+        //System.out.println(invoiceService.getInvoice());
 
         System.out.println("\nThank you for ordering at PhotoShop!");
         System.out.println("Don't forget to send your printing files mentioning the invoice nr. to printing@photoshop.com!\n");
