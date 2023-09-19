@@ -1,11 +1,13 @@
 package service;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
 import pojo.Day;
 import repository.OpeningHoursCSVreader;
+import repository.PickUpTimeJSONhandler;
 
 // ----------------- PURPOSE: Calculate pickuptime based on current time, shop opening times and product creation hours ---------------
 
@@ -17,17 +19,50 @@ public class ScheduleService {
     private int totalWorkMinutes; // this class is independent of type order, and calculates with minutes instead of hours
     private int dayCounter = 0;
 
+    private LocalDateTime startTime;
+
     private final static Path openingTimesPath = Paths.get("data\\PhotoShop_OpeningHours.csv");
+    private final static Path pickUpTimePath = Paths.get("data\\latestPickUpTime.json");
+
+    private PickUpTimeJSONhandler jsonHandler;
+    private OpeningHoursCSVreader csvReader;
 
     public ScheduleService(int totalWorkHours) {
-        OpeningHoursCSVreader csvReader = new OpeningHoursCSVreader(openingTimesPath);
+        csvReader = new OpeningHoursCSVreader(openingTimesPath);
         workingDays = csvReader.readCSV();
+
+        jsonHandler = new PickUpTimeJSONhandler();
+        startTime = jsonHandler.readJSON(); // TODO whose responsibility is it to check whenever that file exists?
+
         this.now = LocalDateTime.now();
         this.totalWorkMinutes = totalWorkHours * 60;
-        setPickUpTime();
+        calculatePickUpTime();
     }
     public LocalDateTime getPickUpTime() {
         return this.pickUpTime;
+    }
+
+    private void calculatePickUpTime() {
+
+        // find how much time there is left in the day of the last' order
+        int dayIndex = getStartDayLastOrder();
+
+        // get the opening and closing hour for the day
+        //LocalDateTime openingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getOpeningTime());
+        LocalDateTime closingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getClosingTime());
+
+        // if yes, calculate the remaining working hours (in minutes)
+        int minutesRemaining = (closingTime.getHour() - now.getHour()) * 60 - now.getMinute();
+
+        // if there is enought time left today to complete it, return today, otherwise substract and go to the next day
+        if (minutesRemaining >= totalWorkMinutes) {
+            pickUpTime = startTime.plusMinutes(totalWorkMinutes);
+        } else {
+            dayCounter++;
+            dayIndex++;
+            pickUpTime = pickupTime(totalWorkMinutes - minutesRemaining, dayIndex);
+        }
+
     }
 
     private void setPickUpTime() {
@@ -98,6 +133,7 @@ public class ScheduleService {
             }
             pickUpTime = pickupTime(productionMinutes, dayIndex);
         }
+        jsonHandler.saveJSON(pickUpTime);
         return pickUpTime;
     }
 
@@ -109,6 +145,16 @@ public class ScheduleService {
             }
         }
         return -1; // TODO this should not happen
+    }
+
+    private int getStartDayLastOrder() {
+        // find at which day (row of CSV) to start calculating
+        for (int i = 0; i < workingDays.length; i++) {
+            if (workingDays[i].getDayName().equals(startTime.getDayOfWeek())) {
+                return i;
+            }
+        }
+        return -1; // TODO this should not happen   
     }
 
 }

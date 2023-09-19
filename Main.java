@@ -35,10 +35,19 @@ public class Main {
         ShopPresentation shopPresentation = new ShopPresentation();
         shopPresentation.startApp();
 
-        // ObjectMapper mapper = JsonMapper.builder()
-        //     .addModule(new JavaTimeModule())
-        //     .build();
 
+        // ObjectMapper mapper = JsonMapper.builder()
+        //      .addModule(new JavaTimeModule())
+        //      .build();
+
+        // LocalDateTime now = LocalDateTime.now();
+
+        // try {
+        //     mapper.writeValue(new File("data\\\\latestPickUpTime.json"), now);    
+        // } catch (Exception e) {
+        //     // TODO: handle exception
+        // }
+        
         // adding our custom Key Deserializer for HashMap<Product, Integer> to the mapper
         // SimpleModule simpleModule = new SimpleModule();
         // simpleModule.addKeyDeserializer(Product.class, new ProductDeserializer());

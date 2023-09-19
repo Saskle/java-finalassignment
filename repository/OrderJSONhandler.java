@@ -27,7 +27,7 @@ public class OrderJSONhandler extends JSONhandler {
         } 
     }
 
-    public Object readJSON(int orderID) {
+    public Order readJSON(int orderID) {
         file = new File("data//order" + orderID + ".json");
 
         try {
