@@ -8,7 +8,7 @@ import java.util.List;
 
 // ----------------- PURPOSE: Reading CSV files to POJO arrays -----------------
 
-public abstract class CSVhandler {
+public abstract class CSVreader {
 
     protected List<String> lines;
 

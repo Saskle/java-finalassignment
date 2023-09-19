@@ -8,22 +8,23 @@ import java.util.List;
 
 import pojo.*;
 
-// ----------------- PURPOSE: saving, retrieving & handling order data -----------------
+// ----------------- PURPOSE: saving, retrieving & handling order data, notifying other services -----------------
 
 public class OrderService extends Service {
 
+    // services handling parts of Order class (Basket & Customer) are referenced here
     private List<OrderObserver> observers = new ArrayList<>();
 
-    private JSONhandler jsonHandler;
+    private OrderJSONhandler jsonHandler;
     private ScheduleService scheduleService;
     private Order order; // only current order is stored
  
 
     public OrderService() {
-        jsonHandler = new JSONhandler();
+        jsonHandler = new OrderJSONhandler();
     }
 
-    // observers
+    // observer handling
     public void registerObserver(OrderObserver observer) {
         observers.add(observer);
     }
@@ -44,8 +45,11 @@ public class OrderService extends Service {
         updateOrderData(oldOrder);
     }
     public void saveOrder() {
-        // save order to json
-        jsonHandler.saveJSON(order);
+        // if any order has been initialized (created or loaded), save it
+        if (order != null) {
+            jsonHandler.saveJSON(order);    
+        }
+        
     }
     public void findOrder(int id) {
         // search id in current orders and open the file if it exists

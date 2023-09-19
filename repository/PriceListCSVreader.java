@@ -7,9 +7,9 @@ import pojo.Product;
 
 // ----------------- PURPOSE: Reading Price List CSV and convert it to a Product array -----------------
 
-public class PriceListCSVhandler extends CSVhandler {
+public class PriceListCSVreader extends CSVreader {
 
-    public PriceListCSVhandler(Path path) {
+    public PriceListCSVreader(Path path) {
         setLines(path);
     }
     

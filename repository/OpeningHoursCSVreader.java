@@ -8,10 +8,10 @@ import pojo.Day;
 
 // ----------------- PURPOSE: Reading Opening Hours CSV and convert it to a Day array -----------------
 
-public class OpeningHoursCSVhandler extends CSVhandler {
+public class OpeningHoursCSVreader extends CSVreader {
 
     // TODO think if we can't make this an abstract class with static methods?
-    public OpeningHoursCSVhandler(Path path) {
+    public OpeningHoursCSVreader(Path path) {
         setLines(path);
     }
 

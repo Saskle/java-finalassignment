@@ -4,18 +4,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import pojo.Product;
-import repository.PriceListCSVhandler;
+import repository.PriceListCSVreader;
 
 // ----------------- PURPOSE: initializing product catalogue and providing access to it -----------------
 
 public class ProductService {
     public final Product[] catalogue; // read-only
-    private PriceListCSVhandler csvHandler;
+    private PriceListCSVreader csvHandler;
     private final static Path productsPath = Paths.get("data\\PhotoShop_PriceList.csv");
 
     public ProductService () {
         // upon intialisation, create product catalog string to fill with all products
-        this.csvHandler = new PriceListCSVhandler(productsPath);
+        this.csvHandler = new PriceListCSVreader(productsPath);
         catalogue = this.csvHandler.readCSV();
     }
 
