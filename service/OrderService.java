@@ -3,12 +3,16 @@ package service;
 import repository.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import pojo.*;
 
-// ----------------- PURPOSE: handling order data & starting app -----------------
+// ----------------- PURPOSE: saving, retrieving & handling order data -----------------
 
 public class OrderService extends Service {
+
+    private List<OrderObserver> observers = new ArrayList<>();
 
     private JSONhandler jsonHandler;
     private ScheduleService scheduleService;
@@ -16,6 +20,15 @@ public class OrderService extends Service {
  
 
     public OrderService() {
+        jsonHandler = new JSONhandler();
+    }
+
+    // observers
+    public void registerObserver(OrderObserver observer) {
+        observers.add(observer);
+    }
+    public void unregisterObserver(OrderObserver observer) {
+        observers.remove(observer);
     }
 
     public void createOrder() {
@@ -24,17 +37,25 @@ public class OrderService extends Service {
         this.order = new Order(id);
     }
 
-    public void loadOrder() {
+    public void loadOrder(int orderID) {
         // retrieve order from json
+        Order oldOrder = jsonHandler.readJSON(orderID);
+        // update the current order and observers
+        updateOrderData(oldOrder);
     }
     public void saveOrder() {
         // save order to json
+        jsonHandler.saveJSON(order);
+    }
+    public void findOrder(int id) {
+        // search id in current orders and open the file if it exists
     }
 
-    // TODO this is needed for InvoiceService
-    public Order getOrder() {
-        return this.order.clone();
+    public int getOrderID() {
+        return order.getOrderID();
     }
+
+
 
     // remove this when csv loader is implemented!
     public void setOrder(Order order) {
@@ -49,20 +70,23 @@ public class OrderService extends Service {
     }
     
     public String orderToInvoice() {
-        // set total production hours by iterating through all products
-        //this.totalWorkHours = order.basket.getTotalProductionHours();
 
         // intitalize ScheduleService & calculate pickup time
         scheduleService = new ScheduleService(order.basket.getTotalProductionHours());
         order.setOrderTime(LocalDateTime.now());
         order.setPickupTime(scheduleService.getPickUpTime());
 
-        // create new invoice and set pickuptime & totalworkhours
-        //this.invoice = new Invoice(order.getOrderID(), order.clone(), this.pickupTime.getPickUpTime());
-        //this.invoice.setTotalWorkHours(totalWorkHours);
-
         return order.toString();
     }
 
+    public void updateOrderData(Order loadedOrder) {
+        // update the current order
+        this.order = loadedOrder.clone();
+
+        // notify all registered observers
+        for (OrderObserver observer : observers) {
+            observer.Update(loadedOrder);
+        }
+    }
 
 }

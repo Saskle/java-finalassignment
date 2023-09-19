@@ -13,6 +13,7 @@ public class PriceListCSVhandler extends CSVhandler {
         setLines(path);
     }
     
+    @Override
     public Product[] readCSV() {
 
         // Format of PriceList.CSV:

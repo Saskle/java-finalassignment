@@ -9,7 +9,6 @@ import pojo.Order; // remove this when json reader is implemented
 import pojo.Product; // remove this when json reader is implemented
 import service.BasketService;
 import service.CustomerService;
-import service.InvoiceService;
 import service.OrderService;
 import service.ProductService;
 
@@ -30,6 +29,10 @@ public class ShopPresentation {
         customerService = new CustomerService(orderService);
         productService = new ProductService();
 
+        // register observer services
+        orderService.registerObserver(basketService);
+        orderService.registerObserver(customerService);
+
         System.out.println("\nWelcome to PhotoShop! ");
         System.out.println("Do you want to retrieve a previously saved order (1), or create a new order (2) ?");
         System.out.println("You can also close the application by entering 0.");
@@ -41,19 +44,20 @@ public class ShopPresentation {
             case 0: closeApp();
             case 1:
                 // load in existing order (hardcode something for now)
-                Order loadedOrder = new Order(4);
-                loadedOrder.basket.addProducts(new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1), 2);
-                loadedOrder.setCustomer(new Customer(1, "Saskia", "de Klerk", "saskle@calco.nl"));;
+                //Order loadedOrder = new Order(4);
+                //loadedOrder.basket.addProducts(new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1), 2);
+                //loadedOrder.setCustomer(new Customer(1, "Saskia", "de Klerk", "saskle@calco.nl"));;
 
-                System.out.println("The last saved order no. " + loadedOrder.getOrderID() + " was made by " + loadedOrder.getCustomer().getFirstName() + " " + loadedOrder.getCustomer().getLastName());
+                orderService.loadOrder(1);
+                System.out.println("The last saved order no. " + orderService.getOrderID() + " was made by " + customerService.getCustomer().getFirstName() + " " + customerService.getCustomer().getLastName());
                 System.out.println("Please enter the order no. of the order you'd like to restore.");
                 scan.nextLine(); // this one is eaten by nextInt();
                 scan.nextLine();
 
                 // pass dummyorder to orderservice
-                orderService.setOrder(loadedOrder);
+                //orderService.setOrder(loadedOrder);
                 // set current customer data to dummyorder's customer
-                customerService.setCustomer(loadedOrder.getCustomer());
+                //customerService.setCustomer(loadedOrder.getCustomer());
                 showMainMenu();
                 break;
 
@@ -71,7 +75,9 @@ public class ShopPresentation {
         scan.close();
         System.out.println("Application closing.");
 
-        // saveOrder();
+        // save order to JSON
+        orderService.saveOrder();
+
         System.exit(0);
     }
 

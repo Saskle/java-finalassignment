@@ -1,10 +1,11 @@
 package service;
 
 import pojo.Customer;
+import pojo.Order;
 
 // ----------------- PURPOSE: handling & validating customer data (current customer) -----------------
 
-public class CustomerService extends Service {
+public class CustomerService extends Service implements OrderObserver {
     private Customer customer;
     private OrderService orderService;
 
@@ -44,6 +45,11 @@ public class CustomerService extends Service {
 
     public void passCustomer() {
         orderService.setCustomer(customer);
+    }
+
+    @Override
+    public void Update(Order order) {
+        setCustomer(order.getCustomer());
     }
 
     // TODO adding other fields, validating their input

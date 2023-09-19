@@ -1,12 +1,13 @@
 package service;
 
 import pojo.Basket;
+import pojo.Order;
 import pojo.Product;
 
 
 // ----------------- PURPOSE: handling products in basket -----------------
 
-public class BasketService {
+public class BasketService implements OrderObserver{
     private Basket basket;
     private ProductService productService;
     private OrderService orderService;
@@ -68,6 +69,11 @@ public class BasketService {
 
     public void passBasket() {
         orderService.setBasket(basket);
+    }
+
+    @Override
+    public void Update(Order order) { 
+        setBasket(order.getBasket());
     }
 
 }

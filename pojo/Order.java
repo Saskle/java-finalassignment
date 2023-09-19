@@ -1,6 +1,7 @@
 package pojo;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -96,7 +97,7 @@ public class Order {
 
     @Override
     public String toString() {
-        // TODO remove this so I can format it whenever I like in presentation?
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E dd MMMM yyyy HH:mm");
 
         // protection when order is printed but no customer is entered yet
         String customer = "No customer";
@@ -104,11 +105,11 @@ public class Order {
             customer = this.customer.toString();
         }
 
-        return "id:\t" + getOrderID() + "\n" +
+        return "order id:\t" + getOrderID() + "\n" +
             "customer:\n" + customer + "\n" +
             "products: " + basket + "\n" +
-            "order placed at: " + getOrderTime() + "\n" +
-            "order can be picked up at: " + getPickUpTime();
+            "order placed at: " + getOrderTime().format(formatter) + "\n" +
+            "order can be picked up at: " + getPickUpTime().format(formatter);
     }
 
     @Override

@@ -15,7 +15,8 @@ public class OpeningHoursCSVhandler extends CSVhandler {
         setLines(path);
     }
 
-     public Day[] readCSV() {
+    @Override
+    public Day[] readCSV() {
 
         // Format of OpeningHours.CSV:
         // [0] (first row) is id
