@@ -6,10 +6,12 @@ import java.io.IOException;
 import pojo.Basket;
 
 public class BasketJSONhandler extends JSONhandler {
-    
-    public void saveJSON(Object basket) {
-        file = new File("data//current_basket.json");
 
+    public BasketJSONhandler() {
+        file = new File("data//current_basket.json");
+    }
+    
+    public void saveJSON(Basket basket) {
         try {
             mapper.writeValue(file, basket);
         } catch (IOException exception) {
@@ -18,6 +20,23 @@ public class BasketJSONhandler extends JSONhandler {
     }
 
     public Basket readJSON() {
-        return new Basket();
+        try {
+            return mapper.readValue(file, Basket.class);
+        } catch (Exception exception) {
+            System.out.println(exception);
+        }
+        return null; // TODO is this allowed?
+    }
+
+    public boolean fileExists() {
+        return file.exists();
+    }
+
+    public void deleteFile() {
+        if (file.delete()) {
+            System.out.print("file deleted");
+        } else {
+            System.out.println("file not deleted");
+        }
     }
 }

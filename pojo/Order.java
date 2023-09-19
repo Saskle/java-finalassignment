@@ -100,16 +100,17 @@ public class Order {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E dd MMMM yyyy HH:mm");
 
         // protection when order is printed but no customer is entered yet
+        // TODO this could be removed probably
         String customer = "No customer";
         if (this.customer != null) {
             customer = this.customer.toString();
         }
 
-        return "order id:\t" + getOrderID() + "\n" +
-            "customer:\n" + customer + "\n" +
-            "products: " + basket + "\n" +
-            "order placed at:\t\t" + getOrderTime().format(formatter) + "\n" +
-            "order can be picked up at:\t" + getPickUpTime().format(formatter);
+        return "Order id:\t" + getOrderID() + "\n" +
+            "Customer:\n" + customer + "\n" +
+            "Products: " + basket + "\n" +
+            "Order placed at:\t\t" + getOrderTime().format(formatter) + "\n" +
+            "Order can be picked up at:\t" + getPickUpTime().format(formatter);
     }
 
     @Override

@@ -3,8 +3,6 @@ package service;
 import repository.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import pojo.*;
 
@@ -12,25 +10,17 @@ import pojo.*;
 
 public class OrderService extends Service {
 
-    // services handling parts of Order class (Basket & Customer) are referenced here
-    private List<OrderObserver> observers = new ArrayList<>();
-
     private OrderJSONhandler jsonHandler;
     private ScheduleService scheduleService;
     private Order order; // only current order is stored
- 
+    public boolean hasInvoice = false;
 
     public OrderService() {
         jsonHandler = new OrderJSONhandler();
+        createOrder();
     }
 
-    // observer handling
-    public void registerObserver(OrderObserver observer) {
-        observers.add(observer);
-    }
-    public void unregisterObserver(OrderObserver observer) {
-        observers.remove(observer);
-    }
+
 
     public void createOrder() {
         int id = generateID();
@@ -41,8 +31,8 @@ public class OrderService extends Service {
     public void loadOrder(int orderID) {
         // retrieve order from json
         Order oldOrder = jsonHandler.readJSON(orderID);
-        // update the current order and observers
-        updateOrderData(oldOrder);
+        // TODO only use this order to show user, NOT editing it
+        // might have to make this a string method
     }
     public void saveOrder() {
         // if any order has been initialized (created or loaded), save it
@@ -80,17 +70,8 @@ public class OrderService extends Service {
         order.setOrderTime(LocalDateTime.now());
         order.setPickupTime(scheduleService.getPickUpTime());
 
+        hasInvoice = true;
         return order.toString();
-    }
-
-    public void updateOrderData(Order loadedOrder) {
-        // update the current order
-        this.order = loadedOrder.clone();
-
-        // notify all registered observers
-        for (OrderObserver observer : observers) {
-            observer.Update(loadedOrder);
-        }
     }
 
 }

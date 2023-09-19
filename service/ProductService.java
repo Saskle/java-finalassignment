@@ -11,11 +11,10 @@ import repository.PriceListCSVreader;
 public class ProductService {
     public final Product[] catalogue; // read-only
     private PriceListCSVreader csvHandler;
-    private final static Path productsPath = Paths.get("data\\PhotoShop_PriceList.csv");
-
+    
     public ProductService () {
         // upon intialisation, create product catalog string to fill with all products
-        this.csvHandler = new PriceListCSVreader(productsPath);
+        this.csvHandler = new PriceListCSVreader();
         catalogue = this.csvHandler.readCSV();
     }
 

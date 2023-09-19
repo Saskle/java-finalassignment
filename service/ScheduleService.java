@@ -1,8 +1,5 @@
 package service;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
 import pojo.Day;
@@ -21,18 +18,18 @@ public class ScheduleService {
 
     private LocalDateTime startTime;
 
-    private final static Path openingTimesPath = Paths.get("data\\PhotoShop_OpeningHours.csv");
-    private final static Path pickUpTimePath = Paths.get("data\\latestPickUpTime.json");
+    //private final static Path openingTimesPath = Paths.get("data\\PhotoShop_OpeningHours.csv");
+    //private final static Path pickUpTimePath = Paths.get("data\\latestPickUpTime.json");
 
     private PickUpTimeJSONhandler jsonHandler;
     private OpeningHoursCSVreader csvReader;
 
     public ScheduleService(int totalWorkHours) {
-        csvReader = new OpeningHoursCSVreader(openingTimesPath);
+        csvReader = new OpeningHoursCSVreader();
         workingDays = csvReader.readCSV();
 
         jsonHandler = new PickUpTimeJSONhandler();
-        startTime = jsonHandler.readJSON(); // TODO whose responsibility is it to check whenever that file exists?
+        startTime = jsonHandler.readJSON(); 
 
         this.now = LocalDateTime.now();
         this.totalWorkMinutes = totalWorkHours * 60;
@@ -63,6 +60,7 @@ public class ScheduleService {
             pickUpTime = pickupTime(totalWorkMinutes - minutesRemaining, dayIndex);
         }
 
+        // TODO if pickuptime is before now, recalculate from now on
         // save calculated pick up time as latest in JSON
         jsonHandler.saveJSON(pickUpTime);
     }
@@ -105,6 +103,11 @@ public class ScheduleService {
 
     private LocalDateTime pickupTime(int totalWorkMinutes, int dayIndex) {
 
+        // if it's Saturday, start at the beginning again
+        if (dayIndex == workingDays.length) {
+            dayIndex = 0;
+        }
+
         // setting a new variable to mutate, so we still have access to the original value
         int productionMinutes = totalWorkMinutes;
         
@@ -127,11 +130,6 @@ public class ScheduleService {
             // add a day to the index and counter and recalculate
             dayCounter++;
             dayIndex++;
-
-            // if it's Saturday, start at the beginning again
-            if (dayIndex == workingDays.length) {
-                dayIndex = 0;
-            }
             pickUpTime = pickupTime(productionMinutes, dayIndex);
         }
         return pickUpTime;

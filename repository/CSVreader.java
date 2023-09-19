@@ -11,6 +11,7 @@ import java.util.List;
 public abstract class CSVreader {
 
     protected List<String> lines;
+    protected Path path;
 
     // defining the delimiters for all CSVs
     protected final static String VALUE_DELIMITER = ";";

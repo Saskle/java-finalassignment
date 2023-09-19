@@ -1,6 +1,7 @@
 package repository;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
@@ -10,8 +11,11 @@ import pojo.Day;
 
 public class OpeningHoursCSVreader extends CSVreader {
 
+    // TODO check if the file actually exists?
+    private final static Path path = Paths.get("data\\PhotoShop_OpeningHours.csv");
+
     // TODO think if we can't make this an abstract class with static methods?
-    public OpeningHoursCSVreader(Path path) {
+    public OpeningHoursCSVreader() {
         setLines(path);
     }
 

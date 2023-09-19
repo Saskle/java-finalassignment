@@ -2,6 +2,7 @@ package repository;
 
 import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import pojo.Product;
 
@@ -9,7 +10,9 @@ import pojo.Product;
 
 public class PriceListCSVreader extends CSVreader {
 
-    public PriceListCSVreader(Path path) {
+    private final static Path path = Paths.get("data\\PhotoShop_PriceList.csv");
+
+    public PriceListCSVreader() {
         setLines(path);
     }
     

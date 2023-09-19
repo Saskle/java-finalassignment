@@ -1,12 +1,8 @@
 package presentation;
 
-import java.math.BigDecimal;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import pojo.Customer; // remove this when json reader is implemented
-import pojo.Order; // remove this when json reader is implemented
-import pojo.Product; // remove this when json reader is implemented
 import service.BasketService;
 import service.CustomerService;
 import service.OrderService;
@@ -29,54 +25,43 @@ public class ShopPresentation {
         customerService = new CustomerService(orderService);
         productService = new ProductService();
 
-        // register observer services
-        orderService.registerObserver(basketService);
-        orderService.registerObserver(customerService);
-
         System.out.println("\nWelcome to PhotoShop! ");
-        System.out.println("Do you want to retrieve a previously saved order (1), or create a new order (2) ?");
-        System.out.println("You can also close the application by entering 0.");
-        System.out.print("Please enter the corresponding number of your choice: ");
-        
-        int response = validateNumericalInput(2); // we want either 0 or 1 or 2
 
-        switch (response) {
-            case 0: closeApp();
-            case 1:
-                // load in existing order (hardcode something for now)
-                //Order loadedOrder = new Order(4);
-                //loadedOrder.basket.addProducts(new Product(1, "Paper 10 x 15 mat", new BigDecimal("1.40"), 1), 2);
-                //loadedOrder.setCustomer(new Customer(1, "Saskia", "de Klerk", "saskle@calco.nl"));;
+        // if the user has closed the app without placing an order, retrieve the basket
+        if (basketService.hasBasket()) {
+            System.out.println("There has been a previous basket saved since your last session.");
+            System.out.println("Would you like to open it (1), or start with a new order? (2)");
+            System.out.println("You can also close the application by entering 0.");
 
-                orderService.loadOrder(1);
-                System.out.println("The last saved order no. " + orderService.getOrderID() + " was made by " + customerService.getCustomer().getFirstName() + " " + customerService.getCustomer().getLastName());
-                System.out.println("Please enter the order no. of the order you'd like to restore.");
-                scan.nextLine(); // this one is eaten by nextInt();
-                scan.nextLine();
+            int response = validateNumericalInput(2);
+            switch (response) {
+                case 0: closeApp();
+                    
+                case 1:
+                    basketService.loadBasket();
+                    showMainMenu();
 
-                // pass dummyorder to orderservice
-                //orderService.setOrder(loadedOrder);
-                // set current customer data to dummyorder's customer
-                //customerService.setCustomer(loadedOrder.getCustomer());
-                showMainMenu();
-                break;
-
-            case 2: 
-                System.out.println("Creating new order...");
-                orderService.createOrder();
-                showMainMenu();
-                break;
-
-            default: throw new InputMismatchException("Input for startApp() isn't correctly validated!");
-        }
+                case 2: 
+                    System.out.println("Creating new order...");
+                    basketService.newBasket();
+                    showMainMenu();
+                
+                default: throw new InputMismatchException("Input for startApp() isn't correctly validated!");
+            }
+        } else {
+            basketService.newBasket();
+            showMainMenu();
+        }      
     }
 
     public void closeApp() {
         scan.close();
         System.out.println("Application closing.");
 
-        // save order to JSON
-        orderService.saveOrder();
+        // if the order hasn't been placed yet, save the basket for next time
+        if (!orderService.hasInvoice && basketService.hasProducts()) {
+            basketService.saveBasket();    
+        }
 
         System.exit(0);
     }
@@ -85,13 +70,14 @@ public class ShopPresentation {
         System.out.println("\nMAIN MENU");
         printMainMenu();
 
-        int menuChoice = validateNumericalInput(5);
+        String response = scan.nextLine();
+        int menuChoice = validateNumericalInput(response, 4, true);
         switch (menuChoice) {
             case 1: showProductCatalogue();
             case 2: showCurrentOrder();
             case 3: showCustomerData();
             case 4: checkOut();
-            case 5: closeApp();
+            case 0: closeApp();
             default:
                 System.out.println("Please enter a correct menu index."); // case 0 is not handled, so don't throw an exeception here
                 showMainMenu();
@@ -103,7 +89,7 @@ public class ShopPresentation {
                             "2 - View Current Order\n" +
                             "3 - Customer Information\n" + 
                             "4 - Create Invoice\n" + 
-                            "5 - Close Application\n");
+                            "0 - Close Application\n");
         System.out.print("Please enter the no. of the menu to proceed: ");
     }
     
@@ -284,17 +270,17 @@ public class ShopPresentation {
             promptCustomerData();
         }   
 
-        //InvoiceService invoiceService = new InvoiceService();
-        //invoiceService.createInvoice(orderService.getOrder());
-
         // passing current Customer & Basket to current order
         customerService.passCustomer();
         basketService.passBasket();
         
         System.out.println(orderService.orderToInvoice());
 
-        //System.out.println("Total work hours for this order is: " + invoiceService.getTotalWorkHours());
-        //System.out.println(invoiceService.getInvoice());
+        // save order to JSON
+        orderService.saveOrder();
+
+        // delete current basket
+        basketService.deleteBasket();
 
         System.out.println("\nThank you for ordering at PhotoShop!");
         System.out.println("Don't forget to send your printing files mentioning the invoice nr. to printing@photoshop.com!\n");

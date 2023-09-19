@@ -1,24 +1,24 @@
 package service;
 
 import pojo.Basket;
-import pojo.Order;
 import pojo.Product;
+import repository.BasketJSONhandler;
 
 
 // ----------------- PURPOSE: handling products in basket -----------------
 
-public class BasketService implements OrderObserver{
+public class BasketService {
     private Basket basket;
     private ProductService productService;
     private OrderService orderService;
+    private BasketJSONhandler jsonhandler;
 
     // constructor injection -> making sure all services work with the same instance
     public BasketService(OrderService orderService) {
         this.orderService = orderService;
         productService = new ProductService();
-        basket = new Basket();
+        jsonhandler = new BasketJSONhandler();        
     }
-
 
     public Basket getBasket() {
         return this.basket.clone();
@@ -26,11 +26,8 @@ public class BasketService implements OrderObserver{
     public void setBasket(Basket basket) { // will need this for loading previous orders
         this.basket = basket.clone();
     }
-    public ProductService getProductService() {
-        return this.productService;
-    }
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
+    public void newBasket() {
+        basket = new Basket();
     }
 
     public void addProducts(int id, int quantity) {
@@ -71,9 +68,20 @@ public class BasketService implements OrderObserver{
         orderService.setBasket(basket);
     }
 
-    @Override
-    public void Update(Order order) { 
-        setBasket(order.getBasket());
+    public void saveBasket() {
+        jsonhandler.saveJSON(basket);
+    }
+
+    public void loadBasket() {
+        basket = jsonhandler.readJSON();
+    }
+
+    public boolean hasBasket() {
+        return jsonhandler.fileExists();
+    }
+
+    public void deleteBasket() {
+        jsonhandler.deleteFile();
     }
 
 }
