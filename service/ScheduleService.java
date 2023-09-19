@@ -63,6 +63,8 @@ public class ScheduleService {
             pickUpTime = pickupTime(totalWorkMinutes - minutesRemaining, dayIndex);
         }
 
+        // save calculated pick up time as latest in JSON
+        jsonHandler.saveJSON(pickUpTime);
     }
 
     private void setPickUpTime() {
@@ -107,8 +109,8 @@ public class ScheduleService {
         int productionMinutes = totalWorkMinutes;
         
         // get the opening and closing times for the day (first column is opening hour, second is closing hour)
-        LocalDateTime openingTime = LocalDateTime.of(now.toLocalDate(), workingDays[dayIndex].getOpeningTime());
-        LocalDateTime closingTime = LocalDateTime.of(now.toLocalDate(), workingDays[dayIndex].getClosingTime());
+        LocalDateTime openingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getOpeningTime());
+        LocalDateTime closingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getClosingTime());
 
         // calculate amount of work minutes in this day and substract production time
         int workMinutesInThisDay = (closingTime.getHour() - openingTime.getHour()) * 60 + (closingTime.getMinute() - openingTime.getMinute());
@@ -116,12 +118,11 @@ public class ScheduleService {
 
         if (productionMinutes <= 0) {
             // if the work fits this day, set pickUpTime to today and right opening hour
-            pickUpTime = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), openingTime.getHour(), openingTime.getMinute());
+            pickUpTime = LocalDateTime.of(startTime.getYear(), startTime.getMonth(), startTime.getDayOfMonth(), openingTime.getHour(), openingTime.getMinute());
             
             // add the remaining minutes and amount of days looped through to the pickup time 
             pickUpTime = pickUpTime.plusMinutes(totalWorkMinutes);
             pickUpTime = pickUpTime.plusDays(dayCounter);
-            return pickUpTime;
         } else {
             // add a day to the index and counter and recalculate
             dayCounter++;
@@ -133,7 +134,6 @@ public class ScheduleService {
             }
             pickUpTime = pickupTime(productionMinutes, dayIndex);
         }
-        jsonHandler.saveJSON(pickUpTime);
         return pickUpTime;
     }
 

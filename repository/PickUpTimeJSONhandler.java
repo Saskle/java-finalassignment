@@ -5,9 +5,12 @@ import java.time.LocalDateTime;
 
 public class PickUpTimeJSONhandler extends JSONhandler {
     
-    public void saveJSON(LocalDateTime object) {
+    // TODO check if the file actually exists, and if it doesn't, create a new one?
+
+    public void saveJSON(LocalDateTime pickUpTime) {
+        file = new File("data\\latestPickUpTime.json");
         try {
-            mapper.writeValueAsString(object);    
+            mapper.writeValue(file, pickUpTime);    
         } catch (Exception exception) {
             System.out.println(exception);
         }

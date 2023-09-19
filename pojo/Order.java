@@ -108,8 +108,8 @@ public class Order {
         return "order id:\t" + getOrderID() + "\n" +
             "customer:\n" + customer + "\n" +
             "products: " + basket + "\n" +
-            "order placed at: " + getOrderTime().format(formatter) + "\n" +
-            "order can be picked up at: " + getPickUpTime().format(formatter);
+            "order placed at:\t\t" + getOrderTime().format(formatter) + "\n" +
+            "order can be picked up at:\t" + getPickUpTime().format(formatter);
     }
 
     @Override
