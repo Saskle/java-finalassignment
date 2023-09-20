@@ -23,9 +23,7 @@ public class BasketService {
     public Basket getBasket() {
         return this.basket.clone();
     }
-    public void setBasket(Basket basket) { // will need this for loading previous orders
-        this.basket = basket.clone();
-    }
+
     public void newBasket() {
         basket = new Basket();
     }
@@ -64,7 +62,7 @@ public class BasketService {
         return basket.getProducts().size();
     }
 
-    public void passBasket() {
+    public void basketToOrder() {
         orderService.setBasket(basket);
     }
 

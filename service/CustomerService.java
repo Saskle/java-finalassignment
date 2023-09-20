@@ -43,7 +43,7 @@ public class CustomerService extends Service {
         } return "\tNo customer found.";
     }
 
-    public void passCustomer() {
+    public void customerToOrder() {
         orderService.setCustomer(customer);
     }
     

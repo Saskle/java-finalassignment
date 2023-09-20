@@ -1,12 +1,11 @@
 package service;
 
-import repository.*;
-
 import java.time.LocalDateTime;
 
+import repository.*;
 import pojo.*;
 
-// ----------------- PURPOSE: saving, retrieving & handling order data, notifying other services -----------------
+// ----------------- PURPOSE: saving, retrieving & handling order data -----------------
 
 public class OrderService extends Service {
 
@@ -17,7 +16,7 @@ public class OrderService extends Service {
 
     public OrderService() {
         jsonHandler = new OrderJSONhandler();
-        createOrder();
+        //createOrder();
     }
 
 
@@ -28,9 +27,10 @@ public class OrderService extends Service {
         this.order = new Order(id);
     }
 
-    public void loadOrder(int orderID) {
+    public String loadOrder(int orderID) {
         // retrieve order from json
         Order oldOrder = jsonHandler.readJSON(orderID);
+        return oldOrder.toString();
         // TODO only use this order to show user, NOT editing it
         // might have to make this a string method
     }
@@ -41,19 +41,13 @@ public class OrderService extends Service {
         }
         
     }
-    public void findOrder(int id) {
+    public boolean isOrder(int orderID) {
         // search id in current orders and open the file if it exists
+        return false;
     }
 
     public int getOrderID() {
         return order.getOrderID();
-    }
-
-
-
-    // remove this when csv loader is implemented!
-    public void setOrder(Order order) {
-        this.order = order.clone();
     }
 
     public void setCustomer(Customer customer) {

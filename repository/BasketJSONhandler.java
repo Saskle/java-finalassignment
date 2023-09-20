@@ -33,10 +33,6 @@ public class BasketJSONhandler extends JSONhandler {
     }
 
     public void deleteFile() {
-        if (file.delete()) {
-            System.out.print("file deleted");
-        } else {
-            System.out.println("file not deleted");
-        }
+        file.delete();
     }
 }

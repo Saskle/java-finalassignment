@@ -27,7 +27,7 @@ public class ShopPresentation {
 
         System.out.println("\nWelcome to PhotoShop! ");
 
-        // if the user has closed the app without placing an order, retrieve the basket
+        // if the user has closed the app without placing an order, ask to retrieve the basket
         if (basketService.hasBasket()) {
             System.out.println("There has been a previous basket saved since your last session.");
             System.out.println("Would you like to open it (1), or start with a new order? (2)");
@@ -70,13 +70,14 @@ public class ShopPresentation {
         System.out.println("\nMAIN MENU");
         printMainMenu();
 
-        String response = scan.nextLine();
-        int menuChoice = validateNumericalInput(response, 4, true);
+        //String menuInput = scan.nextLine(); // this introduces a scan.nextLine() bug ???
+        int menuChoice = validateNumericalInput(5);
         switch (menuChoice) {
             case 1: showProductCatalogue();
             case 2: showCurrentOrder();
             case 3: showCustomerData();
             case 4: checkOut();
+            case 5: showPlacedOrders();
             case 0: closeApp();
             default:
                 System.out.println("Please enter a correct menu index."); // case 0 is not handled, so don't throw an exeception here
@@ -89,6 +90,7 @@ public class ShopPresentation {
                             "2 - View Current Order\n" +
                             "3 - Customer Information\n" + 
                             "4 - Create Invoice\n" + 
+                            "5 - View placed orders\n" + 
                             "0 - Close Application\n");
         System.out.print("Please enter the no. of the menu to proceed: ");
     }
@@ -270,9 +272,11 @@ public class ShopPresentation {
             promptCustomerData();
         }   
 
+        orderService.createOrder();
+
         // passing current Customer & Basket to current order
-        customerService.passCustomer();
-        basketService.passBasket();
+        customerService.customerToOrder();
+        basketService.basketToOrder();
         
         System.out.println(orderService.orderToInvoice());
 
@@ -300,6 +304,21 @@ public class ShopPresentation {
         customerService.createCustomer(firstName, lastName, email);
     }
 
+    public void showPlacedOrders() {
+        System.out.println("Please enter the no. of the order you would like to view.");
+        System.out.println("Enter 0 to go back to the main menu. ");
+
+        int orderID = validateNumericalInput(9999); // maximum ID possible is 9999
+
+        // allow to go back to the main menu
+        if (orderID == 0) {
+            showMainMenu();
+        }
+
+        System.out.println(orderService.loadOrder(orderID)); // TODO validate if file exists
+        System.out.println("Placed orders are final. If there's something wrong with your order, please contact customer service at XXX.\n");
+        showPlacedOrders();
+        }
     // TODO remove this overload?
     public int validateNumericalInput(int range) {
         // first check if there is actually numberical input
