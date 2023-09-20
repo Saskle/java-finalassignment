@@ -106,11 +106,17 @@ public class Order {
             customer = this.customer.toString();
         }
 
-        return "Order id:\t" + getOrderID() + "\n" +
-            "Customer:\n" + customer + "\n" +
-            "Products: " + basket + "\n" +
-            "Order placed at:\t\t" + getOrderTime().format(formatter) + "\n" +
-            "Order can be picked up at:\t" + getPickUpTime().format(formatter);
+        return  "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 INVOICE \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n" +
+                "Order id: \t\t" + getOrderID() + "\n" +
+                "Order placed at:\t" + getOrderTime().format(formatter) + "\n\n" +
+                "CUSTOMER \n" + customer + "\n" +
+                "PRODUCTS \n" + 
+                "\tProduct name \t\t\tPrice \t\tAmount \t\tSubtotal\n" + basket + "\n" +
+                
+                "Order can be picked up at:\t\t" + getPickUpTime().format(formatter) + "\n\n" +
+                "Thank you for ordering at PhotoShop!\n" +
+                "Don't forget to send your printing files mentioning the order nr. to printing@photoshop.com.\n" +
+                "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n";
     }
 
     @Override

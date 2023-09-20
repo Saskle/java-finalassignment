@@ -268,6 +268,9 @@ public class ShopPresentation {
     }
 
     public void checkOut() {
+
+        // TODO ask user to confirm if order info is correct
+
         System.out.println("CREATE INVOICE");
 
         // making sure the basket contains products before proceeding
@@ -298,10 +301,6 @@ public class ShopPresentation {
         // delete current Customer & Basket
         customerService.deleteCustomer();
         basketService.deleteBasket();
-        
-        System.out.println("\nThank you for ordering at PhotoShop!");
-        System.out.println("Don't forget to send your printing files mentioning the invoice nr. to printing@photoshop.com!\n");
-
         closeApp();
     }
 
@@ -329,7 +328,7 @@ public class ShopPresentation {
         }
 
         System.out.println(orderService.loadOrder(orderID)); // TODO validate if file exists
-        System.out.println("Placed orders are final. If there's something wrong with your order, please contact customer service at XXX.\n");
+        System.out.println("Placed orders are final. If there's something wrong with your order, please contact customer service.\n");
         showPlacedOrders();
         }
     // TODO remove this overload?
