@@ -63,14 +63,10 @@ public class ShopPresentation {
         scan.close();
         System.out.println("Application closing.");
 
-        // if the order hasn't been placed yet, save the basket for next time
+        // if the order hasn't been placed yet, save the basket and or customer data for next time
         if (!orderService.hasInvoice) {
-            if (basketService.hasProducts()) {
-                basketService.saveBasket(); 
-            }
-            if (customerService.hasCustomer()) {
-                customerService.saveCustomer();
-            }  
+            if (basketService.hasProducts()) basketService.saveBasket(); 
+            if (customerService.hasCustomer()) customerService.saveCustomer();
         }
 
         System.exit(0);
@@ -320,7 +316,7 @@ public class ShopPresentation {
         System.out.println("Please enter the no. of the order you would like to view.");
         System.out.println("Enter 0 to go back to the main menu. ");
 
-        int orderID = validateNumericalInput(9999); // maximum ID possible is 9999
+        int orderID = validateNumericalInput(9999); // maximum possible order ID is 9999
 
         // allow to go back to the main menu
         if (orderID == 0) {

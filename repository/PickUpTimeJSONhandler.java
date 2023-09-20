@@ -7,7 +7,7 @@ public class PickUpTimeJSONhandler extends JSONhandler<LocalDateTime> {
     
     // TODO check if the file actually exists, and if it doesn't, create a new one?
 
-    private void hasPickUpTime() {
+    public PickUpTimeJSONhandler() {
         file = new File("data\\latestPickUpTime.json");
         if (!file.exists()) {
             // cycle through orders and find latest pickup time
@@ -16,7 +16,7 @@ public class PickUpTimeJSONhandler extends JSONhandler<LocalDateTime> {
 
     @Override
     public void saveJSON(LocalDateTime pickUpTime) {
-        file = new File("data\\latestPickUpTime.json");
+        //file = new File("data\\latestPickUpTime.json");
         try {
             mapper.writeValue(file, pickUpTime);    
         } catch (Exception exception) {
@@ -26,7 +26,7 @@ public class PickUpTimeJSONhandler extends JSONhandler<LocalDateTime> {
 
     @Override
     public LocalDateTime readJSON() {
-        file = new File("data\\latestPickUpTime.json");
+        //file = new File("data\\latestPickUpTime.json");
         try {
             return mapper.readValue(file, LocalDateTime.class);    
         } catch (Exception exception) {

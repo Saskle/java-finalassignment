@@ -11,7 +11,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 public abstract class JSONhandler<T> {
     
     // mapping object that allows serializing & deserializing POJO's (JavaTimeModule for LocalDateTime support)
-    protected ObjectMapper mapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
+    protected ObjectMapper mapper = JsonMapper.builder()
+                                                .addModule(new JavaTimeModule())
+                                                .build();
     protected File file;
 
     public abstract void saveJSON(T object);

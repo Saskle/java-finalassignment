@@ -10,6 +10,7 @@ import pojo.Basket;
 public class BasketJSONhandler extends JSONhandler<Basket> {
 
     public BasketJSONhandler() {
+        // set the file path on initialisation
         file = new File("data//current_basket.json");
     }
     

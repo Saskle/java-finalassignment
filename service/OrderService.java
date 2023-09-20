@@ -16,10 +16,7 @@ public class OrderService extends Service {
 
     public OrderService() {
         jsonHandler = new OrderJSONhandler();
-        //createOrder();
     }
-
-
 
     public void createOrder() {
         int id = generateID();

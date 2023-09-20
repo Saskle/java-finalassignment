@@ -10,6 +10,7 @@ import pojo.Customer;
 public class CustomerJSONhandler extends JSONhandler<Customer> {
 
     public CustomerJSONhandler() {
+        // set the file path on initialisation
         file = new File("data//current_customer.json");
     }
     
