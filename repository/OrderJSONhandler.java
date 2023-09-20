@@ -5,17 +5,19 @@ import java.io.IOException;
 
 import pojo.Order;
 
-public class OrderJSONhandler extends JSONhandler {
+public class OrderJSONhandler extends JSONhandler<Order> {
 
-    public void saveJSON(Object order) {
-        Order realOrder = (Order) order;
-        int orderID = realOrder.getOrderID();
+    private int orderID;
+
+    @Override
+    public void saveJSON(Order order) {
+        int orderID = order.getOrderID();
         file = new File("data//order" + orderID + ".json");
 
         // if the file already exists, modify the order ID
         while (file.exists()) {
-            realOrder.setOrderID(realOrder.getOrderID() + 1);
-            orderID = realOrder.getOrderID();
+            order.setOrderID(order.getOrderID() + 1);
+            orderID = order.getOrderID();
             String path = "data//order" + orderID + ".json";
             file = new File(path);
         }
@@ -27,7 +29,15 @@ public class OrderJSONhandler extends JSONhandler {
         } 
     }
 
-    public Order readJSON(int orderID) {
+    public void setOrderID(int orderID) {
+        if (orderID <= 0) {
+            throw new IllegalArgumentException("Order's ID cannot be 0 or negative.");
+        }
+        this.orderID = orderID;
+    }
+
+    @Override
+    public Order readJSON() {
         file = new File("data//order" + orderID + ".json");
 
         try {

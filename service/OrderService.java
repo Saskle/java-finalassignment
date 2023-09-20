@@ -29,7 +29,8 @@ public class OrderService extends Service {
 
     public String loadOrder(int orderID) {
         // retrieve order from json
-        Order oldOrder = jsonHandler.readJSON(orderID);
+        jsonHandler.setOrderID(orderID);
+        Order oldOrder = jsonHandler.readJSON();
         return oldOrder.toString();
         // TODO only use this order to show user, NOT editing it
         // might have to make this a string method

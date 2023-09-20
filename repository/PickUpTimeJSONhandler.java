@@ -3,10 +3,18 @@ package repository;
 import java.io.File;
 import java.time.LocalDateTime;
 
-public class PickUpTimeJSONhandler extends JSONhandler {
+public class PickUpTimeJSONhandler extends JSONhandler<LocalDateTime> {
     
     // TODO check if the file actually exists, and if it doesn't, create a new one?
 
+    private void hasPickUpTime() {
+        file = new File("data\\latestPickUpTime.json");
+        if (!file.exists()) {
+            // cycle through orders and find latest pickup time
+        }
+    }
+
+    @Override
     public void saveJSON(LocalDateTime pickUpTime) {
         file = new File("data\\latestPickUpTime.json");
         try {
@@ -16,6 +24,7 @@ public class PickUpTimeJSONhandler extends JSONhandler {
         }
     }
 
+    @Override
     public LocalDateTime readJSON() {
         file = new File("data\\latestPickUpTime.json");
         try {

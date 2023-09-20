@@ -5,12 +5,13 @@ import java.io.IOException;
 
 import pojo.Basket;
 
-public class BasketJSONhandler extends JSONhandler {
+public class BasketJSONhandler extends JSONhandler<Basket> {
 
     public BasketJSONhandler() {
         file = new File("data//current_basket.json");
     }
     
+    @Override
     public void saveJSON(Basket basket) {
         try {
             mapper.writeValue(file, basket);
@@ -19,6 +20,7 @@ public class BasketJSONhandler extends JSONhandler {
         } 
     }
 
+    @Override
     public Basket readJSON() {
         try {
             return mapper.readValue(file, Basket.class);
