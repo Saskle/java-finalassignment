@@ -35,7 +35,6 @@ public class Main {
         ShopPresentation shopPresentation = new ShopPresentation();
         shopPresentation.startApp();
 
-
         // ObjectMapper mapper = JsonMapper.builder()
         //      .addModule(new JavaTimeModule())
         //      .build();

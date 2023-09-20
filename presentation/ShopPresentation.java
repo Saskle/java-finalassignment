@@ -28,7 +28,7 @@ public class ShopPresentation {
         System.out.println("\nWelcome to PhotoShop! ");
 
         // if the user has closed the app without placing an order, ask to retrieve the basket
-        if (basketService.hasBasket()) {
+        if (basketService.hasSavedBasket() || customerService.hasSavedCustomer()) {
             System.out.println("There has been a previous basket saved since your last session.");
             System.out.println("Would you like to open it (1), or start with a new order? (2)");
             System.out.println("You can also close the application by entering 0.");
@@ -38,18 +38,23 @@ public class ShopPresentation {
                 case 0: closeApp();
                     
                 case 1:
-                    basketService.loadBasket();
+                    if (basketService.hasSavedBasket()) {
+                        basketService.loadBasket();
+                        System.out.println("Products in basket have been retrieved.");
+                    }
+                    if (customerService.hasSavedCustomer()) {
+                        customerService.loadCustomer();
+                        System.out.println("Customer data has been retrieved.");
+                    }
                     showMainMenu();
 
                 case 2: 
                     System.out.println("Creating new order...");
-                    basketService.newBasket();
                     showMainMenu();
                 
                 default: throw new InputMismatchException("Input for startApp() isn't correctly validated!");
             }
         } else {
-            basketService.newBasket();
             showMainMenu();
         }      
     }
@@ -59,8 +64,13 @@ public class ShopPresentation {
         System.out.println("Application closing.");
 
         // if the order hasn't been placed yet, save the basket for next time
-        if (!orderService.hasInvoice && basketService.hasProducts()) {
-            basketService.saveBasket();    
+        if (!orderService.hasInvoice) {
+            if (basketService.hasProducts()) {
+                basketService.saveBasket(); 
+            }
+            if (customerService.hasCustomer()) {
+                customerService.saveCustomer();
+            }  
         }
 
         System.exit(0);
@@ -262,7 +272,7 @@ public class ShopPresentation {
 
         // making sure the basket contains products before proceeding
         if(!basketService.hasProducts()) {
-            System.out.println("There are no projects in this order yet!");
+            System.out.println("The basket contains no products yet!");
             showProductCatalogue();
         }
 
@@ -272,20 +282,23 @@ public class ShopPresentation {
             promptCustomerData();
         }   
 
+        // creating an order
         orderService.createOrder();
 
         // passing current Customer & Basket to current order
         customerService.customerToOrder();
         basketService.basketToOrder();
         
+        // print the order (invoice) to the console
         System.out.println(orderService.orderToInvoice());
 
         // save order to JSON
         orderService.saveOrder();
 
-        // delete current basket
+        // delete current Customer & Basket
+        customerService.deleteCustomer();
         basketService.deleteBasket();
-
+        
         System.out.println("\nThank you for ordering at PhotoShop!");
         System.out.println("Don't forget to send your printing files mentioning the invoice nr. to printing@photoshop.com!\n");
 

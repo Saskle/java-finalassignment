@@ -18,9 +18,6 @@ public class ScheduleService {
 
     private LocalDateTime startTime;
 
-    //private final static Path openingTimesPath = Paths.get("data\\PhotoShop_OpeningHours.csv");
-    //private final static Path pickUpTimePath = Paths.get("data\\latestPickUpTime.json");
-
     private PickUpTimeJSONhandler jsonHandler;
     private OpeningHoursCSVreader csvReader;
 
@@ -44,8 +41,7 @@ public class ScheduleService {
         // find how much time there is left in the day of the last' order
         int dayIndex = getStartDayLastOrder();
 
-        // get the opening and closing hour for the day
-        //LocalDateTime openingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getOpeningTime());
+        // get the opening and closing hour for the day (we assume that the last pickuptime was after opening so we don't check that)
         LocalDateTime closingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getClosingTime());
 
         // if yes, calculate the remaining working hours (in minutes)

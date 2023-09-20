@@ -3,29 +3,29 @@ package repository;
 import java.io.File;
 import java.io.IOException;
 
-import pojo.Basket;
+import pojo.Customer;
 
-// ----------------- PURPOSE: reading & writing current Basket to JSON -----------------
+// ----------------- PURPOSE: reading & writing current Customer to JSON -----------------
 
-public class BasketJSONhandler extends JSONhandler<Basket> {
+public class CustomerJSONhandler extends JSONhandler<Customer> {
 
-    public BasketJSONhandler() {
-        file = new File("data//current_basket.json");
+    public CustomerJSONhandler() {
+        file = new File("data//current_customer.json");
     }
     
     @Override
-    public void saveJSON(Basket basket) {
+    public void saveJSON(Customer customer) {
         try {
-            mapper.writeValue(file, basket);
+            mapper.writeValue(file, customer);
         } catch (IOException exception) {
             System.out.println(exception);
         } 
     }
-
+    
     @Override
-    public Basket readJSON() {
+    public Customer readJSON() {
         try {
-            return mapper.readValue(file, Basket.class);
+            return mapper.readValue(file, Customer.class);
         } catch (Exception exception) {
             System.out.println(exception);
         }
