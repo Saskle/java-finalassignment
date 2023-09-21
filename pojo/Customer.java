@@ -121,7 +121,7 @@ public class Customer {
     @Override
     public String toString() {
         return 
-            "\tid: \t\t" + getCustomerID() + "\n" +
+            "\tCustomer ID: \t" + getCustomerID() + "\n" +
             "\tName: \t\t" + getFirstName() + " " + getLastName() + "\n" +
             "\tAddress: \t" + getAddress() + "\n" +
             "\tPostal code: \t" + getPostalCode() + "\n" +

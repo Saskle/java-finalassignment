@@ -15,6 +15,7 @@ import pojo.Customer;
 import pojo.Order;
 import pojo.Product;
 import presentation.*;
+import static presentation.PrintFormatter.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -34,6 +35,23 @@ public class Main {
 
         ShopPresentation shopPresentation = new ShopPresentation();
         shopPresentation.startApp();
+
+        // String text = "Hello.\nHow do you do?\n";
+        // System.out.println(text);
+        // System.out.println(addBox(text));
+
+        //System.out.println(addBox("This is going to be a longer string for testing purposes.\n Wonder how you'll handle that.\n"));
+
+        // System.out.println(ANSI_GREEN + "This text is red!" + ANSI_RESET);
+        // System.out.println(ANSI_RED + "This text is red!" + ANSI_RESET);
+        // System.out.println(ANSI_YELLOW + "This text is red!" + ANSI_RESET);
+        // System.out.println(ANSI_BLUE + "This text is red!" + ANSI_RESET);
+        // System.out.println(ANSI_PURPLE + "This text is red!" + ANSI_RESET);
+        // System.out.println(ANSI_CYAN + "This text is red!" + ANSI_RESET);
+        // System.out.println(ANSI_WHITE + "This text is red!" + ANSI_RESET);
+        // System.out.println(ANSI_BLACK + "This text is red!" + ANSI_RESET);
+
+
 
         // ObjectMapper mapper = JsonMapper.builder()
         //      .addModule(new JavaTimeModule())

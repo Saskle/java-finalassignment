@@ -95,28 +95,22 @@ public class Order {
         return copy;
     }
 
-    @Override // THIS IS THE INVOICE
+    @Override // this is in fact the invoice
     public String toString() {
+        // create a formatter so the date is formatted nicely
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E dd MMMM yyyy HH:mm");
 
-        // protection when order is printed but no customer is entered yet
-        // TODO this could be removed probably
-        String customer = "No customer";
-        if (this.customer != null) {
-            customer = this.customer.toString();
-        }
-
-        return  "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 INVOICE \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n" +
-                "Order id: \t\t" + getOrderID() + "\n" +
+        return  "\n***********************************            INVOICE            ***********************************\n" +
+                "Order ID: \t\t" + getOrderID() + "\n" +
                 "Order placed at:\t" + getOrderTime().format(formatter) + "\n\n" +
                 "CUSTOMER \n" + customer + "\n" +
                 "PRODUCTS \n" + 
                 "\tProduct name \t\t\tPrice \t\tAmount \t\tSubtotal\n" + basket + "\n" +
                 
-                "Order can be picked up at:\t\t" + getPickUpTime().format(formatter) + "\n\n" +
+                "Order can be picked up at:\t\t\t" + getPickUpTime().format(formatter) + "\n\n" +
                 "Thank you for ordering at PhotoShop!\n" +
-                "Don't forget to send your printing files mentioning the order nr. to printing@photoshop.com.\n" +
-                "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n";
+                "Don't forget to send your printing files mentioning the order nr. to printing@photoshop.com.\n\n" +
+                "****************************************************************************************************\n";
     }
 
     @Override

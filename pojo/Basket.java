@@ -130,8 +130,8 @@ public class Basket {
     @Override
     public String toString() {
         return productsToString() + "\n" +
-            "\t\t\t\t\t\t Total Expenses: \t" + getTotalExpenses() + "\n" +
-            "\t\t\t\t\t\t Total Production Hours: \t" + getTotalProductionHours() + ":00\n";
+            "\t\t\t\t\t\tTotal Expenses: \t" + getTotalExpenses() + "\n" +
+            "\t\t\t\t\t\tTotal Production Hours: \t" + getTotalProductionHours() + ":00\n";
     }
 
     @Override
