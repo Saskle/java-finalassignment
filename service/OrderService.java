@@ -7,7 +7,7 @@ import pojo.*;
 
 // ----------------- PURPOSE: saving, retrieving & handling order data -----------------
 
-public class OrderService extends Service {
+public class OrderService extends IDservice {
 
     private OrderJSONhandler jsonHandler;
     private ScheduleService scheduleService;

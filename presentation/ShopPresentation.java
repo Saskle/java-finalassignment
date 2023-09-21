@@ -246,6 +246,7 @@ public class ShopPresentation {
     public void showCustomerData() {
         System.out.println("\n" + header("CUSTOMER INFO"));
         
+        // if there is customer data, ask for changes, otherwise, prompt to add customer data
         if (customerService.hasCustomer()) {
             System.out.println(customerService.showCustomer());
             System.out.println("Do you want to change this info?");
@@ -254,15 +255,16 @@ public class ShopPresentation {
             int response = validateNumericalInput(1);
             switch (response) {
                 case 0: showMainMenu();
-                case 1: promptCustomerData();
-                        
+                case 1: scan.nextLine(); // throwaway line for nextInt()
+                        editCustomerData();
+                        //promptCustomerData();
                         showCustomerData();
-                    break;
                 default: throw new InputMismatchException("Input for showCurrentOrder() isn't correctly validated!");
             }
 
         } else {
             System.out.println(RED + "No customer info as been added to this order yet." + RESET_COLOR);
+            scan.nextLine(); // throwaway line for nextInt()
             promptCustomerData();
             showCustomerData();
         }
@@ -316,19 +318,6 @@ public class ShopPresentation {
         closeApp();
     }
 
-    public void promptCustomerData() {
-        scan.nextLine(); // throwaway line for nextInt()
-        System.out.print("Please add your first name: ");
-        String firstName = scan.nextLine();
-        System.out.print("Please add your last name: ");
-        String lastName = scan.nextLine();
-        System.out.print("Please add your email address: ");
-        String email = scan.nextLine();
-
-        customerService.createCustomer(firstName, lastName, email);
-        System.out.println(BLACK + "Customer data updated." + RESET_COLOR);
-    }
-
     public void showPlacedOrders() {
         System.out.println("Please enter the no. of the order you would like to view.");
         System.out.println("Enter " + YELLOW + 0 + RESET_COLOR + " to go back to the main menu. ");
@@ -344,8 +333,128 @@ public class ShopPresentation {
         System.out.println("Placed orders are final. If there's something wrong with your order, please contact customer service.\n");
         showPlacedOrders();
     }
+
+    public void promptCustomerData() {
+        // start with the obligatory fields
+        String firstName = promptCustomerFirstName();
+        String lastName = promptCustomerLastName();
+        String email = promptCustomerEmail();
+        
+        customerService.createCustomer(firstName, lastName, email);
+        System.out.println(BLACK + "Customer data updated." + RESET_COLOR);
+    }
     
-    public int validateNumericalInput(int range) {
+    public void editCustomerData() {
+        System.out.println();
+
+        // split the customer string on lines so we can add menu numbers in front of each line
+        String[] lines = customerService.showCustomer().split("\\r?\\n");
+
+        // skip the first line (customer ID isn't changeable) + 0 is for cancelling editing
+        for (int i = 1; i < lines.length; i++) {
+            System.out.println(YELLOW + i + RESET_COLOR + lines[i]);
+        }
+
+        System.out.println("\nTo cancel editing and go back to the main menu, type " + YELLOW + 0 + RESET_COLOR + ".");
+        System.out.print("Please specify which field you'd like to edit: ");
+
+        int response = validateNumericalInput(6); // we assume here that customer.toString always contains 6 lines = 6 fields to edit
+        switch (response) {
+            case 1: // line 1 is first name + last name
+                scan.nextLine(); // eaten by nextInt()
+                String firstName = promptCustomerFirstName();
+                String lastName = promptCustomerLastName();
+                customerService.setFirstName(firstName);
+                customerService.setLastName(lastName);
+                System.out.println(BLACK + "Name has been set to " + firstName + " " + lastName + "." + RESET_COLOR);
+                editCustomerData();
+
+            case 2: // line 2 is address
+                scan.nextLine(); // eaten by nextInt()
+                String address = promptCustomerAddress();
+                customerService.setAddress(address);
+                System.out.println(BLACK + "Address has been set to " + address + "." + RESET_COLOR);
+                editCustomerData();
+                editCustomerData();
+
+            case 3: // line 3 is postal code
+                scan.nextLine(); // eaten by nextInt()
+                String postalCode = promptCustomerPostalCode();
+                customerService.setPostalCode(postalCode);
+                System.out.println(BLACK + "Postal code has been set to " + postalCode + "." + RESET_COLOR);
+                editCustomerData();
+
+            case 4: // line 4 is city
+                scan.nextLine(); // eaten by nextInt()
+                String city = promptCustomerCity();                
+                customerService.setCity(city);
+                System.out.println(BLACK + "City has been set to " + city + "." + RESET_COLOR);
+                editCustomerData();
+
+            case 5: // line 5 is email address
+                scan.nextLine(); // eaten by nextInt()
+                String email = promptCustomerEmail();
+                customerService.setEmail(email);
+                System.out.println(BLACK + "Email has been set to " + email + "." + RESET_COLOR);
+                editCustomerData();
+
+            case 6: // line 6 is phone number
+                scan.nextLine(); // eaten by nextInt()
+                String phoneNr = promptCustomerPhoneNr();
+                customerService.setPhoneNr(phoneNr);
+                System.out.println(BLACK + "Phone number has been set to " + phoneNr + "." + RESET_COLOR);
+                editCustomerData();
+
+            case 0: showMainMenu();
+            default: throw new InputMismatchException("Input for editCustomerData() isn't correctly validated!");
+        }
+    }
+
+    private String promptCustomerFirstName() {
+        System.out.print("Please enter your first name: ");
+        return scan.nextLine();
+    }
+    private String promptCustomerLastName() {
+        System.out.print("Please enter your last name: ");
+        return scan.nextLine();
+    }
+    private String promptCustomerEmail() {
+        System.out.print("Please enter your email address: ");
+        String email = scan.nextLine();
+        while(!customerService.isEmail(email)) {
+            System.out.println(RED + "The email you've entered isn't valid. Please try again:" + RESET_COLOR);
+            email = scan.nextLine();
+        }
+        return email;
+    }
+    private String promptCustomerAddress() {
+        System.out.print("Please enter your address (street and house nr.): ");
+        return scan.nextLine();
+    }
+    private String promptCustomerCity() {
+        System.out.print("Please enter your city: ");
+        return scan.nextLine();
+    }
+    private String promptCustomerPostalCode() {
+        System.out.print("Please enter your postal code: ");
+        String postalCode = scan.nextLine();
+        while(!customerService.isPostalCode(postalCode)) {
+            System.out.println(RED + "The postal code you've entered isn't valid. Please try again:" + RESET_COLOR);
+            postalCode = scan.nextLine();
+        }
+        return postalCode;
+    }
+    private String promptCustomerPhoneNr() {
+        System.out.print("Please enter your phone number: ");
+        String phoneNr = scan.nextLine();
+        while (!customerService.isPhoneNr(phoneNr)) {
+            System.out.println(RED + "The phone number you've entered isn't valid. Please try again:" + RESET_COLOR);
+            phoneNr = scan.nextLine();
+        }
+        return phoneNr;
+    }
+
+    private int validateNumericalInput(int range) {
         // first check if there is actually numberical input
         while (!scan.hasNextInt()) {
             System.out.println(RED + "You haven't entered a number. Please try again. " + RESET_COLOR);
@@ -361,7 +470,7 @@ public class ShopPresentation {
         return response;
     }
 
-    public int validateNumericalInput(String text, int range, boolean canBeNull) {
+    private int validateNumericalInput(String text, int range, boolean canBeNull) {
         // first check if there is actually numberical input
         while (!isInteger(text)) {
             System.out.println(RED + "You haven't entered a number. Please try again. " + RESET_COLOR);
@@ -384,7 +493,7 @@ public class ShopPresentation {
         return response;
     }
 
-    public String validateProductName(String productName) {
+    private String validateProductName(String productName) {
         while (!productService.isProduct(productName)) {
             System.out.println(RED + "You haven't entered a correct product name. Please try again. " + RESET_COLOR);
             productName = scan.nextLine();
