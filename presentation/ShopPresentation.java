@@ -42,16 +42,16 @@ public class ShopPresentation {
                 case 1:
                     if (basketService.hasSavedBasket()) {
                         basketService.loadBasket();
-                        System.out.println("Products in basket have been retrieved.");
+                        System.out.println(BLACK + "Products in basket have been retrieved." + RESET_COLOR);
                     }
                     if (customerService.hasSavedCustomer()) {
                         customerService.loadCustomer();
-                        System.out.println("Customer data has been retrieved.");
+                        System.out.println(BLACK + "Customer data has been retrieved." + RESET_COLOR);
                     }
                     showMainMenu();
 
                 case 2: 
-                    System.out.println("Creating new order...");
+                    System.out.println(BLACK + "Creating new order..." + RESET_COLOR);
                     showMainMenu();
                 
                 default: throw new InputMismatchException("Input for startApp() isn't correctly validated!");
@@ -63,7 +63,7 @@ public class ShopPresentation {
 
     public void closeApp() {
         scan.close();
-        System.out.println("Application closing.");
+        System.out.println(BLACK + "Application closing." + RESET_COLOR);
 
         // if the order hasn't been placed yet, save the basket and or customer data for next time
         if (!orderService.hasInvoice) {
@@ -86,9 +86,7 @@ public class ShopPresentation {
             case 4: checkOut();
             case 5: showPlacedOrders();
             case 0: closeApp();
-            default:
-                System.out.println("Please enter a correct menu index."); // case 0 is not handled, so don't throw an exeception here
-                showMainMenu();
+            default: throw new InputMismatchException("Input for showMainMenu() isn't correctly validated!");
             }
         }
 
@@ -140,13 +138,13 @@ public class ShopPresentation {
 
             // add product (product ID's start at 1 instead of 0)
             basketService.addProducts(index - 1, quantity); 
-            System.out.println(quantity + " x " + productService.catalogue[index - 1].getName() + " has been added."); 
+            System.out.println(BLACK + quantity + " x " + productService.catalogue[index - 1].getName() + " has been added." + RESET_COLOR); 
 
         } else {
             // product must be a product's name
             product = validateProductName(product);
             basketService.addProducts(product, quantity);
-            System.out.println(quantity + " x " + product + " has been added.");
+            System.out.println(BLACK + quantity + " x " + product + " has been added." + RESET_COLOR);
         }
 
         System.out.println("\n" + basketService.showBasket());
@@ -189,7 +187,11 @@ public class ShopPresentation {
             case 1: showProductCatalogue();
             case 2: 
 
-                // TODO if basket is empty, say so!
+                // if basket is empty, say so!
+                if (!basketService.hasProducts()) {
+                    System.out.println(RED + "There are no products in the basket to remove!" + RESET_COLOR);
+                    showCurrentOrder();
+                }
 
                 System.out.println(basketService.showBasket());
                 System.out.println("You can add remove products at once by specifying name and quantity like (" + YELLOW + "Paper 10 x 15 mat:3" + RESET_COLOR + ").");
@@ -226,13 +228,13 @@ public class ShopPresentation {
         
                     // remove product (product ID's start at 1 instead of 0)
                     basketService.removeProducts(index - 1, quantity); 
-                    System.out.println(quantity + " x " + productService.catalogue[index - 1].getName() + " has been removed."); 
+                    System.out.println(BLACK + quantity + " x " + productService.catalogue[index - 1].getName() + " has been removed." + RESET_COLOR); 
         
                 } else {
                     // product must be a product's name
                     product = validateProductName(product);
                     basketService.removeProducts(product, quantity);
-                    System.out.println(quantity + " x " + product + " has been removed.");
+                    System.out.println(BLACK + quantity + " x " + product + " has been removed." + RESET_COLOR);
                 }
                 showCurrentOrder();
             case 3: showCustomerData();
@@ -253,7 +255,7 @@ public class ShopPresentation {
             switch (response) {
                 case 0: showMainMenu();
                 case 1: promptCustomerData();
-                        System.out.println("Customer data updated.");
+                        
                         showCustomerData();
                     break;
                 default: throw new InputMismatchException("Input for showCurrentOrder() isn't correctly validated!");
@@ -282,7 +284,18 @@ public class ShopPresentation {
             promptCustomerData();
         }   
 
-        // TODO ask user to confirm if order info is correct
+        // ask user to confirm if the order is complete
+        System.out.println(customerService.showCustomer());
+        System.out.println(basketService.showBasket());
+        System.out.println("Please check if your order is ready for checkout.");
+        System.out.print("Enter " + YELLOW + 0 + RESET_COLOR + " for to go back to the Main Menu, " + YELLOW + 1 + RESET_COLOR + " for proceeding to payment: ");
+        
+        int response = validateNumericalInput(1);
+        switch (response) {
+            case 0: showMainMenu();
+            case 1: break;
+            default: throw new InputMismatchException("Input for checkout() isn't correctly validated!"); 
+        }
 
         // creating an order
         orderService.createOrder();
@@ -313,6 +326,7 @@ public class ShopPresentation {
         String email = scan.nextLine();
 
         customerService.createCustomer(firstName, lastName, email);
+        System.out.println(BLACK + "Customer data updated." + RESET_COLOR);
     }
 
     public void showPlacedOrders() {

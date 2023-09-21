@@ -109,7 +109,7 @@ public class Order {
                 
                 "Order can be picked up at:\t\t\t" + getPickUpTime().format(formatter) + "\n\n" +
                 "Thank you for ordering at PhotoShop!\n" +
-                "Don't forget to send your printing files mentioning the order nr. to printing@photoshop.com.\n\n" +
+                "Don't forget to send your printing files mentioning the order ID to printing@photoshop.com.\n\n" +
                 "****************************************************************************************************\n";
     }
 
