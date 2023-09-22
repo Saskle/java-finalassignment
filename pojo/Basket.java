@@ -5,14 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.Objects;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import json.HashMapDeserializer;
-import json.HashMapSerializer;
-
-import java.util.Objects;
+import serialization.*;
 
 // ----------------- PURPOSE: Defining & validating Basket & products in basket's data -----------------
 
@@ -30,7 +28,7 @@ public class Basket {
         setTotalProductionHours(0);
     }
 
-    // GETTERS & SETTERS (private setters as they only serve the constructor & clone() override)
+    // GETTERS & SETTERS 
     public HashMap<Product,Integer> getProducts() {
         HashMap<Product, Integer> copy = new HashMap<>();
         copy.putAll(products);

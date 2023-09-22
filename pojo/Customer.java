@@ -15,7 +15,7 @@ public class Customer {
     private String postalCode;
     private String city;
     private String email;
-    private String phoneNr; // I need a way to save the 0 in 0612345678, might check if it is actually a number tho
+    private String phoneNr; 
 
     // first name, last name and email are obligatory, rest is not -> argument validation in service layer
     public Customer(int id, String firstName, String lastName, String email) {

@@ -39,7 +39,7 @@ public class OrderService extends IDservice {
         
     }
     public boolean isOrder(int orderID) {
-        // search id in current orders and open the file if it exists
+        // TODO search id in current orders and open the file if it exists
         return false;
     }
 
@@ -57,7 +57,7 @@ public class OrderService extends IDservice {
     public String orderToInvoice() {
 
         // intitalize ScheduleService & calculate pickup time
-        scheduleService = new ScheduleService(order.basket.getTotalProductionHours());
+        scheduleService = new ScheduleService(order.getBasket().getTotalProductionHours());
         order.setOrderTime(LocalDateTime.now());
         order.setPickupTime(scheduleService.getPickUpTime());
 

@@ -30,7 +30,7 @@ public class Product {
     public int getProductID() {
         return this.productID;
     }
-    public void setProductID(int id) {
+    private void setProductID(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("Product's id cannot be 0 or negative.");
         }
@@ -39,7 +39,7 @@ public class Product {
     public String getName() {
         return this.name;
     }
-    public void setName(String name) {
+    private void setName(String name) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Product's name cannot be null or empty.");   
         }
@@ -48,7 +48,7 @@ public class Product {
     public BigDecimal getPrice() {
         return this.price;
     }
-    public void setPrice(BigDecimal price) {
+    private void setPrice(BigDecimal price) {
         if (price == null || price.compareTo(new BigDecimal("0")) < 0) { 
             throw new IllegalArgumentException("Product's price cannot be negative or null.");
         }
@@ -57,7 +57,7 @@ public class Product {
     public int getCreatingHours() {
         return this.creatingHours;
     }
-    public void setCreatingHours(int creatingHours) {
+    private void setCreatingHours(int creatingHours) {
         if (creatingHours < 0) {
             throw new IllegalArgumentException("Product's creating hours cannot be negative.");
         }

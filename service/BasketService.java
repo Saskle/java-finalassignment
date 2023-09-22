@@ -13,7 +13,7 @@ public class BasketService {
     private OrderService orderService;
     private BasketJSONhandler jsonHandler;
 
-    // constructor injection -> making sure all services work with the same instance
+    // constructor injection -> making sure all services work with the same instance of Orderservice
     public BasketService(OrderService orderService) {
         this.orderService = orderService;
         productService = new ProductService();
@@ -26,9 +26,6 @@ public class BasketService {
     public Basket getBasket() {
         return this.basket.clone();
     }
-    // public void newBasket() {
-    //     basket = new Basket();
-    // }
 
     // adding and removing products to basket
     public void addProducts(int id, int quantity) {
@@ -52,15 +49,12 @@ public class BasketService {
         return basket.getProducts().containsKey(product);
     }
 
-    // TODO remove this?
+    // printing the basket to the user
     public String showBasket() {
         return basket.toString();
     }
 
-    public int basketSize() {
-        return basket.getProducts().size();
-    }
-
+    // passing the basket to Orderservice
     public void basketToOrder() {
         orderService.setBasket(basket);
     }
@@ -70,7 +64,11 @@ public class BasketService {
         jsonHandler.saveJSON(basket);
     }
     public void loadBasket() {
-        basket = jsonHandler.readJSON();
+        try {
+            basket = jsonHandler.readJSON();
+        } catch (NullPointerException exception) {
+            System.out.println("Basket could not be deserialized: " + exception);
+        }
     }
     public boolean hasSavedBasket() {
         return jsonHandler.fileExists();

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Order {
     private int orderID;
     private Customer customer;
-    public Basket basket; 
+    private Basket basket; 
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime orderTime; // when the order is placed (invoice is printed)

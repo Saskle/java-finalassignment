@@ -21,7 +21,7 @@ public class ProductService {
                 return catalogue[i].clone();
             }
         }
-        return null; // TODO not sure if this is right (maybe throw an exception?)
+        return null; // client's responsibility to check if it is a product beforehand
     }
     public boolean isProduct(String name) {
         for (int i = 0; i < catalogue.length; i++) {

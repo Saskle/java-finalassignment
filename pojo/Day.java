@@ -23,7 +23,7 @@ public class Day {
     public int getDayID() {
         return this.dayID;
     }
-    public void setDayID(int id) {
+    private void setDayID(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("A day's ID cannot be 0 or negative.");
         }
@@ -32,19 +32,19 @@ public class Day {
     public DayOfWeek getDayName() {
         return this.dayName;
     }
-    public void setDayName(DayOfWeek dayName) {
+    private void setDayName(DayOfWeek dayName) {
         this.dayName = dayName;
     }
     public LocalTime getOpeningTime() {
         return this.openingTime;
     }
-    public void setOpeningTime(LocalTime openingTime) {
+    private void setOpeningTime(LocalTime openingTime) {
         this.openingTime = openingTime;
     }
     public LocalTime getClosingTime() {
         return this.closingTime;
     }
-    public void setClosingTime(LocalTime closingTime) {
+    private void setClosingTime(LocalTime closingTime) {
         this.closingTime = closingTime;
     }
 

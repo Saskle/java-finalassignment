@@ -11,7 +11,6 @@ import repository.PickUpTimeJSONhandler;
 public class ScheduleService {
     
     private Day[] workingDays;
-    //private LocalDateTime now;
     private LocalDateTime pickUpTime;
     private int totalWorkMinutes; // calculates with minutes instead of hours
     private int dayCounter = 0;
@@ -63,48 +62,9 @@ public class ScheduleService {
             pickUpTime = pickupTime(totalWorkMinutes - minutesRemaining, dayIndex);
         }
 
-        
         // save calculated pick up time as latest in JSON
         jsonHandler.saveJSON(pickUpTime);
     }
-
-    /*
-    private void setPickUpTime() {
-
-        // find today's index
-        int dayIndex = getStartDay();
-
-        // get the opening and closing hour for the day
-        LocalDateTime openingTime = LocalDateTime.of(now.toLocalDate(), workingDays[dayIndex].getOpeningTime());
-        LocalDateTime closingTime = LocalDateTime.of(now.toLocalDate(), workingDays[dayIndex].getClosingTime());
-
-        // check if the shop is open right now (between opening hours)
-        if (now.isAfter(openingTime) && now.isBefore(closingTime)) { 
-
-            // if yes, calculate the remaining working hours (in minutes)
-            int minutesRemaining = (closingTime.getHour() - now.getHour()) * 60 - now.getMinute();
-            
-            // if there is enought time left today to complete it, return today, otherwise substract and go to the next day
-            if (minutesRemaining >= totalWorkMinutes) {
-                pickUpTime = now.plusMinutes(totalWorkMinutes);
-            } else {
-                dayCounter++;
-                dayIndex++;
-                pickUpTime = pickupTime(totalWorkMinutes - minutesRemaining, dayIndex);
-            }
-            
-        } else if (now.isBefore(openingTime)) {
-            // if the shop is not yet open, start calculating from the beginning
-            pickUpTime = pickupTime(totalWorkMinutes, dayIndex);
-
-        } else {
-            // if the shop's already closed, go to next day
-            dayCounter++;
-            dayIndex++;
-            pickUpTime = pickupTime(totalWorkMinutes, dayIndex);
-        }
-    } 
-     */
 
     private LocalDateTime pickupTime(int totalWorkMinutes, int dayIndex) {
 

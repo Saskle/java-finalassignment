@@ -4,19 +4,17 @@ import java.io.File;
 import java.time.LocalDateTime;
 
 public class PickUpTimeJSONhandler extends JSONhandler<LocalDateTime> {
-    
-    // TODO check if the file actually exists, and if it doesn't, create a new one?
 
     public PickUpTimeJSONhandler() {
         file = new File("data\\latestPickUpTime.json");
         if (!file.exists()) {
-            // cycle through orders and find latest pickup time
+            // TODO cycle through orders and find latest pickup time
+            // create a new json with latest pickup time
         }
     }
 
     @Override
     public void saveJSON(LocalDateTime pickUpTime) {
-        //file = new File("data\\latestPickUpTime.json");
         try {
             mapper.writeValue(file, pickUpTime);    
         } catch (Exception exception) {
@@ -26,12 +24,11 @@ public class PickUpTimeJSONhandler extends JSONhandler<LocalDateTime> {
 
     @Override
     public LocalDateTime readJSON() {
-        //file = new File("data\\latestPickUpTime.json");
         try {
             return mapper.readValue(file, LocalDateTime.class);    
         } catch (Exception exception) {
             System.out.println(exception);
         }
-        return null; // TODO is this safe? 
+        return null; // all exceptions are being caught, so I suppose this never happens
     }
 }

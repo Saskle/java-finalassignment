@@ -19,8 +19,7 @@ public class CustomerService extends IDservice {
     // allow postal codes consisting of 4 numbers and 2 letters, where the first number cannot be 0
     private static final String POSTALCODE_REGEX = "[1-9]{1}[0-9]{3}[a-zA-Z]{2}";
 
-    // constructor injection -> making sure all services work with the same instance
-    // TODO is a singleton better?
+    // constructor injection -> making sure all services work with the same instance of Orderservice
     public CustomerService(OrderService orderService) {
         this.orderService = orderService;
         jsonHandler = new CustomerJSONhandler();  
@@ -36,9 +35,8 @@ public class CustomerService extends IDservice {
         if (hasCustomer()) {
             return this.customer.clone();    
         }
-        return null; // TODO is this safe?
+        return null; 
     }
-
     public boolean hasCustomer() {
         if (customer == null) {
             return false;
@@ -51,6 +49,7 @@ public class CustomerService extends IDservice {
         } return "\tNo customer found.";
     }
 
+    // passing the customer to Orderservice
     public void customerToOrder() {
         orderService.setCustomer(customer);
     }
@@ -60,7 +59,11 @@ public class CustomerService extends IDservice {
         jsonHandler.saveJSON(customer);
     }
     public void loadCustomer() {
-        customer = jsonHandler.readJSON();
+        try {
+            customer = jsonHandler.readJSON();
+        } catch (NullPointerException exception) {
+            System.out.println("Customer couldn't be deserialized: " + exception);
+        }
     }
     public boolean hasSavedCustomer() {
         return jsonHandler.fileExists();
