@@ -31,7 +31,7 @@ public class ScheduleService {
         startTime = jsonHandler.readJSON(); 
 
         // if last pickup time has passed, work from now
-        if (startTime.isAfter(LocalDateTime.now())) {
+        if (startTime.isBefore(LocalDateTime.now())) {
             startTime = LocalDateTime.now();
         }
 

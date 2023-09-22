@@ -282,7 +282,8 @@ public class ShopPresentation {
 
         // making sure there is customer data for this order
         if (!customerService.hasCustomer()) {
-            System.out.println(RED + "There is no customer data for this order yet!" + RESET_COLOR);
+            System.out.println(RED + "There is no customer data for this order yet!\n" + RESET_COLOR);
+            scan.nextLine(); // gets eaten by nextInt();
             promptCustomerData();
         }   
 
