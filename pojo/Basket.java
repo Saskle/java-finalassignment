@@ -116,7 +116,7 @@ public class Basket {
 
         if (products.isEmpty()) {
             // if there are no products in the basket, say so
-            productsAsString = "\tNo products\n";
+            productsAsString = "\tNo products.\n";
         } else {
             // for every product in the HashMap, concat the string with the product.toString(), quantity and price subtotal
             for (Map.Entry<Product, Integer> set : products.entrySet()) {
