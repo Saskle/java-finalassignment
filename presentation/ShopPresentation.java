@@ -92,7 +92,7 @@ public class ShopPresentation {
 
     public void printMainMenu() {
         System.out.print(   YELLOW + 1 + RESET_COLOR + " - Product Catalog\n" +
-                            YELLOW + 2 + RESET_COLOR + " - View Current Order\n" +
+                            YELLOW + 2 + RESET_COLOR + " - View / Edit Current Order\n" +
                             YELLOW + 3 + RESET_COLOR + " - Customer Information\n" + 
                             YELLOW + 4 + RESET_COLOR + " - Proceed to Checkout\n" + 
                             YELLOW + 5 + RESET_COLOR + " - View previous orders\n" + 

@@ -12,8 +12,6 @@ public class Day {
     private LocalTime openingTime;
     private LocalTime closingTime;
 
-    // TODO argument validation
-
     public Day(int id, DayOfWeek dayName, LocalTime openingTime, LocalTime closingTime) {
         setDayID(id);
         setDayName(dayName);

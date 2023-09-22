@@ -60,9 +60,6 @@ public class Order {
         return this.pickUpTime;
     }
     public void setPickupTime(LocalDateTime pickUpTime) {
-        if (pickUpTime.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("An order's pick up time cannot lie in the past!");
-        }
         this.pickUpTime = pickUpTime;
     }
     public Customer getCustomer() {

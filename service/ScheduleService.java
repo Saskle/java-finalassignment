@@ -11,9 +11,9 @@ import repository.PickUpTimeJSONhandler;
 public class ScheduleService {
     
     private Day[] workingDays;
-    private LocalDateTime now;
+    //private LocalDateTime now;
     private LocalDateTime pickUpTime;
-    private int totalWorkMinutes; // this class is independent of type order, and calculates with minutes instead of hours
+    private int totalWorkMinutes; // calculates with minutes instead of hours
     private int dayCounter = 0;
 
     private LocalDateTime startTime;
@@ -22,13 +22,20 @@ public class ScheduleService {
     private OpeningHoursCSVreader csvReader;
 
     public ScheduleService(int totalWorkHours) {
+        // initialisation of CSVreader, reading opening times
         csvReader = new OpeningHoursCSVreader();
         workingDays = csvReader.readCSV();
 
+        // initialisation of JSONhandler, reading last pickup time = start time for this order
         jsonHandler = new PickUpTimeJSONhandler();
         startTime = jsonHandler.readJSON(); 
 
-        this.now = LocalDateTime.now();
+        // if last pickup time has passed, work from now
+        if (startTime.isAfter(LocalDateTime.now())) {
+            startTime = LocalDateTime.now();
+        }
+
+        //this.now = LocalDateTime.now();
         this.totalWorkMinutes = totalWorkHours * 60;
         calculatePickUpTime();
     }
@@ -39,15 +46,15 @@ public class ScheduleService {
     private void calculatePickUpTime() {
 
         // find how much time there is left in the day of the last' order
-        int dayIndex = getStartDayLastOrder();
+        int dayIndex = getStartDayIndex();
 
-        // get the opening and closing hour for the day (we assume that the last pickuptime was after opening so we don't check that)
+        // get the |opening| and closing hour for the day (we assume that the last pickuptime was after opening so we don't check that)
         LocalDateTime closingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getClosingTime());
 
         // if yes, calculate the remaining working hours (in minutes)
-        int minutesRemaining = (closingTime.getHour() - now.getHour()) * 60 - now.getMinute();
+        int minutesRemaining = (closingTime.getHour() - startTime.getHour()) * 60 - startTime.getMinute();
 
-        // if there is enought time left today to complete it, return today, otherwise substract and go to the next day
+        // if there is enought time left in the day to complete it, return today, otherwise substract and go to the next day
         if (minutesRemaining >= totalWorkMinutes) {
             pickUpTime = startTime.plusMinutes(totalWorkMinutes);
         } else {
@@ -56,11 +63,12 @@ public class ScheduleService {
             pickUpTime = pickupTime(totalWorkMinutes - minutesRemaining, dayIndex);
         }
 
-        // TODO if pickuptime is before now, recalculate from now on
+        
         // save calculated pick up time as latest in JSON
         jsonHandler.saveJSON(pickUpTime);
     }
 
+    /*
     private void setPickUpTime() {
 
         // find today's index
@@ -96,6 +104,7 @@ public class ScheduleService {
             pickUpTime = pickupTime(totalWorkMinutes, dayIndex);
         }
     } 
+     */
 
     private LocalDateTime pickupTime(int totalWorkMinutes, int dayIndex) {
 
@@ -131,24 +140,14 @@ public class ScheduleService {
         return pickUpTime;
     }
 
-    private int getStartDay() {
-        // find at which day (row of CSV) to start calculating
-        for (int i = 0; i < workingDays.length; i++) {
-            if (workingDays[i].getDayName().equals(now.getDayOfWeek())) {
-                return i;
-            }
-        }
-        return -1; // TODO this should not happen
-    }
-
-    private int getStartDayLastOrder() {
+    private int getStartDayIndex() {
         // find at which day (row of CSV) to start calculating
         for (int i = 0; i < workingDays.length; i++) {
             if (workingDays[i].getDayName().equals(startTime.getDayOfWeek())) {
                 return i;
             }
         }
-        return -1; // TODO this should not happen   
+        return -1; // TODO this should not happen
     }
 
 }

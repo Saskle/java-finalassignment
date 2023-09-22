@@ -29,9 +29,8 @@ public class OrderService extends IDservice {
         jsonHandler.setOrderID(orderID);
         Order oldOrder = jsonHandler.readJSON();
         return oldOrder.toString();
-        // TODO only use this order to show user, NOT editing it
-        // might have to make this a string method
     }
+    
     public void saveOrder() {
         // if any order has been initialized (created or loaded), save it
         if (order != null) {
