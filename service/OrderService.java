@@ -24,13 +24,19 @@ public class OrderService extends IDservice {
         this.order = new Order(id);
     }
 
+    // retrieving and saving order from json
     public String loadOrder(int orderID) {
-        // retrieve order from json
-        jsonHandler.setOrderID(orderID);
-        Order oldOrder = jsonHandler.readJSON();
-        return oldOrder.toString();
+        String orderToString = "";
+
+        try {
+            jsonHandler.setOrderID(orderID);
+            Order oldOrder = jsonHandler.readJSON();
+            orderToString =  oldOrder.toString();
+        } catch (NullPointerException exception) {
+            System.out.println("Order couldn't be deserialized: " + exception);
+        }
+        return orderToString;
     }
-    
     public void saveOrder() {
         // if any order has been initialized (created or loaded), save it
         if (order != null) {
@@ -39,14 +45,11 @@ public class OrderService extends IDservice {
         
     }
     public boolean isOrder(int orderID) {
-        // TODO search id in current orders and open the file if it exists
-        return false;
+        return jsonHandler.isJSON(orderID);
     }
 
-    public int getOrderID() {
-        return order.getOrderID();
-    }
 
+    // setting customer & basket 
     public void setCustomer(Customer customer) {
         this.order.setCustomer(customer.clone());
     }
@@ -55,7 +58,6 @@ public class OrderService extends IDservice {
     }
     
     public String orderToInvoice() {
-
         // intitalize ScheduleService & calculate pickup time
         scheduleService = new ScheduleService(order.getBasket().getTotalProductionHours());
         order.setOrderTime(LocalDateTime.now());

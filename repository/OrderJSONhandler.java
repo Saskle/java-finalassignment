@@ -9,6 +9,8 @@ public class OrderJSONhandler extends JSONhandler<Order> {
 
     private int orderID;
 
+    // TODO create a constructor that passes in orderID already so we can set orderID + file from the onset
+
     @Override
     public void saveJSON(Order order) {
         int orderID = order.getOrderID();
@@ -46,7 +48,12 @@ public class OrderJSONhandler extends JSONhandler<Order> {
         } catch (IOException exception) {
             System.out.println(exception);
         }
-        return null; // TODO is this safe? 
+        return null; // client's responsibility to account for null values
+    }
+
+    public boolean isJSON(int orderID) {
+        file = new File("data//order" + orderID + ".json");
+        return file.exists();
     }
 }
 

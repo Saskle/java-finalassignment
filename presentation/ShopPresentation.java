@@ -330,6 +330,12 @@ public class ShopPresentation {
             showMainMenu();
         }
 
+        while (!orderService.isOrder(orderID)) {
+            System.out.print("Order could not be found. Please enter a valid order ID: ");
+            orderID = validateNumericalInput(9999);
+            // again allow for returning to menu?
+        }
+
         System.out.println(orderService.loadOrder(orderID)); // TODO validate if file exists
         System.out.println("Placed orders are final. If there's something wrong with your order, please contact customer service.\n");
         showPlacedOrders();
