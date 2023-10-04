@@ -42,6 +42,8 @@ public class Main {
         // String text = "Hello.\nHow do you do?\n";
         // System.out.println(text);
         // System.out.println(addBox(text));
+        // System.out.println(addBox("12345"));
+        // System.out.println(addBox("123456"));
 
         //System.out.println(addBox("This is going to be a longer string for testing purposes.\n Wonder how you'll handle that.\n"));
 

@@ -27,7 +27,7 @@ public class ShopPresentation {
         customerService = new CustomerService(orderService);
         productService = new ProductService();
 
-        System.out.println("\nWelcome to the PhotoShop Ordering App! ");
+        System.out.println(addBox("Welcome to the PhotoShop Ordering App! "));
 
         // if the user has closed the app without placing an order, ask to retrieve the basket and/or customer data
         if (basketService.hasSavedBasket() || customerService.hasSavedCustomer()) {

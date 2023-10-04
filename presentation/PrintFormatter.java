@@ -30,9 +30,16 @@ public abstract class PrintFormatter {
         // go through each line and add calculated whitespace before and after
         String boxedText = "";
         for (String line : lines) {
-            int whitespacePerLine = (MAX_LINE_LENGHT - line.length()) / 2;
+
+            int whitespacePerLine = MAX_LINE_LENGHT - line.length() - 3; // minus 3 for 2x | and line break (?)
             String whitespace = calculateWhitespace(line, whitespacePerLine);
-            boxedText = boxedText + "|" + whitespace + line + whitespace + "|\n";
+
+            // if the lenght of the line is uneven, add one character less whitespace
+            if (line.length() % 2 == 0) {
+                boxedText = boxedText + "|" + whitespace + line + whitespace + "|\n";
+            } else {
+                boxedText = boxedText + "|" + whitespace + line + calculateWhitespace(line, whitespacePerLine - 1) + "|\n";
+            }
         }
         return DIVIDER + boxedText + DIVIDER;
     }
