@@ -10,6 +10,9 @@ public class OrderJSONhandler extends JSONhandler<Order> {
     private int orderID;
 
     // TODO create a constructor that passes in orderID already so we can set orderID + file from the onset
+    public OrderJSONhandler() {
+        // set the file path on initialisation
+    }
 
     @Override
     public void saveJSON(Order order) {

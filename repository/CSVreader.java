@@ -3,7 +3,6 @@ package repository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 // ----------------- PURPOSE: Reading CSV files to POJO arrays -----------------
@@ -16,10 +15,6 @@ public abstract class CSVreader {
     // defining the delimiters for all CSVs
     protected final static String VALUE_DELIMITER = ";";
     protected final static String TIME_DELIMITER = ":";
-
-    public List<String> getLines() {
-        return new ArrayList<>(lines); // TODO is this safe? do we need this?
-    }
 
     public void setLines(Path path) {
         try {

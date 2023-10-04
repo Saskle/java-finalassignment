@@ -107,7 +107,7 @@ public class ScheduleService {
                 return i;
             }
         }
-        return -1; // TODO this should not happen
+        return -1;
     }
 
 }
