@@ -32,8 +32,8 @@ public class ShopPresentation {
         // if the user has closed the app without placing an order, ask to retrieve the basket and/or customer data
         if (basketService.hasSavedBasket() || customerService.hasSavedCustomer()) {
             System.out.println("There has been a previous basket and / or customer data saved since your last session.");
-            System.out.println("Would you like to open it (" + YELLOW + 1 + RESET_COLOR + "), or start with a new order? (" + YELLOW + 2 + RESET_COLOR + ")");
-            System.out.println("You can also close the application by entering " + YELLOW + 0 + RESET_COLOR + ".");
+            System.out.println("Would you like to open it (" + YELLOW + 1 + RESET_COLOR + "), or start with a new order (" + YELLOW + 2 + RESET_COLOR + ") ?");
+            System.out.println("You can also close the application by entering " + YELLOW + 0 + RESET_COLOR + " and pressing " + YELLOW + "Enter" + RESET_COLOR + ".");
 
             int response = validateNumericalInput(2);
             switch (response) {
@@ -97,16 +97,16 @@ public class ShopPresentation {
                             YELLOW + 4 + RESET_COLOR + " - Proceed to Checkout\n" + 
                             YELLOW + 5 + RESET_COLOR + " - View previous orders\n" + 
                             YELLOW + 0 + RESET_COLOR + " - Close Application\n");
-        System.out.print("Please enter the no. of the menu to proceed: ");
+        System.out.print("Please enter the number of the menu followed by " + YELLOW + "Enter" + RESET_COLOR + " to proceed: ");
     }
     
     public void showProductCatalogue() {
         System.out.println("\n" + header("PRODUCT CATALOG"));
         printProductCatalogue();
 
-        System.out.println("You can add multiple products at once by specifying id or name and quantity like (" + YELLOW + "2:3" + RESET_COLOR + ").");
-        System.out.println("To return to the main menu, enter " + YELLOW + 0 + RESET_COLOR);
-        System.out.println("Please enter the corresponding no. or name of the product to add to your order: ");
+        System.out.println("You can add multiple products at once by specifying ID or name and quantity, like " + YELLOW + "2:3" + RESET_COLOR + ".");
+        System.out.println("To return to the main menu, enter " + YELLOW + 0 + RESET_COLOR + ".");
+        System.out.println("Please enter the corresponding ID or name of the product to add to your order: ");
 
         String product = "";
         int quantity = 1; // if not specified, the user wants to add 1 product
@@ -179,7 +179,7 @@ public class ShopPresentation {
                             "\t" + YELLOW + 3 + RESET_COLOR + " - change customer data\n" + 
                             "\t" + YELLOW + 4 + RESET_COLOR + " - place order and print invoice\n" + 
                             "\t" + YELLOW + 0 + RESET_COLOR + " - return to the Main Menu"); 
-        System.out.print("Please enter the corresponding no.: ");
+        System.out.print("Please enter the corresponding number: ");
         
         int response = validateNumericalInput(4);
         switch (response) {
@@ -187,14 +187,14 @@ public class ShopPresentation {
             case 1: showProductCatalogue();
             case 2: 
 
-                // if basket is empty, say so!
+                // if basket is empty, say so and return to Current Order menu
                 if (!basketService.hasProducts()) {
                     System.out.println(RED + "There are no products in the basket to remove!" + RESET_COLOR);
                     showCurrentOrder();
                 }
 
                 System.out.println(basketService.showBasket());
-                System.out.println("You can add remove products at once by specifying name and quantity like (" + YELLOW + "Paper 10 x 15 mat:3" + RESET_COLOR + ").");
+                System.out.println("You can remove products at once by specifying name and quantity, like " + YELLOW + "Paper 10 x 15 mat:3" + RESET_COLOR + ".");
                 System.out.println("To return to the main menu, enter " + YELLOW + 0 + RESET_COLOR + ".");
                 System.out.print("Which product would you like to remove? ");
                 
@@ -246,10 +246,10 @@ public class ShopPresentation {
     public void showCustomerData() {
         System.out.println("\n" + header("CUSTOMER INFO"));
         
-        // if there is customer data, ask for changes, otherwise, prompt to add customer data
+        // if there is customer data, ask for changes
         if (customerService.hasCustomer()) {
             System.out.println(customerService.showCustomer());
-            System.out.println("Do you want to change this info?");
+            System.out.println("Do you want to change any data?");
             System.out.print("Enter " + YELLOW + 0 + RESET_COLOR + " for returning to the main menu, "  + YELLOW + 1 + RESET_COLOR + " for editing customer data: ");
 
             int response = validateNumericalInput(1);
@@ -257,13 +257,12 @@ public class ShopPresentation {
                 case 0: showMainMenu();
                 case 1: scan.nextLine(); // throwaway line for nextInt()
                         editCustomerData();
-                        //promptCustomerData();
                         showCustomerData();
                 default: throw new InputMismatchException("Input for showCurrentOrder() isn't correctly validated!");
             }
 
-        } else {
-            System.out.println(RED + "No customer info as been added to this order yet." + RESET_COLOR);
+        } else { // otherwise, prompt to add customer data and load the menu again
+            System.out.println(RED + "No customer information as been added to this order yet." + RESET_COLOR);
             scan.nextLine(); // throwaway line for nextInt()
             promptCustomerData();
             showCustomerData();
@@ -276,7 +275,7 @@ public class ShopPresentation {
 
         // making sure the basket contains products before proceeding
         if(!basketService.hasProducts()) {
-            System.out.println(RED + "The basket contains no products yet!" + RESET_COLOR);
+            System.out.println(RED + "There are no products in the basket yet!" + RESET_COLOR);
             showProductCatalogue();
         }
 
@@ -365,7 +364,7 @@ public class ShopPresentation {
         System.out.println("\nTo cancel editing and go back to the main menu, type " + YELLOW + 0 + RESET_COLOR + ".");
         System.out.print("Please specify which field you'd like to edit: ");
 
-        int response = validateNumericalInput(6); // we assume here that customer.toString always contains 6 lines = 6 fields to edit
+        int response = validateNumericalInput(6); // we assume here that customer.toString() always contains 6 lines = 6 fields to edit
         switch (response) {
             case 1: // line 1 is first name + last name
                 scan.nextLine(); // eaten by nextInt()
@@ -443,7 +442,7 @@ public class ShopPresentation {
         return scan.nextLine();
     }
     private String promptCustomerPostalCode() {
-        System.out.print("Please enter your postal code: ");
+        System.out.print("Please enter your postal code (1234AB): ");
         String postalCode = scan.nextLine();
         while(!customerService.isPostalCode(postalCode)) {
             System.out.println(RED + "The postal code you've entered isn't valid. Please try again:" + RESET_COLOR);
