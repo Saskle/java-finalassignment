@@ -16,6 +16,7 @@ public abstract class JSONhandler<T> {
                                                 .build();
     protected File file;
 
+    // every child of JSONhandler should implement writing and reading to JSON
     public abstract void saveJSON(T object);
     public abstract T readJSON();
 

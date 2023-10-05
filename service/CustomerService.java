@@ -46,7 +46,7 @@ public class CustomerService extends IDservice {
     public String showCustomer() {
         if (hasCustomer()) {
             return getCustomer().toString();
-        } return "\tNo customer found.";
+        } return "\tNo customer found.\n";
     }
 
     // passing the customer to Orderservice
@@ -56,7 +56,11 @@ public class CustomerService extends IDservice {
 
     // saving and loading from JSON
     public void saveCustomer() {
-        jsonHandler.saveJSON(customer);
+        try {
+            jsonHandler.saveJSON(customer);
+        } catch (NullPointerException exception) {
+            System.out.println("There is no customer data to save to JSON: " + exception);
+        }
     }
     public void loadCustomer() {
         try {

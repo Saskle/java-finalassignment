@@ -38,16 +38,16 @@ public class OrderService extends IDservice {
         return orderToString;
     }
     public void saveOrder() {
-        // if any order has been initialized (created or loaded), save it
-        if (order != null) {
+        // save the current order to JSON, if an order has been created
+        try {
             jsonHandler.saveJSON(order);    
+        } catch (NullPointerException exception) {
+            System.out.println("There is no order data to save to JSON: " + exception);
         }
-        
     }
     public boolean isOrder(int orderID) {
         return jsonHandler.isJSON(orderID);
     }
-
 
     // setting customer & basket 
     public void setCustomer(Customer customer) {
@@ -63,8 +63,8 @@ public class OrderService extends IDservice {
         order.setOrderTime(LocalDateTime.now());
         order.setPickupTime(scheduleService.getPickUpTime());
 
+        // flag the order as saved, it can't be changed anymore
         hasInvoice = true;
         return order.toString();
     }
-
 }

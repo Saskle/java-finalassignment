@@ -298,7 +298,7 @@ public class ShopPresentation {
             default: throw new InputMismatchException("Input for checkout() isn't correctly validated!"); 
         }
 
-        // creating an order
+        // creating a new order
         orderService.createOrder();
 
         // passing current Customer & Basket to current order
@@ -311,7 +311,7 @@ public class ShopPresentation {
         // save order to JSON
         orderService.saveOrder();
 
-        // delete current Customer & Basket
+        // delete current Customer & Basket, close the app
         customerService.deleteCustomer();
         basketService.deleteBasket();
         closeApp();

@@ -5,18 +5,17 @@ import java.io.IOException;
 
 import pojo.Order;
 
+// ----------------- PURPOSE: reading & writing Orders to JSON -----------------
+
 public class OrderJSONhandler extends JSONhandler<Order> {
 
+    // I need to save the current orderID separately, 
+    // as readJSON() can't have parameters as a override method
     private int orderID;
-
-    // TODO create a constructor that passes in orderID already so we can set orderID + file from the onset
-    public OrderJSONhandler() {
-        // set the file path on initialisation
-    }
 
     @Override
     public void saveJSON(Order order) {
-        int orderID = order.getOrderID();
+        orderID = order.getOrderID();
         file = new File("data//order" + orderID + ".json");
 
         // if the file already exists, modify the order ID

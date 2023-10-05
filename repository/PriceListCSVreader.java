@@ -38,14 +38,15 @@ public class PriceListCSVreader extends CSVreader {
             BigDecimal price = new BigDecimal(values[2]);
 
             // splitting the working time on ":"
-            // FOR NOW, I only support working hours of whole hours
+            // right now, I only support working hours of whole hours
             String[] workingTime = values[3].split(TIME_DELIMITER);
 
             int id = 0;
             int workingHours = 0;
+
             try {
                 id = Integer.parseInt(values[0]);
-                workingHours = Integer.parseInt(workingTime[0]);                
+                workingHours = Integer.parseInt(workingTime[0]);         
             } catch (NumberFormatException exception) {
                 System.out.println(exception);
             }

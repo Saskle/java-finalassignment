@@ -61,7 +61,11 @@ public class BasketService {
 
     // saving and loading from JSON
     public void saveBasket() {
-        jsonHandler.saveJSON(basket);
+        try {
+            jsonHandler.saveJSON(basket);
+        } catch (Exception exception) {
+            System.out.println("There is no customer data to save to JSON: " + exception);
+        }
     }
     public void loadBasket() {
         try {

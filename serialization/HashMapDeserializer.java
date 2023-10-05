@@ -24,7 +24,7 @@ public class HashMapDeserializer extends JsonDeserializer<HashMap<Product, Integ
             jsonParser.nextToken();
             Product value = jsonParser.readValueAs(Product.class);
             
-            // skip two tokens (not exactly sure why, first one was 'quantity1')
+            // skip two tokens (not exactly sure why, first one was 'quantity1', but at least it works :) )
             jsonParser.nextToken();
             jsonParser.nextToken();
             int quantity = jsonParser.readValueAs(Integer.class);

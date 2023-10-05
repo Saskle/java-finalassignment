@@ -34,10 +34,10 @@ public class ScheduleService {
             startTime = LocalDateTime.now();
         }
 
-        //this.now = LocalDateTime.now();
         this.totalWorkMinutes = totalWorkHours * 60;
         calculatePickUpTime();
     }
+
     public LocalDateTime getPickUpTime() {
         return this.pickUpTime;
     }
