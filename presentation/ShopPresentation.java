@@ -61,7 +61,7 @@ public class ShopPresentation {
         }      
     }
 
-    public void closeApp() {
+    private void closeApp() {
         scan.close();
         System.out.println(BLACK + "Application closing." + RESET_COLOR);
 
@@ -70,11 +70,10 @@ public class ShopPresentation {
             if (basketService.hasProducts()) basketService.saveBasket(); 
             if (customerService.hasCustomer()) customerService.saveCustomer();
         }
-
         System.exit(0);
     }
 
-    public void showMainMenu() {
+    private void showMainMenu() {
         System.out.println("\n" + header("MAIN MENU"));
         printMainMenu();
 
@@ -90,7 +89,7 @@ public class ShopPresentation {
             }
         }
 
-    public void printMainMenu() {
+    private void printMainMenu() {
         System.out.print(   YELLOW + 1 + RESET_COLOR + " - Product Catalog\n" +
                             YELLOW + 2 + RESET_COLOR + " - View / Edit Current Order\n" +
                             YELLOW + 3 + RESET_COLOR + " - Customer Information\n" + 
@@ -100,7 +99,7 @@ public class ShopPresentation {
         System.out.print("Please enter the number of the menu followed by " + YELLOW + "Enter" + RESET_COLOR + " to proceed: ");
     }
     
-    public void showProductCatalogue() {
+    private void showProductCatalogue() {
         System.out.println("\n" + header("PRODUCT CATALOG"));
         printProductCatalogue();
 
@@ -159,7 +158,7 @@ public class ShopPresentation {
         }
     }
     
-    public void printProductCatalogue() {
+    private void printProductCatalogue() {
         System.out.println("ID \tName \t\t\t\tPrice");
         // printing all products in catalogue, adding 1 to i so 0 is available for going back to main menu
         for (int i = 0; i < productService.catalogue.length; i++) {
@@ -168,7 +167,7 @@ public class ShopPresentation {
         System.out.println();
     }
 
-    public void showCurrentOrder() {
+    private void showCurrentOrder() {
         System.out.println("\n" + header("CURRENT ORDER OVERVIEW"));
         System.out.println(customerService.showCustomer());
         System.out.println(basketService.showBasket());
@@ -243,7 +242,7 @@ public class ShopPresentation {
         }
     }
     
-    public void showCustomerData() {
+    private void showCustomerData() {
         System.out.println("\n" + header("CUSTOMER INFO"));
         
         // if there is customer data, ask for changes
@@ -269,7 +268,7 @@ public class ShopPresentation {
         }
     }
 
-    public void checkOut() {
+    private void checkOut() {
 
         System.out.println("\n" + header("CHECKOUT"));
 
@@ -318,7 +317,7 @@ public class ShopPresentation {
         closeApp();
     }
 
-    public void showPlacedOrders() {
+    private void showPlacedOrders() {
         System.out.println("Please enter the no. of the order you would like to view.");
         System.out.println("Enter " + YELLOW + 0 + RESET_COLOR + " to go back to the main menu. ");
 
@@ -340,7 +339,7 @@ public class ShopPresentation {
         showPlacedOrders();
     }
 
-    public void promptCustomerData() {
+    private void promptCustomerData() {
         // start with the obligatory fields
         String firstName = promptCustomerFirstName();
         String lastName = promptCustomerLastName();
@@ -350,7 +349,7 @@ public class ShopPresentation {
         System.out.println(BLACK + "Customer data updated." + RESET_COLOR);
     }
     
-    public void editCustomerData() {
+    private void editCustomerData() {
         System.out.println();
 
         // split the customer string on lines so we can add menu numbers in front of each line
