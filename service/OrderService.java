@@ -61,7 +61,7 @@ public class OrderService extends IDservice {
         // intitalize ScheduleService & calculate pickup time
         scheduleService = new ScheduleService(order.getBasket().getTotalProductionHours());
         order.setOrderTime(LocalDateTime.now());
-        order.setPickupTime(scheduleService.getPickUpTime());
+        order.setPickupTime(scheduleService.calculatePickUpTime());
 
         // flag the order as saved, it can't be changed anymore
         hasInvoice = true;

@@ -35,22 +35,16 @@ public class ScheduleService {
         }
 
         this.totalWorkMinutes = totalWorkHours * 60;
-        calculatePickUpTime();
     }
 
-    public LocalDateTime getPickUpTime() {
-        return this.pickUpTime;
-    }
-
-    private void calculatePickUpTime() {
-
-        // find how much time there is left in the day of the last' order
+    public LocalDateTime calculatePickUpTime() {
+        // find today's index
         int dayIndex = getStartDayIndex();
 
-        // get the |opening| and closing hour for the day (we assume that the last pickuptime was after opening so we don't check that)
+        // get the closing hour for the day (we assume that the last pickuptime was after opening so we don't check that)
         LocalDateTime closingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getClosingTime());
 
-        // if yes, calculate the remaining working hours (in minutes)
+        // calculate the remaining working hours (in minutes)
         int minutesRemaining = (closingTime.getHour() - startTime.getHour()) * 60 - startTime.getMinute();
 
         // if there is enought time left in the day to complete it, return today, otherwise substract and go to the next day
@@ -64,6 +58,7 @@ public class ScheduleService {
 
         // save calculated pick up time as latest in JSON
         jsonHandler.saveJSON(pickUpTime);
+        return pickUpTime;
     }
 
     private LocalDateTime pickupTime(int totalWorkMinutes, int dayIndex) {
@@ -76,7 +71,7 @@ public class ScheduleService {
         // setting a new variable to mutate, so we still have access to the original value
         int productionMinutes = totalWorkMinutes;
         
-        // get the opening and closing times for the day (first column is opening hour, second is closing hour)
+        // get the opening and closing times for the day
         LocalDateTime openingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getOpeningTime());
         LocalDateTime closingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getClosingTime());
 
@@ -107,7 +102,6 @@ public class ScheduleService {
                 return i;
             }
         }
-        return -1;
+        return -1; 
     }
-
 }
