@@ -272,7 +272,7 @@ public class ShopPresentation {
             // again allow for returning to menu?
         }
 
-        System.out.println(orderService.loadOrder(orderID)); // TODO validate if file exists
+        System.out.println(orderService.loadOrder(orderID));
         System.out.println("Placed orders are final. If there's something wrong with your order, please contact customer service.\n");
         showPlacedOrders();
     }
@@ -474,7 +474,7 @@ public class ShopPresentation {
 
             // if you enter something like "hello:32039", the app will ask you to enter quantity again, and afterwards
             // asking you to enter the product name again - which print the error message multiple times due scan.nextInt()
-            // I could have debugged this further but I just wanted to get this assignment done :)
+            // I could have debugged this further but at some point I just wanted to get this assignment done :)
         }
         return new int[] { productIndex, quantity };
     }

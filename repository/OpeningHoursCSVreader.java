@@ -11,10 +11,8 @@ import pojo.Day;
 
 public class OpeningHoursCSVreader extends CSVreader {
 
-    // TODO check if the file actually exists?
     private final static Path path = Paths.get("data\\PhotoShop_OpeningHours.csv");
 
-    // TODO think if we can't make this an abstract class with static methods?
     public OpeningHoursCSVreader() {
         setLines(path);
     }

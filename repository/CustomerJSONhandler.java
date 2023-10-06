@@ -30,7 +30,7 @@ public class CustomerJSONhandler extends JSONhandler<Customer> {
         } catch (Exception exception) {
             System.out.println(exception);
         }
-        return null; // this is handled by the service class calling readJSON()
+        return null; // this should be handled by the service class calling readJSON()
     }
 
     public boolean fileExists() {

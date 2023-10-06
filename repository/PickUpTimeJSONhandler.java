@@ -27,13 +27,22 @@ public class PickUpTimeJSONhandler extends JSONhandler<LocalDateTime> {
             // sorting the files on time last modified in descending order (we want the latest pickup time)
             Arrays.sort(orderFiles, Comparator.comparingLong(File::lastModified).reversed());
 
-            try {
-                // read the first file and save it's pickup time to JSON
-                Order order = mapper.readValue(orderFiles[0], Order.class); 
-                LocalDateTime latestPickupTime = order.getPickUpTime();
-                saveJSON(latestPickupTime);
-            } catch (Exception exception) {
-                System.out.println(exception);
+            if (orderFiles.length == 0) {
+                // if there are no orders at all, set pickup time to now
+                try {
+                    saveJSON(LocalDateTime.now());
+                } catch (Exception exception) {
+                    System.out.println(exception);
+                }
+            } else {
+                try {
+                    // read the first file and save it's pickup time to JSON
+                    Order order = mapper.readValue(orderFiles[0], Order.class); 
+                    LocalDateTime latestPickupTime = order.getPickUpTime();
+                    saveJSON(latestPickupTime);
+                } catch (Exception exception) {
+                    System.out.println(exception);
+                }
             }
         }
     }
@@ -54,6 +63,6 @@ public class PickUpTimeJSONhandler extends JSONhandler<LocalDateTime> {
         } catch (Exception exception) {
             System.out.println(exception);
         }
-        return null; // all exceptions are being caught, so I suppose this never happens
+        return null; // this is handled by the service class calling readJSON()
     }
 }

@@ -34,19 +34,25 @@ public class ScheduleService {
             startTime = LocalDateTime.now();
         }
 
-        this.totalWorkMinutes = totalWorkHours * 60;
+        totalWorkMinutes = totalWorkHours * 60;
     }
 
     public LocalDateTime calculatePickUpTime() {
-        // find today's index
+        // find today's index, set minutesRemaining
         int dayIndex = getStartDayIndex();
+        int minutesRemaining = 0;
 
-        // get the opening and closing hour for the day (we assume that the last pickuptime was after opening so we don't check that)
+        // get the opening and closing hour for the day 
         LocalDateTime openingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getOpeningTime());
         LocalDateTime closingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getClosingTime());
 
-        // calculate the remaining working hours (in minutes)
-        int minutesRemaining = (closingTime.getHour() - startTime.getHour()) * 60 - startTime.getMinute();
+        // calulating the remaining work time in this day, taking opening times into account
+        if (startTime.isAfter(openingTime)) {
+            // calculate the remaining working hours (in minutes)
+            minutesRemaining = (closingTime.getHour() - startTime.getHour()) * 60 - startTime.getMinute();
+        } else {
+            minutesRemaining = (closingTime.getHour() - openingTime.getHour()) * 60 + (closingTime.getMinute() - openingTime.getMinute());
+        }
 
         // if there is enought time left in the day to complete it, return today, otherwise substract and go to the next day
         if (minutesRemaining >= totalWorkMinutes) {
