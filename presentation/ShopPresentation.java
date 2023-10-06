@@ -1,6 +1,5 @@
 package presentation;
 
-import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -68,7 +67,7 @@ public class ShopPresentation {
 
         // if the order hasn't been placed yet, save the basket and or customer data for next time
         if (!orderService.hasInvoice) {
-            if (basketService.hasProducts()) basketService.saveBasket(); 
+            if (!basketService.isEmpty()) basketService.saveBasket(); 
             if (customerService.hasCustomer()) customerService.saveCustomer();
         }
         System.exit(0);
@@ -156,7 +155,7 @@ public class ShopPresentation {
             case 2: 
 
                 // if basket is empty, say so and return to Current Order menu
-                if (!basketService.hasProducts()) {
+                if (basketService.isEmpty()) {
                     System.out.println(RED + "There are no products in the basket to remove!" + RESET_COLOR);
                     showCurrentOrder();
                 }
@@ -212,7 +211,7 @@ public class ShopPresentation {
         System.out.println("\n" + header("CHECKOUT"));
 
         // making sure the basket contains products before proceeding
-        if(!basketService.hasProducts()) {
+        if(basketService.isEmpty()) {
             System.out.println(RED + "There are no products in the basket yet!" + RESET_COLOR);
             showProductCatalogue();
         }

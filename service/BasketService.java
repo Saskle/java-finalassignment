@@ -23,10 +23,6 @@ public class BasketService {
         basket = new Basket();    
     }
 
-    public Basket getBasket() {
-        return this.basket.clone();
-    }
-
     // adding and removing products to basket
     public void addProducts(int id, int quantity) {
         basket.addProducts(productService.catalogue[id].clone(), quantity);
@@ -42,8 +38,8 @@ public class BasketService {
         Product product = productService.getProduct(name);
         basket.removeProducts(product, quantity);
     }
-    public boolean hasProducts() {
-        return !basket.getProducts().isEmpty();
+    public boolean isEmpty() {
+        return basket.getProducts().isEmpty();
     }
     public boolean hasProduct(Product product) {
         return basket.getProducts().containsKey(product);

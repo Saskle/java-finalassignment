@@ -41,7 +41,8 @@ public class ScheduleService {
         // find today's index
         int dayIndex = getStartDayIndex();
 
-        // get the closing hour for the day (we assume that the last pickuptime was after opening so we don't check that)
+        // get the opening and closing hour for the day (we assume that the last pickuptime was after opening so we don't check that)
+        LocalDateTime openingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getOpeningTime());
         LocalDateTime closingTime = LocalDateTime.of(startTime.toLocalDate(), workingDays[dayIndex].getClosingTime());
 
         // calculate the remaining working hours (in minutes)
@@ -53,7 +54,7 @@ public class ScheduleService {
         } else {
             dayCounter++;
             dayIndex++;
-            pickUpTime = pickupTime(totalWorkMinutes - minutesRemaining, dayIndex);
+            pickUpTime = pickUpTime(totalWorkMinutes - minutesRemaining, dayIndex);
         }
 
         // save calculated pick up time as latest in JSON
@@ -61,7 +62,7 @@ public class ScheduleService {
         return pickUpTime;
     }
 
-    private LocalDateTime pickupTime(int totalWorkMinutes, int dayIndex) {
+    private LocalDateTime pickUpTime(int totalWorkMinutes, int dayIndex) {
 
         // if it's Saturday, start at the beginning again
         if (dayIndex == workingDays.length) {
@@ -90,7 +91,7 @@ public class ScheduleService {
             // add a day to the index and counter and recalculate
             dayCounter++;
             dayIndex++;
-            pickUpTime = pickupTime(productionMinutes, dayIndex);
+            pickUpTime = pickUpTime(productionMinutes, dayIndex);
         }
         return pickUpTime;
     }
