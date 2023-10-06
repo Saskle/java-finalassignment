@@ -23,6 +23,16 @@ public class ProductService {
         }
         return null; // client's responsibility to check if it is a product beforehand
     }
+
+    public int getProductIndex(String name) {
+        for (int i = 0; i < catalogue.length; i++) {
+            if (catalogue[i].getName().equals(name)) {
+                return i;
+            }
+        }
+        return 0; // client's responsibility to check if it is a product beforehand
+    }
+
     public boolean isProduct(String name) {
         for (int i = 0; i < catalogue.length; i++) {
             if (catalogue[i].getName().equals(name)) {

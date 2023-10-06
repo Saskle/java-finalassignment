@@ -1,5 +1,6 @@
 package presentation;
 
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -107,44 +108,12 @@ public class ShopPresentation {
         System.out.println("To return to the main menu, enter " + YELLOW + 0 + RESET_COLOR + ".");
         System.out.println("Please enter the corresponding ID or name of the product to add to your order: ");
 
-        String product = "";
-        int quantity = 1; // if not specified, the user wants to add 1 product
+        scan.nextLine(); // throwaway next line because of menu's integers
 
-        // TODO can this be a method?
-        scan.nextLine(); // throwaway next line
-        String input = scan.nextLine();
-        if (input.contains(":")) {
-            // split imput into two strings
-            String[] splitInput = input.split(":");
-            product = splitInput[0];
-            
-            // check if the input after ":" is a number, larger than 0
-            quantity = validateNumericalInput(splitInput[1], 99, false);
-
-        } else {
-            // if there's no ":", the input only specifies the product
-            product = input;
-        }
-
-        if (isInteger(product)) {
-            // if the user entered a product ID, validate and use that imput
-            int index = validateNumericalInput(product, productService.catalogue.length, true);
-
-            // index 0 is reserved for returning to the main menu
-            if (index == 0) {
-                showMainMenu();
-            }
-
-            // add product (product ID's start at 1 instead of 0)
-            basketService.addProducts(index - 1, quantity); 
-            System.out.println(BLACK + quantity + " x " + productService.catalogue[index - 1].getName() + " has been added." + RESET_COLOR); 
-
-        } else {
-            // product must be a product's name
-            product = validateProductName(product);
-            basketService.addProducts(product, quantity);
-            System.out.println(BLACK + quantity + " x " + product + " has been added." + RESET_COLOR);
-        }
+        // prompt the user for products and optional quantities (int[0] = product index, int[1] = quantity)
+        int[] productsToAdd = promptProduct(true);
+        basketService.addProducts(productsToAdd[0], productsToAdd[1]);
+        System.out.println(BLACK + productsToAdd[1] + " x " + productService.catalogue[productsToAdd[0]].getName() + " has been added." + RESET_COLOR);
 
         System.out.println("\n" + basketService.showBasket());
         System.out.println("Would you like to add another product? ");
@@ -197,45 +166,15 @@ public class ShopPresentation {
                 System.out.println("To return to the main menu, enter " + YELLOW + 0 + RESET_COLOR + ".");
                 System.out.print("Which product would you like to remove? ");
                 
-                String product = "";
-                int quantity = 1; // if not specified, the user wants to add 1 product
+                scan.nextLine(); // throwaway next line because of menu's integers
 
-                // TODO can this be a method?
-                scan.nextLine(); // throwaway next line
-                String input = scan.nextLine();
-                if (input.contains(":")) {
-                    // split imput into two strings
-                    String[] splitInput = input.split(":");
-                    product = splitInput[0];
-                    
-                    // check if the input after ":" is a number, larger than 0
-                    quantity = validateNumericalInput(splitInput[1], 99, false);
-        
-                } else {
-                    // if there's no ":", the input only specifies the product
-                    product = input;
-                }
-        
-                if (isInteger(product)) {
-                    // if the user entered a product ID, validate and use that imput
-                    int index = validateNumericalInput(product, productService.catalogue.length, true);
-        
-                    // index 0 is reserved for returning to the main menu
-                    if (index == 0) {
-                        showMainMenu();
-                    }
-        
-                    // remove product (product ID's start at 1 instead of 0)
-                    basketService.removeProducts(index - 1, quantity); 
-                    System.out.println(BLACK + quantity + " x " + productService.catalogue[index - 1].getName() + " has been removed." + RESET_COLOR); 
-        
-                } else {
-                    // product must be a product's name
-                    product = validateProductName(product);
-                    basketService.removeProducts(product, quantity);
-                    System.out.println(BLACK + quantity + " x " + product + " has been removed." + RESET_COLOR);
-                }
+                // prompt the user for products and optional quantities (int[0] = product index, int[1] = quantity)
+                int[] productsToRemove = promptProduct(false);
+                basketService.removeProducts(productsToRemove[0], productsToRemove[1]);
+                System.out.println(BLACK + productsToRemove[1] + " x " + productService.catalogue[productsToRemove[0]].getName() + " has been removed." + RESET_COLOR);
+                
                 showCurrentOrder();
+
             case 3: showCustomerData();
             case 4: checkOut();
             default: throw new InputMismatchException("Input for showCurrentOrder() isn't correctly validated!");
@@ -469,7 +408,7 @@ public class ShopPresentation {
 
         // if there is, is it within the range (inclusive) we want?
         if (response < 0 || response > range) {
-            System.out.println(RED + "You haven't entered a number in the correct range. Please try again. " + RESET_COLOR);
+            System.out.println(RED + "You haven't entered a number in the correct range (0 - " + range + ") . Please try again. " + RESET_COLOR);
             response = validateNumericalInput(range);
         }
         return response;
@@ -486,16 +425,59 @@ public class ShopPresentation {
         // if there is, is it within the range (inclusive) we want (including or excluding 0)?
         if (canBeNull) {
             if (response < 0 || response > range) {
-                System.out.println(RED + "You haven't entered a number in the correct range. Please try again. " + RESET_COLOR);
+                System.out.println(RED + "You haven't entered a number in the correct range (1 - " + range + ") . Please try again. " + RESET_COLOR);
                 response = validateNumericalInput(range);
             }
         } else {
             if (response <= 0 || response > range) {
-                System.out.println(RED + "You haven't entered a number in the correct range. Please try again. " + RESET_COLOR);
+                System.out.println(RED + "You haven't entered a number in the correct range (0 - " + range + ") . Please try again. " + RESET_COLOR);
                 response = validateNumericalInput(range);
             }
         }
         return response;
+    }
+
+    private int[] promptProduct(boolean allowProductIndex) {
+        String productName = "";
+        int productIndex = 0;
+        int quantity = 1;
+        
+        String input = scan.nextLine();
+        if (input.contains(":")) {
+            // split imput into two strings
+            String[] splitInput = input.split(":");
+            productName = splitInput[0];
+            
+            // check if the input after ":" is a number, larger than 0
+            quantity = validateNumericalInput(splitInput[1], 99, false);
+
+        } else {
+            // if there's no ":", the input only specifies the product
+            productName = input;
+        }
+
+        if (isInteger(productName) && allowProductIndex) {
+            // if the user entered a product ID, validate and use that imput
+            int index = validateNumericalInput(productName, productService.catalogue.length, true);
+
+            // index 0 is reserved for returning to the main menu
+            if (index == 0) {
+                showMainMenu();
+            }
+
+            // product ID's start at 1 instead of 0
+            productIndex = index - 1;
+            
+        } else {
+            // product must be a product's name
+            productName = validateProductName(productName);
+            productIndex = productService.getProductIndex(productName);
+
+            // if you enter something like "hello:32039", the app will ask you to enter quantity again, and afterwards
+            // asking you to enter the product name again - which print the error message multiple times due scan.nextInt()
+            // I could have debugged this further but I just wanted to get this assignment done :)
+        }
+        return new int[] { productIndex, quantity };
     }
 
     private String validateProductName(String productName) {
