@@ -110,7 +110,6 @@ public class Customer {
     @Override
     public Customer clone() {
         Customer copy = new Customer(this.customerID, this.firstName, this.lastName, this.email);
-        copy.setCustomerID(this.customerID);
         copy.setAddress(this.address);
         copy.setPostalCode(this.postalCode);
         copy.setCity(this.city);

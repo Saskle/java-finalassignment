@@ -30,22 +30,14 @@ public class CustomerService extends IDservice {
         int id = generateID(); 
         this.customer = new Customer(id, firstName, lastName, email);
     }
-
-    public Customer getCustomer() {
-        if (hasCustomer()) {
-            return this.customer.clone();    
-        }
-        return null; 
-    }
     public boolean hasCustomer() {
         if (customer == null) {
             return false;
         } return true;
     }
-
     public String showCustomer() {
         if (hasCustomer()) {
-            return getCustomer().toString();
+            return customer.toString();
         } return "\tNo customer found.\n";
     }
 

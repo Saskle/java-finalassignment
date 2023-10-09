@@ -9,7 +9,7 @@ public abstract class PrintFormatter {
     public static final String YELLOW = "\u001B[33m";
 
     // usage: 
-    // System.out.println(ANSI_RED + "This text is red!" + ANSI_RESET);
+    // System.out.println(RED + "This text is red!" + RESET_COLOR);
 
     public static final int MAX_LINE_LENGHT = 100;
 

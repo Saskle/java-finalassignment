@@ -25,7 +25,7 @@ public class ScheduleService {
         csvReader = new OpeningHoursCSVreader();
         workingDays = csvReader.readCSV();
 
-        // initialisation of JSONhandler, reading last pickup time = start time for this order
+        // initialisation of JSONhandler, last pickup time = start time for this order
         jsonHandler = new PickUpTimeJSONhandler();
         startTime = jsonHandler.readJSON(); 
 

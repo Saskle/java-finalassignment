@@ -256,7 +256,7 @@ public class ShopPresentation {
     }
 
     private void showPlacedOrders() {
-        System.out.println("Please enter the no. of the order you would like to view.");
+        System.out.println("Please enter the ID of the order you would like to view.");
         System.out.println("Enter " + YELLOW + 0 + RESET_COLOR + " to go back to the main menu. ");
 
         int orderID = validateNumericalInput(9999); // maximum possible order ID is 9999
