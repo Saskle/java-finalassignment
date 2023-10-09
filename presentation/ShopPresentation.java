@@ -261,15 +261,14 @@ public class ShopPresentation {
 
         int orderID = validateNumericalInput(9999); // maximum possible order ID is 9999
 
+        while (!orderService.isOrder(orderID) && orderID != 0) {
+            System.out.print(RED + "Order could not be found. Please enter a valid order ID: " + RESET_COLOR);
+            orderID = validateNumericalInput(9999);
+        }
+
         // allow the user to go back to the main menu
         if (orderID == 0) {
             showMainMenu();
-        }
-
-        while (!orderService.isOrder(orderID)) {
-            System.out.print("Order could not be found. Please enter a valid order ID: ");
-            orderID = validateNumericalInput(9999);
-            // again allow for returning to menu?
         }
 
         System.out.println(orderService.loadOrder(orderID));
@@ -407,7 +406,7 @@ public class ShopPresentation {
 
         // if there is, is it within the range (inclusive) we want?
         if (response < 0 || response > range) {
-            System.out.println(RED + "You haven't entered a number in the correct range (0 - " + range + ") . Please try again. " + RESET_COLOR);
+            System.out.println(RED + "You haven't entered a number in the correct range (0 - " + range + "). Please try again. " + RESET_COLOR);
             response = validateNumericalInput(range);
         }
         return response;
@@ -424,12 +423,12 @@ public class ShopPresentation {
         // if there is, is it within the range (inclusive) we want (including or excluding 0)?
         if (canBeNull) {
             if (response < 0 || response > range) {
-                System.out.println(RED + "You haven't entered a number in the correct range (1 - " + range + ") . Please try again. " + RESET_COLOR);
+                System.out.println(RED + "You haven't entered a number in the correct range (1 - " + range + "). Please try again. " + RESET_COLOR);
                 response = validateNumericalInput(range);
             }
         } else {
             if (response <= 0 || response > range) {
-                System.out.println(RED + "You haven't entered a number in the correct range (0 - " + range + ") . Please try again. " + RESET_COLOR);
+                System.out.println(RED + "You haven't entered a number in the correct range (0 - " + range + "). Please try again. " + RESET_COLOR);
                 response = validateNumericalInput(range);
             }
         }
